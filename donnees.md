@@ -16,13 +16,13 @@ La sélection des extraits analysés a été réalisée avec l'outil [AléaScope
 
 Les données issues du Test d'Associations Verbales (TAV) sont collectées de manière anonyme. Aucune donnée nominative n'est conservée. Les variables de contexte retenues (type d'établissement, niveau d'enseignement, ancienneté) sont suffisamment agrégées pour ne pas permettre l'identification des participants.
 
-Les données de corpus, en revanche, sont référencées de manière complète et citées avec leurs sources — la transparence sur les documents analysés est une condition de la reproductibilité du codage.
+Les données de corpus, en revanche, sont référencées de manière complète et citées avec leurs sources, la transparence sur les documents analysés est une condition de la reproductibilité du codage.
 
 ---
 
 ### Structure des données
 
-**Données TAV** : exportées en CSV depuis le TAVI, avec les variables suivantes — inducteur, rang d'apparition de chaque association, score de centralité calculé selon la méthode de Vergès (1992), indicateurs de fréquence et d'importance.
+**Données TAV** : exportées en CSV depuis le TAVI, avec les variables suivantes : inducteur, rang d'apparition de chaque association, score de centralité calculé selon la méthode de Vergès (1992), indicateurs de fréquence et d'importance.
 
 **Données de corpus** : exportées en CSV depuis la PAC, avec les variables suivantes — identifiant du document, type de document, date, six dimensions de codage (réification, lexique déficitaire, attribution de responsabilité, savoirs hors école, rapport à la norme, définition du LP), commentaires des codeurs.
 
