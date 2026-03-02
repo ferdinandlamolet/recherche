@@ -12,7 +12,7 @@ Le dispositif articule donc deux outils complémentaires. L'un accède à la dim
 
 ---
 
-### Outil 1 — Analyse de corpus
+### Outil 1 - Analyse de corpus
 
 Un corpus de 30 documents francophones (articles scientifiques, rapports institutionnels, textes réglementaires) sera analysé à l'aide d'une grille de codage structurée autour de six dimensions.
 
@@ -30,7 +30,7 @@ Un corpus de 30 documents francophones (articles scientifiques, rapports institu
 
 ---
 
-### Outil 2 — Test d'Associations Verbales (TAV)
+### Outil 2 - Test d'Associations Verbales (TAV)
 
 Un TAV sera administré à un échantillon de 80 enseignants du secondaire (lycées généraux, technologiques, professionnels, et dispositifs de raccrochage).
 
