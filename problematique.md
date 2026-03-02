@@ -26,7 +26,7 @@ Car si nommer *décrocheur* un jeune qui n'a pas décroché de tout apprentissag
 
 Cette recherche ne porte pas sur le *décrochage scolaire* comme phénomène. Elle ne cherche pas à mesurer son ampleur, à identifier ses facteurs, ni à évaluer les dispositifs qui y répondent.
 
-Elle porte sur la **catégorie**, l'outil de classement que nous utilisons pour penser ces situations. Sur sa généalogie, son statut épistémologique, ses effets cognitifs et institutionnels. Sur la manière dont elle structure les représentations professionnelles et invisibilise des trajectoires qui ne correspondent pas à la norme qu'elle présuppose.
+Elle porte sur la catégorie, l'outil de classement que nous utilisons pour penser ces situations. Sur sa généalogie, son statut épistémologique, ses effets cognitifs et institutionnels. Sur la manière dont elle structure les représentations professionnelles et invisibilise des trajectoires qui ne correspondent pas à la norme qu'elle présuppose.
 
 C'est un déplacement d'objet. Il est justifié par une observation : si un système ne peut pas reconnaître ce qu'un jeune a appris hors de l'école, ce n'est peut-être pas d'abord un problème d'outils. C'est un problème d'instruments cognitifs - de ce que la catégorie rend pensable et de ce qu'elle ne rend pas disponible.
 
