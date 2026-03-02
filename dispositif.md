@@ -1,18 +1,18 @@
-# Dispositif de recherche
+## Dispositif de recherche
 
 ---
 
-## Pourquoi une triangulation
+### Une triangulation des résultats
 
-Le cadre théorique ne définit pas seulement ce qu'on cherche — il contraint aussi comment on doit chercher.
+Le cadre théorique ne définit pas seulement ce qu'on cherche, il contraint aussi comment on doit chercher.
 
 Une représentation sociale existe à la fois dans les discours objectivés des textes scientifiques ou des rapports institutionnels, et dans les structures cognitives des individus qui l'ont intériorisée. Accéder à cette représentation en saisissant ces deux dimensions conjointement fonde la nécessité d'une triangulation — non comme agrément méthodologique, mais comme exigence théorique.
 
-Le dispositif articule donc deux outils complémentaires : l'un accède à la dimension discursive (comment la représentation est construite et objectivée dans la littérature) ; l'autre à la dimension cognitive (comment elle est intériorisée dans les cognitions spontanées des professionnels).
+Le dispositif articule donc deux outils complémentaires. L'un accède à la dimension discursive (comment la représentation est construite et objectivée dans la littérature) ; l'autre à la dimension cognitive (comment elle est intériorisée dans les cognitions spontanées des professionnels).
 
 ---
 
-## Outil 1 — Analyse de corpus
+### Outil 1 — Analyse de corpus
 
 Un corpus de 30 documents francophones (articles scientifiques, rapports institutionnels, textes réglementaires) sera analysé à l'aide d'une grille de codage structurée autour de six dimensions.
 
@@ -30,7 +30,7 @@ Un corpus de 30 documents francophones (articles scientifiques, rapports institu
 
 ---
 
-## Outil 2 — Test d'Associations Verbales (TAV)
+### Outil 2 — Test d'Associations Verbales (TAV)
 
 Un TAV sera administré à un échantillon de 80 enseignants du secondaire (lycées généraux, technologiques, professionnels, et dispositifs de raccrochage).
 
@@ -48,7 +48,7 @@ Ces inducteurs couvrent cinq dimensions théoriques : la tonalité affective, l'
 
 ---
 
-## Articulation des deux outils
+### Articulation des deux outils
 
 La grille de corpus révèle comment la représentation sociale du *décrochage* est construite et objectivée dans les textes qui ont formaté la formation des enseignants et fondé les politiques auxquelles ils se conforment. Le TAV révèle comment cette représentation est intériorisée dans leurs cognitions spontanées.
 
