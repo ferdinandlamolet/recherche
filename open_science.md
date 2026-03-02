@@ -16,13 +16,13 @@ Tous les contenus de cet atelier public de recherche, textes, protocoles, donné
 
 Cela signifie que vous pouvez :
 
-- **partager** - copier et redistribuer le contenu sur n'importe quel support ou format
-- **adapter** - transformer, modifier, et construire à partir de ce contenu, y compris à des fins commerciales
+- **partager**, copier et redistribuer le contenu sur n'importe quel support ou format
+- **adapter**, transformer, modifier, et construire à partir de ce contenu, y compris à des fins commerciales
 
 à condition de :
 
-- **citer la source** - mentionner l'auteur, le titre du projet et un lien vers la licence
-- **partager dans les mêmes conditions** - si vous transformez ou construisez à partir de ce contenu, vos contributions doivent être publiées sous la même licence
+- **citer la source**, mentionner l'auteur, le titre du projet et un lien vers la licence
+- **partager dans les mêmes conditions**, si vous transformez ou construisez à partir de ce contenu, vos contributions doivent être publiées sous la même licence
 
 ---
 
