@@ -1,6 +1,6 @@
 ## Instruments & outils
 
-Ces outils sont des instruments au service d'un problème, ils n'en sont pas le cœur. Ils ont été développés pour opérationnaliser le dispositif d'enquête décrit dans la page [dispositif de recherche](dispositif.md), et peuvent être réutilisés librement pour d'autres recherches partageant des préoccupations similaires.
+Ces outils sont des instruments au service d'un problème, ils n'en sont pas le cœur. Ils ont été développés pour opérationnaliser le dispositif d'enquête décrit dans la page [dispositif de recherche](dispositif.md) et peuvent être réutilisés librement pour d'autres recherches partageant des préoccupations similaires.
 
 ---
 
