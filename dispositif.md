@@ -57,3 +57,6 @@ Cette analyse sur deux niveaux permettra d'observer des convergences ou des déc
 ---
 
 → [Instruments & outils](outils.md) — les applications développées pour conduire cette enquête
+
+---
+*Ferdinand Lamolet (2026)*
