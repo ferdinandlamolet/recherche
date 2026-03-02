@@ -45,3 +45,6 @@ La question des apprentissages construits hors de l'institution est presque abse
 La notion d'*injustice épistémique* (Fricker, 2007) s'est imposée comme un possible cadre complémentaire, mais elle pose un problème car elle implique un jugement normatif sur le système qui est peut-être prématuré à ce stade de la recherche. La question reste ouverte, est-ce que ce cadre éclaire quelque chose que les autres n'éclairent pas, ou est-ce qu'il introduit une conclusion avant l'enquête ?
 
 *[Ce journal est mis à jour au fil de la recherche.]*
+
+---
+*Ferdinand Lamolet (2026)*
