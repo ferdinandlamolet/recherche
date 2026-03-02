@@ -10,9 +10,9 @@ Transposition informatique du protocole d'un Test d'Associations Verbales (Abric
 
 Dans le cadre de cette recherche, le TAVI est utilisé pour accéder aux structures cognitives automatiques des enseignants, la dimension intériorisée de la représentation sociale du *décrochage scolaire*.
 
-📋 [Protocole TAVI](https://ferdinandlamolet.github.io/tav-protocole) - présentation de la méthode TAV et du paramétrage
+📋 [Protocole TAVI](https://ferdinandlamolet.github.io/tav-protocole) (présentation de la méthode TAV et du paramétrage)
 
-🏫 [TAVI - Raccrochage Scolaire](https://ferdinandlamolet.github.io/tav-raccrochage.html) - application configurée pour cette recherche
+🏫 [TAVI - Raccrochage Scolaire](https://ferdinandlamolet.github.io/tav-raccrochage.html) (application configurée pour cette recherche)
 
 ---
 
@@ -22,9 +22,9 @@ Plateforme coopérative d'analyse et de codage de corpus en ligne, conçue pour 
 
 Dans le cadre de cette recherche, la PAC est utilisée pour analyser le corpus de 30 documents francophones - la dimension objectivée de la représentation sociale du *décrochage scolaire*.
 
-📋 [Protocole PAC](https://ferdinandlamolet.github.io/pac-protocole.html) - présentation du dispositif de codage coopératif
+📋 [Protocole PAC](https://ferdinandlamolet.github.io/pac-protocole.html) (présentation du dispositif de codage coopératif)
 
-🔎 [PAC - Obstacles et Présupposés](https://ferdinandlamolet.github.io/pac-obstacles.html) - grille de codage configurée pour cette recherche
+🔎 [PAC - Obstacles et Présupposés](https://ferdinandlamolet.github.io/pac-obstacles.html) (grille de codage configurée pour cette recherche)
 
 ---
 
