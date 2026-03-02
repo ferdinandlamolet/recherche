@@ -39,3 +39,6 @@ Les données sont publiées sous licence **CC BY-SA 4.0** : elles peuvent être 
 ---
 
 → [Licence & réutilisation](open_science.md) — conditions détaillées
+
+---
+*Ferdinand Lamolet (2026)*
