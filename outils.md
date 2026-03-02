@@ -1,6 +1,6 @@
 ## Instruments & outils
 
-Ces outils sont des instruments au service d'un problème — ils n'en sont pas le cœur. Ils ont été développés pour opérationnaliser le dispositif d'enquête décrit dans la page [Dispositif de recherche](dispositif.md), et peuvent être réutilisés librement pour d'autres recherches partageant des préoccupations similaires.
+Ces outils sont des instruments au service d'un problème, ils n'en sont pas le cœur. Ils ont été développés pour opérationnaliser le dispositif d'enquête décrit dans la page [dispositif de recherche](dispositif.md), et peuvent être réutilisés librement pour d'autres recherches partageant des préoccupations similaires.
 
 ---
 
@@ -8,11 +8,11 @@ Ces outils sont des instruments au service d'un problème — ils n'en sont pas 
 
 Transposition informatique du protocole d'un Test d'Associations Verbales (Abric, 2003 ; Vergès, 1992). L'outil permet d'administrer le TAV en ligne à des professionnels du secondaire, de collecter les associations spontanées et leurs hiérarchisations, et d'exporter les données vers un tableur (Google Sheets) pour traitement.
 
-Dans le cadre de cette recherche, le TAVI est utilisé pour accéder aux structures cognitives automatiques des enseignants — la dimension intériorisée de la représentation sociale du *décrochage scolaire*.
+Dans le cadre de cette recherche, le TAVI est utilisé pour accéder aux structures cognitives automatiques des enseignants, la dimension intériorisée de la représentation sociale du *décrochage scolaire*.
 
-📋 [Protocole TAVI](https://ferdinandlamolet.github.io/tav-protocole) — présentation de la méthode TAV et du paramétrage
+📋 [Protocole TAVI](https://ferdinandlamolet.github.io/tav-protocole) - présentation de la méthode TAV et du paramétrage
 
-🏫 [TAVI — Raccrochage Scolaire](https://ferdinandlamolet.github.io/tav-raccrochage.html) — application configurée pour cette recherche
+🏫 [TAVI - Raccrochage Scolaire](https://ferdinandlamolet.github.io/tav-raccrochage.html) - application configurée pour cette recherche
 
 ---
 
@@ -20,11 +20,11 @@ Dans le cadre de cette recherche, le TAVI est utilisé pour accéder aux structu
 
 Plateforme coopérative d'analyse et de codage de corpus en ligne, conçue pour identifier les obstacles épistémologiques et présupposés normatifs dans la littérature scientifique. Les codages sont réalisés à partir d'une grille structurée, et les données sont exportables au format CSV (compatible Sphinx, jamovi et autres logiciels d'analyse).
 
-Dans le cadre de cette recherche, la PAC est utilisée pour analyser le corpus de 30 documents francophones — la dimension objectivée de la représentation sociale du *décrochage scolaire*.
+Dans le cadre de cette recherche, la PAC est utilisée pour analyser le corpus de 30 documents francophones - la dimension objectivée de la représentation sociale du *décrochage scolaire*.
 
-📋 [Protocole PAC](https://ferdinandlamolet.github.io/pac-protocole.html) — présentation du dispositif de codage coopératif
+📋 [Protocole PAC](https://ferdinandlamolet.github.io/pac-protocole.html) - présentation du dispositif de codage coopératif
 
-🔎 [PAC — Obstacles et Présupposés](https://ferdinandlamolet.github.io/pac-obstacles.html) — grille de codage configurée pour cette recherche
+🔎 [PAC - Obstacles et Présupposés](https://ferdinandlamolet.github.io/pac-obstacles.html) - grille de codage configurée pour cette recherche
 
 ---
 
