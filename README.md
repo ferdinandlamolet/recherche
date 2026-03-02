@@ -16,9 +16,9 @@ Nos recherches portent sur l'épistémologie des catégories et les représentat
 
 Transposition informatique du protocole d'un Test d'Associations Verbales (Abric, 2003 ; Vergès, 1992), pour explorer les représentations sociales spontanées des professionnels du secondaire. Export Script Sheets.
 
-📋 [Protocole TAVI](https://perilordinaire.github.io/tav-protocole)
+📋 [Protocole TAVI](https://ferdinandlamolet.github.io/tav-protocole)
 
-🏫 [TAVI - Raccrochage Scolaire](https://perilordinaire.github.io/tav-raccrochage.html)
+🏫 [TAVI - Raccrochage Scolaire](https://ferdinandlamolet.github.io/tav-raccrochage.html)
 
 ---
 
@@ -26,9 +26,9 @@ Transposition informatique du protocole d'un Test d'Associations Verbales (Abric
 
 Conception de PAC, une plateforme coopérative d'analyse et de codage de corpus en ligne, pour identifier les obstacles épistémologiques et présupposés normatifs dans la littérature scientifique. Export CSV (Sphinx, jamovi...).
 
-📋 [Protocole PAC](https://perilordinaire.github.io/pac-protocole.html)
+📋 [Protocole PAC](https://ferdinandlamolet.github.io/pac-protocole.html)
 
-🔎 [PAC - Obstacles et Présupposés](https://perilordinaire.github.io/pac-obstacles.html)
+🔎 [PAC - Obstacles et Présupposés](https://ferdinandlamolet.github.io/pac-obstacles.html)
 
 ---
 
