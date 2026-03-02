@@ -4,7 +4,7 @@ Ces outils sont des instruments au service d'un problème — ils n'en sont pas 
 
 ---
 
-### TAVI — Test d'Associations Verbales Informatique
+### TAVI - Test d'Associations Verbales Informatique
 
 Transposition informatique du protocole d'un Test d'Associations Verbales (Abric, 2003 ; Vergès, 1992). L'outil permet d'administrer le TAV en ligne à des professionnels du secondaire, de collecter les associations spontanées et leurs hiérarchisations, et d'exporter les données vers un tableur (Google Sheets) pour traitement.
 
@@ -16,7 +16,7 @@ Dans le cadre de cette recherche, le TAVI est utilisé pour accéder aux structu
 
 ---
 
-### PAC — Plateforme d'Analyse de Corpus
+### PAC - Plateforme d'Analyse de Corpus
 
 Plateforme coopérative d'analyse et de codage de corpus en ligne, conçue pour identifier les obstacles épistémologiques et présupposés normatifs dans la littérature scientifique. Les codages sont réalisés à partir d'une grille structurée, et les données sont exportables au format CSV (compatible Sphinx, jamovi et autres logiciels d'analyse).
 
