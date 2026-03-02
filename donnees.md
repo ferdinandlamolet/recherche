@@ -4,9 +4,9 @@
 
 ### Le corpus d'analyse
 
-Le corpus est constitué de 30 documents francophones portant sur le *décrochage scolaire*, publiés entre 2015 et 2025. Il comprend des articles scientifiques (revues de sciences de l'éducation, de sociologie, de psychologie sociale), des rapports institutionnels (DEPP, CNESCO, Observatoire des inégalités), et des textes réglementaires (décrets, circulaires, lois).
+Le corpus est constitué de 30 documents francophones portant sur le *décrochage scolaire*, publiés entre 2015 et 2025. Il comprend des articles scientifiques, des rapports institutionnels (CNESCO, Observatoire des inégalités), et des textes réglementaires (décrets, circulaires, lois).
 
-Le corpus est construit pour couvrir trois registres dans lesquels la catégorie circule simultanément : le discours scientifique, le discours institutionnel, et le discours politique. Cette diversité est constitutive du problème de recherche : c'est précisément parce que la catégorie franchit ces registres sans que ses présupposés soient reformulés qu'elle présente un intérêt épistémologique.
+Le corpus est construit pour couvrir trois registres dans lesquels la catégorie circule simultanément : le discours scientifique, le discours institutionnel, et le discours politique. Cette diversité est constitutive du problème de recherche, c'est précisément parce que la catégorie franchit ces registres sans que ses présupposés soient reformulés qu'elle présente un intérêt épistémologique.
 
 La sélection des extraits analysés a été réalisée avec l'outil [AléaScope](outils.md), qui garantit une randomisation contrôlée indépendante de toute lecture préalable.
 
