@@ -1,8 +1,8 @@
-# Problématisation
+## Problématisation
 
 ---
 
-## La situation de départ
+### La situation de départ
 
 Au cours d'une expérience de coordination d'un Micro-Lycée, nous avons suivi la rescolarisation d'un jeune de 17 ans. Ce dernier avait quitté l'école à 15 ans, avant de passer deux années dans un atelier de mécanique automobile. Il y a développé des compétences professionnelles concrètes — spécifiques à la mécanique, mais aussi transversales : gestion de la relation client, comptabilité de base, organisation du travail.
 
@@ -10,7 +10,7 @@ Les professionnels du Micro-Lycée reconnaissaient verbalement ses capacités da
 
 ---
 
-## Une dissonance institutionnelle
+### Une dissonance institutionnelle
 
 Ce décalage entre la reconnaissance informelle des professionnels et l'impossibilité institutionnelle d'en tenir compte est frappant. Il s'agit d'un manque d'outils d'évaluation des acquis informels ? D'une contrainte du cadre légal ? D'un défaut de formation des professionnels ?
 
@@ -22,7 +22,7 @@ Car si nommer *décrocheur* un jeune qui n'a pas décroché de tout apprentissag
 
 ---
 
-## Ce que la recherche examine — et ce qu'elle n'examine pas
+### Ce que la recherche examine — et ce qu'elle n'examine pas
 
 Cette recherche ne porte pas sur le *décrochage scolaire* comme phénomène. Elle ne cherche pas à mesurer son ampleur, à identifier ses facteurs, ni à évaluer les dispositifs qui y répondent.
 
@@ -32,7 +32,7 @@ C'est un déplacement d'objet. Il est justifié par une observation : si un syst
 
 ---
 
-## L'hypothèse centrale
+### L'hypothèse centrale
 
 Notre hypothèse exploratoire est que la catégorie *décrochage scolaire*, en raison de sa généalogie, de son statut épistémologique et de son ancrage institutionnel, constitue une **représentation sociale** dont le noyau central structure les discours scientifiques et les représentations professionnelles — au point de faire obstacle à la reconnaissance des trajectoires scolaires qui se sont écartées de la norme.
 
