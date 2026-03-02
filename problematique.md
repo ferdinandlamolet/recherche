@@ -22,7 +22,7 @@ Car si nommer *décrocheur* un jeune qui n'a pas décroché de tout apprentissag
 
 ---
 
-### Ce que la recherche examine — et ce qu'elle n'examine pas
+### Ce que la recherche examine, et ce qu'elle n'examine pas
 
 Cette recherche ne porte pas sur le *décrochage scolaire* comme phénomène. Elle ne cherche pas à mesurer son ampleur, à identifier ses facteurs, ni à évaluer les dispositifs qui y répondent.
 
