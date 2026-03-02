@@ -13,7 +13,7 @@ C'est cette hypothèse qui a orienté la recherche vers un objet inhabituel, non
 
 ### Ce que cette recherche examine
 
-Cette recherche porte sur la catégorie *décrochage scolaire* - sa généalogie, son statut épistémologique, ses effets cognitifs et institutionnels. Elle s'intéresse à la manière dont un terme structure les représentations professionnelles et invisibilise des trajectoires qui ne correspondent pas à la norme qu'il présuppose.
+Cette recherche porte sur la catégorie *décrochage scolaire*, sa généalogie, son statut épistémologique, ses effets cognitifs et institutionnels. Elle s'intéresse à la manière dont un terme structure les représentations professionnelles et invisibilise des trajectoires qui ne correspondent pas à la norme qu'il présuppose.
 
 Elle ne porte pas sur le décrochage comme phénomène, ni sur les dispositifs de remédiation, ni sur les statistiques de sortie sans diplôme, excepté dans la mesure où ces éléments révèlent ce que la catégorie fait.
 
