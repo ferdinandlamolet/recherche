@@ -1,20 +1,21 @@
-## Penser le décrochage scolaire
+## Le décrochage scolaire en France
+**Généalogie d’une catégorie, anatomie d’un obstacle**
 
 ---
 
-Dans un Micro-Lycée, nous avons suivi la rescolarisation d'un jeune de 17 ans. Il avait quitté l'école à 15 ans pour travailler deux ans dans un atelier de mécanique automobile — et y avait appris : la relation client, la comptabilité de base, l'organisation du travail. Les professionnels reconnaissaient verbalement ses capacités. Institutionnellement, rien ne changeait. Son dossier le définissait par des absences, un manque de diplôme, une « sortie sans qualification ». Ces deux années n'y figuraient pas.
+Dans un Micro-Lycée, nous avons suivi la rescolarisation d'un jeune de 17 ans. Il avait quitté l'école à 15 ans pour travailler deux ans dans un atelier de mécanique automobile — et y avait appris : la relation client, la comptabilité de base, l'organisation du travail. Si les professionnels reconnaissaient verbalement ses capacités, institutionnellement, rien ne changeait. Son dossier le définissait par des absences, un manque de diplôme, une « sortie sans qualification ».
 
 > Ce décalage entre reconnaissance informelle et impossibilité institutionnelle constitue notre question de départ : cette impossibilité de reconnaître les acquis d'un *décrocheur* intervient-elle dans la manière même dont on nomme ces jeunes ?
 
-C'est cette hypothèse qui a orienté la recherche vers un objet inhabituel : non pas le *décrochage scolaire* comme phénomène, mais la **catégorie elle-même** — celle que nous utilisons pour penser ces situations. Car si nommer *décrocheur* un jeune qui a appris, travaillé, développé des compétences rend ces apprentissages invisibles, c'est peut-être que le terme lui-même impose un regard qui ne peut pas les voir.
+C'est cette hypothèse qui a orienté la recherche vers un objet inhabituel, non pas le *décrochage scolaire* comme phénomène statistique, mais la **catégorie elle-même**, celle que nous utilisons pour penser ces situations. Car si nommer *décrocheur* un jeune qui a appris, travaillé, développé des compétences rend ces apprentissages invisibles, c'est peut-être que le terme lui-même impose un regard qui ne peut pas les voir.
 
 ---
 
 ### Ce que cette recherche examine
 
-Cette recherche porte sur la catégorie *décrochage scolaire* — sa généalogie, son statut épistémologique, ses effets cognitifs et institutionnels. Elle s'intéresse à la manière dont un terme structure les représentations professionnelles et invisibilise des trajectoires qui ne correspondent pas à la norme qu'il présuppose.
+Cette recherche porte sur la catégorie *décrochage scolaire* - sa généalogie, son statut épistémologique, ses effets cognitifs et institutionnels. Elle s'intéresse à la manière dont un terme structure les représentations professionnelles et invisibilise des trajectoires qui ne correspondent pas à la norme qu'il présuppose.
 
-Elle ne porte pas sur le décrochage comme phénomène, ni sur les dispositifs de remédiation, ni sur les statistiques de sortie sans diplôme — sauf dans la mesure où ces éléments révèlent ce que la catégorie fait.
+Elle ne porte pas sur le décrochage comme phénomène, ni sur les dispositifs de remédiation, ni sur les statistiques de sortie sans diplôme, excepté dans la mesure où ces éléments révèlent ce que la catégorie fait.
 
 ---
 
