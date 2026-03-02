@@ -15,7 +15,7 @@ Les fichiers sources des pages, organisées dans l'ordre de la recherche :
 |---|---|
 | `index.md` | Page d'accueil du site |
 | `problematique.md` | Situation de départ, dissonance institutionnelle, question de recherche |
-| `epistemologie.md` | Cadre théorique — Bachelard, Scheffler, Gallie, Foucault, Hacking, représentations sociales |
+| `epistemologie.md` | Cadre théorique (obstacles épistémologique, production de catégories, représentations sociales) |
 | `dispositif.md` | Analyse de corpus + Test d'Associations Verbales |
 | `outils.md` | TAVI, PAC, AléaScope |
 | `donnees.md` | Corpus, principes d'anonymisation, données ouvertes |
