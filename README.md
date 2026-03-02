@@ -29,7 +29,7 @@ Les fichiers sources des pages, organisées dans l'ordre de la recherche :
 
 Recherche en épistémologie des catégories éducatives. L'hypothèse centrale : la catégorie *décrochage scolaire* constitue une représentation sociale dont le noyau central structure les discours scientifiques et les représentations professionnelles au point de faire obstacle à la reconnaissance des trajectoires qui s'en écartent.
 
-Le dépôt est versionné pour rendre visible l'évolution de la pensée — pas seulement les résultats, mais les reformulations, les résistances, les déplacements d'objet.
+Le dépôt est versionné pour rendre visible l'évolution de la pensée, pas seulement les résultats, mais les reformulations et les résistances, les déplacements.
 
 **Licence** : CC BY-SA 4.0 — réutilisation libre, partage dans les mêmes conditions.
 
