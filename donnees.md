@@ -8,7 +8,7 @@ Le corpus est constitué de 30 documents francophones portant sur le *décrochag
 
 Le corpus est construit pour couvrir trois registres dans lesquels la catégorie circule simultanément : le discours scientifique, le discours institutionnel, et le discours politique. Cette diversité est constitutive du problème de recherche, c'est précisément parce que la catégorie franchit ces registres sans que ses présupposés soient reformulés qu'elle présente un intérêt épistémologique.
 
-La sélection des extraits analysés a été réalisée avec l'outil [AléaScope](outils.md), qui garantit une randomisation contrôlée indépendante de toute lecture préalable.
+La sélection des extraits analysés a été réalisée avec l'outil [AléaScope](outils.md) qui garantit une randomisation contrôlée indépendante de toute lecture préalable.
 
 ---
 
@@ -38,7 +38,7 @@ Les données sont publiées sous licence **CC BY-SA 4.0** : elles peuvent être 
 
 ---
 
-→ [Licence & réutilisation](open_science.md) — conditions détaillées
+→ [Licence & réutilisation](open_science.md) - conditions détaillées
 
 ---
 *Ferdinand Lamolet (2026)*
