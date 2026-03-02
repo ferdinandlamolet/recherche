@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Protocole du TAVI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:       #F7F4EF;
+    --surface:  #FFFFFF;
+    --border:   #E2DDD6;
+    --ink:      #1A1815;
+    --ink-2:    #5A5550;
+    --ink-3:    #9A9590;
+    --accent:   #B85C38;
+    --accent-lt:#F0E0D8;
+    --navy:     #1E2D40;
+    --navy-lt:  #EDF1F5;
+    --green:    #2D6A4F;
+    --green-lt: #D8EDE5;
+    --amber:    #92600A;
+    --amber-lt: #FEF3C7;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin:0; padding:0; }
+  html { font-size: 15px; scroll-behavior: smooth; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.7;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--navy);
+    color: #fff;
+    padding: 4rem 2rem 3rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content:'';
+    position:absolute; inset:0;
+    background: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 40px,
+      rgba(255,255,255,.025) 40px,
+      rgba(255,255,255,.025) 41px
+    );
+  }
+  .hero-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: .75rem; letter-spacing: .18em;
+    text-transform: uppercase; color: #7AA4C2;
+    margin-bottom: 1rem; position: relative;
+  }
+  .hero h1 {
+    font-family: 'Libre Baskerville', serif;
+    font-size: clamp(1.6rem, 4vw, 2.6rem);
+    font-weight: 700; line-height: 1.2;
+    position: relative; margin-bottom: .75rem;
+  }
+  .hero h1 em { font-style: italic; color: #A8C4D8; }
+  .hero-sub {
+    font-size: .95rem; color: #A8BFD4; max-width: 560px;
+    margin: 0 auto 2rem; position: relative;
+  }
+  .hero-badges { display:flex; gap:.75rem; justify-content:center; flex-wrap:wrap; position:relative; }
+  .hero-badge {
+    padding: .3rem .9rem; border-radius: 99px;
+    font-size: .75rem; font-weight: 600; letter-spacing: .04em;
+    border: 1px solid rgba(255,255,255,.2); color: #C8D8E8;
+    background: rgba(255,255,255,.07);
+  }
+
+  /* ── LAYOUT ── */
+  .container { max-width: 860px; margin: 0 auto; padding: 0 2rem; }
+  .section { padding: 3.5rem 0; }
+  .section + .section { border-top: 1px solid var(--border); }
+
+  /* ── INTRO BLOCK ── */
+  .intro-grid { display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; margin-top:1.5rem; }
+  .intro-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px; padding: 1.25rem;
+  }
+  .intro-card h3 {
+    font-family: 'Libre Baskerville', serif;
+    font-size: .9rem; margin-bottom: .5rem;
+  }
+  .intro-card p { font-size: .85rem; color: var(--ink-2); line-height: 1.6; }
+
+  /* ── SECTION TITLES ── */
+  .section-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: .7rem; letter-spacing: .15em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: .6rem;
+  }
+  h2 {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 1.4rem; font-weight: 700; color: var(--ink);
+    margin-bottom: 1rem;
+  }
+  .lead { font-size: .95rem; color: var(--ink-2); margin-bottom: 2rem; max-width: 640px; }
+
+  /* ── STEPS ── */
+  .steps { display:flex; flex-direction:column; gap:0; }
+  .step {
+    display: grid;
+    grid-template-columns: 64px 1fr;
+    gap: 0 1.5rem;
+    position: relative;
+  }
+  .step:not(:last-child) .step-line {
+    position: absolute; left: 31px; top: 56px; bottom: 0;
+    width: 2px; background: var(--border);
+  }
+  .step-num-col { display:flex; flex-direction:column; align-items:center; padding-top:.25rem; }
+  .step-num {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--navy); color: #fff;
+    font-family: 'Libre Baskerville', serif;
+    font-size: 1.05rem; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; position: relative; z-index: 1;
+    box-shadow: 0 0 0 4px var(--bg);
+  }
+  .step-body { padding: .1rem 0 2.5rem; }
+  .step-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: .68rem; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--ink-3); margin-bottom: .3rem;
+  }
+  .step h3 {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 1.05rem; font-weight: 700; margin-bottom: .6rem; color: var(--ink);
+  }
+  .step p { font-size: .88rem; color: var(--ink-2); margin-bottom: .75rem; line-height:1.65; }
+  .step p:last-child { margin-bottom:0; }
+
+  /* ── CODE BLOCKS ── */
+  .code-block {
+    background: var(--navy);
+    color: #A8C8E0;
+    font-family: 'DM Mono', monospace;
+    font-size: .8rem; line-height: 1.6;
+    border-radius: 8px; padding: 1rem 1.25rem;
+    margin: .75rem 0; overflow-x: auto;
+    position: relative;
+  }
+  .code-block .co { color: #5A7A9A; }
+  .code-block .k  { color: #F4A26E; }
+  .code-block .s  { color: #A8D8B0; }
+  .code-block .v  { color: #F0C070; }
+  .code-label {
+    font-family: 'DM Mono', monospace; font-size: .68rem;
+    text-transform: uppercase; letter-spacing: .1em;
+    color: var(--ink-3); margin-bottom: .35rem;
+  }
+
+  /* ── CALLOUTS ── */
+  .callout {
+    border-radius: 8px; padding: .9rem 1.1rem;
+    font-size: .85rem; line-height: 1.6;
+    display: flex; gap: .7rem; align-items: flex-start;
+    margin: .75rem 0;
+  }
+  .callout-icon { flex-shrink:0; font-size:1rem; margin-top:.05rem; }
+  .callout-tip  { background: var(--green-lt); color: #1A4D36; border: 1px solid #B0D9CA; }
+  .callout-warn { background: var(--amber-lt); color: #5C3D06; border: 1px solid #F7D06A; }
+  .callout-info { background: var(--navy-lt);  color: #1A2D40; border: 1px solid #B0C4D8; }
+  .callout-legal { background: var(--accent-lt); color: #6B2A12; border: 1px solid #DDA88C; }
+
+  /* ── CHECKLIST ── */
+  .checklist { list-style:none; margin-top:.75rem; }
+  .checklist li {
+    display:flex; gap:.75rem; align-items:flex-start;
+    padding:.45rem 0; border-bottom:1px solid #EFEBE6;
+    font-size:.87rem; color:var(--ink-2);
+  }
+  .checklist li:last-child { border-bottom:none; }
+  .check-box {
+    width:18px; height:18px; border-radius:4px;
+    border:2px solid var(--border); flex-shrink:0;
+    margin-top:.1rem;
+  }
+
+  /* ── RECO TABLE ── */
+  .reco-table { width:100%; border-collapse:collapse; font-size:.83rem; margin-top:.75rem; }
+  .reco-table th {
+    text-align:left; padding:.5rem .75rem;
+    font-size:.72rem; font-weight:600; text-transform:uppercase; letter-spacing:.07em;
+    color:var(--ink-2); background:#FAFAF8; border-bottom:1px solid var(--border);
+  }
+  .reco-table td { padding:.55rem .75rem; border-bottom:1px solid #EFEBE6; vertical-align:top; }
+  .reco-table tr:last-child td { border-bottom:none; }
+  .reco-id {
+    font-family:'DM Mono',monospace; font-size:.75rem;
+    background:var(--navy); color:#fff; padding:.15rem .45rem;
+    border-radius:3px; white-space:nowrap;
+  }
+
+  /* ── LEGAL BANNER ── */
+  .legal-banner {
+    background: var(--navy);
+    color: #C8D8E8;
+    border-radius: 10px;
+    padding: 1.75rem 2rem;
+    margin-top: 2rem;
+  }
+  .legal-banner h3 {
+    font-family: 'Libre Baskerville', serif;
+    color: #fff; margin-bottom: .75rem; font-size: 1rem;
+  }
+  .legal-banner p { font-size: .85rem; line-height:1.65; }
+  .legal-banner .credit {
+    font-family: 'DM Mono', monospace;
+    font-size: .8rem; color: #7AA4C2;
+    background: rgba(255,255,255,.07);
+    border-radius: 6px; padding: .75rem 1rem;
+    margin-top: 1rem; border-left: 3px solid var(--accent);
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #111820; color: #5A7A9A;
+    text-align:center; padding: 2rem;
+    font-size: .78rem; font-family: 'DM Mono', monospace;
+  }
+  footer a { color: #7AA4C2; text-decoration:none; }
+
+  @media (max-width:640px) {
+    .intro-grid { grid-template-columns:1fr; }
+    .step { grid-template-columns: 48px 1fr; gap:0 1rem; }
+    .container { padding:0 1.25rem; }
+    .hero { padding: 2.5rem 1.25rem 2rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <div class="hero-eyebrow">Guide de réutilisation</div>
+  <h1>Test d'Associations Verbales <em>Informatisé</em> (TAVI)</h1>
+  <p class="hero-sub">Ce protocole explique comment récupérer, déployer et personnaliser le TAVI pour vos propres recherches sur les représentations sociales.</p>
+  <div class="hero-badges">
+    <span class="hero-badge">GitHub Pages — gratuit</span>
+    <span class="hero-badge">Google Sheets — collecte auto</span>
+    <span class="hero-badge">Export CSV · Jamovi · SPSS · R</span>
+    <span class="hero-badge">1 fichier HTML unique</span>
+  </div>
+</div>
+
+<!-- ── SECTION : PRÉSENTATION ── -->
+<div class="section">
+  <div class="container">
+    <div class="section-eyebrow">Présentation</div>
+    <h2>Qu'est-ce que le TAVI ?</h2>
+    <p class="lead">Le TAVI est un outil de collecte de données en ligne pour l'étude des représentations sociales par la méthode des associations verbales. Il présente des termes inducteurs et recueille les associations libres des participants, puis envoie les données vers un Google Sheet pour analyse.</p>
+
+    <div class="intro-grid">
+      <div class="intro-card">
+        <h3>Pour quel usage ?</h3>
+        <p>Toute recherche nécessitant l'exploration du noyau central d'une représentation sociale : croyances professionnelles, images de métiers, représentations d'objets éducatifs, de pratiques, d'institutions, etc.</p>
+      </div>
+      <div class="intro-card">
+        <h3>Comment ça fonctionne ?</h3>
+        <p>Un fichier HTML unique qui tourne dans n'importe quel navigateur. Le participant saisit ses associations, les données sont envoyées en temps réel vers votre Google Sheet via un script Apps.</p>
+      </div>
+      <div class="intro-card">
+        <h3>Ce que vous allez modifier</h3>
+        <p>Principalement le tableau <code>inducteurs</code> dans le code JavaScript et l'URL du script Google Apps. Vous pouvez aussi personnaliser les couleurs et les textes d'introduction.</p>
+      </div>
+      <div class="intro-card">
+        <h3>⏱ Combien de temps ?</h3>
+        <p>Comptez 30 minutes pour déployer votre propre version une fois ce protocole en main. Aucune connaissance avancée en programmation n'est nécessaire.</p>
+      </div>
+    </div>
+
+    <div class="callout callout-legal" style="margin-top:1.5rem;">
+      <span class="callout-icon">⚖️</span>
+      <div><strong>Propriété intellectuelle.</strong> Le TAVI a été conçu et développé par <strong>Lamolet (2026)</strong>, d'après la méthodologie du TAV (Abric, 2003 ; Vergès, 1992). Toute réutilisation doit mentionner cette attribution dans le code et dans les publications qui en découlent. Voir la <a href="#legal" style="color:var(--accent)">section Licence</a> en bas de page.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── SECTION : ÉTAPES ── -->
+<div class="section">
+  <div class="container">
+    <div class="section-eyebrow">Protocole</div>
+    <h2>Les étapes de réutilisation</h2>
+    <p class="lead">Suivez ces 8 étapes dans l'ordre. Chaque étape est autonome et illustrée d'exemples concrets.</p>
+
+    <div class="steps">
+
+      <!-- STEP 1 -->
+      <div class="step">
+        <div class="step-line"></div>
+        <div class="step-num-col"><div class="step-num">1</div></div>
+        <div class="step-body">
+          <div class="step-tag">Récupération du code</div>
+          <h3>Accéder au fichier source et copier le code</h3>
+          <p>Rendez-vous sur la page de démonstration du TAVI à l'adresse suivante :</p>
+          <div class="code-label">URL de la version de référence</div>
+          <div class="code-block">https://perilordinaire.github.io/tav-raccrochage.html</div>
+          <p>Une fois sur la page, faites un clic droit → <strong>Afficher le code source</strong> (ou utilisez le raccourci <code>Ctrl+U</code> / <code>Cmd+U</code>). Cela ouvre le code source brut dans un nouvel onglet.</p>
+          <div class="callout callout-tip">
+            <span class="callout-icon">💡</span>
+            <div>Sur la page du code source, faites <strong>Ctrl+A</strong> puis <strong>Ctrl+C</strong> (ou Cmd+A / Cmd+C sur Mac) pour sélectionner et copier la totalité du code en une seule fois. Tout le TAVI tient dans un unique fichier HTML — c'est voulu pour faciliter la réutilisation.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 2 -->
+      <div class="step">
+        <div class="step-line"></div>
+        <div class="step-num-col"><div class="step-num">2</div></div>
+        <div class="step-body">
+          <div class="step-tag">Création de votre dépôt</div>
+          <h3>Créer votre propre dépôt GitHub</h3>
+          <p>Connectez-vous à <a href="https://github.com" style="color:var(--accent)">GitHub</a> (créez un compte gratuit si vous n'en avez pas). Cliquez sur le <strong>+</strong> en haut à droite → <strong>New repository</strong>.</p>
+          <p>Donnez-lui un nom explicite (ex. : <code>mon-tav-recherche</code>), cochez <strong>Public</strong>, cochez <strong>Add a README file</strong>, puis cliquez sur <strong>Create repository</strong>.</p>
+          <div class="callout callout-info">
+            <span class="callout-icon">ℹ️</span>
+            <div>Le dépôt doit être <strong>public</strong> pour que GitHub Pages fonctionne gratuitement. Vos données de recherche seront collectées dans votre Google Sheet privé, pas exposées sur GitHub.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 3 -->
+      <div class="step">
+        <div class="step-line"></div>
+        <div class="step-num-col"><div class="step-num">3</div></div>
+        <div class="step-body">
+          <div class="step-tag">Création du fichier HTML</div>
+          <h3>Coller le code dans votre dépôt</h3>
+          <p>Dans votre nouveau dépôt, cliquez sur <strong>Add file</strong> → <strong>Create new file</strong>. Nommez le fichier exactement <code>index.html</code>, puis collez le code copié à l'Étape 1 dans la zone d'édition.</p>
+          <p>Cliquez sur <strong>Commit changes</strong> en bas de la page pour sauvegarder.</p>
+          <div class="callout callout-tip">
+            <span class="callout-icon">💡</span>
+            <div>Pour toutes les modifications futures, cliquez sur le fichier → icône crayon (Edit) → modifiez → <strong>Commit changes</strong>. La mise à jour est effective en moins d'une minute.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 4 -->
+      <div class="step">
+        <div class="step-line"></div>
+        <div class="step-num-col"><div class="step-num">4</div></div>
+        <div class="step-body">
+          <div class="step-tag">Personnalisation des inducteurs</div>
+          <h3>Remplacer les termes inducteurs par les vôtres</h3>
+          <p>Ouvrez votre fichier <code>index.html</code> en édition. Cherchez le tableau <code>inducteurs</code> avec <strong>Ctrl+F</strong> (il se trouve vers la ligne 690) :</p>
+          <div class="code-label">Bloc à localiser et modifier</div>
+          <div class="code-block"><span class="k">const</span> <span class="v">inducteurs</span> = [
+    <span class="s">"Décrochage scolaire"</span>,
+    <span class="s">"Élève de lycée professionnel"</span>,
+    <span class="s">"Raccrochage scolaire"</span>,
+    <span class="s">"Compétences hors-école"</span>,
+    <span class="s">"Parcours scolaire réussi"</span>
+];</div>
+          <p>Remplacez les termes par les vôtres en conservant la même structure (guillemets, virgules, crochets) :</p>
+          <div class="code-label">Exemple — Vos propres termes</div>
+          <div class="code-block"><span class="k">const</span> <span class="v">inducteurs</span> = [
+    <span class="s">"Motivation scolaire"</span>,
+    <span class="s">"Apprentissage collaboratif"</span>,
+    <span class="s">"Évaluation formative"</span>
+];</div>
+          <div class="callout callout-warn">
+            <span class="callout-icon">⚠️</span>
+            <div>Respectez impérativement la structure : chaque terme entre guillemets <code>" "</code>, séparé par une virgule, sans virgule après le dernier terme. Vous pouvez mettre entre <strong>3 et 8 termes</strong> — au-delà, le taux d'abandon augmente significativement.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 5 -->
+      <div class="step">
+        <div class="step-line"></div>
+        <div class="step-num-col"><div class="step-num">5</div></div>
+        <div class="step-body">
+          <div class="step-tag">Configuration Google Sheets</div>
+          <h3>Préparer la feuille de collecte et le script Apps</h3>
+          <p>Les données saisies par vos participants seront automatiquement envoyées dans un Google Sheet que vous contrôlez. Cette étape se déroule en trois temps.</p>
+
+          <p><strong>5.1 — Créer la feuille de calcul.</strong> Allez sur <a href="https://sheets.google.com" style="color:var(--accent)">Google Sheets</a>, créez une nouvelle feuille et nommez-la (ex. : "TAV — Données Recherche"). Dans la <strong>première ligne</strong>, copiez exactement ces en-têtes dans des cellules adjacentes :</p>
+          <div class="code-label">En-têtes de colonnes — à copier exactement</div>
+          <div class="code-block">Date/Heure | Sexe | Âge | Fonction | Discipline | Type Structure |
+Ancienneté Structure | Ancienneté Éducation | Diplôme | Support |
+Environnement | Isolement | Inducteur | Mot | Rang</div>
+
+          <p><strong>5.2 — Créer le script Google Apps.</strong> Dans votre Google Sheet : <strong>Extensions → Apps Script</strong>. Supprimez le code par défaut et collez-y le code suivant :</p>
+          <div class="code-label">Script Apps à coller</div>
+          <div class="code-block"><span class="k">function</span> <span class="v">doPost</span>(e) {
+  <span class="k">try</span> {
+    <span class="k">const</span> data = JSON.parse(e.postData.contents);
+    <span class="k">const</span> sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    data.data.forEach(row =&gt; { sheet.appendRow(row); });
+    <span class="k">return</span> ContentService
+      .createTextOutput(JSON.stringify({ <span class="s">'status'</span>: <span class="s">'success'</span> }))
+      .setMimeType(ContentService.MimeType.JSON);
+  } <span class="k">catch</span> (error) {
+    <span class="k">return</span> ContentService
+      .createTextOutput(JSON.stringify({ <span class="s">'status'</span>: <span class="s">'error'</span>, <span class="s">'message'</span>: error.toString() }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}</div>
+          <p>Enregistrez, puis cliquez sur <strong>Déployer → Nouveau déploiement</strong>. Sélectionnez <strong>Application Web</strong>. Configurez : <em>Exécuter en tant que</em> → Moi ; <em>Qui a accès</em> → Tout le monde. Cliquez sur <strong>Déployer</strong> et autorisez l'application.</p>
+
+          <div class="callout callout-warn">
+            <span class="callout-icon">⚠️</span>
+            <div><strong>Copiez l'URL fournie</strong> à la fin du déploiement — elle ressemble à <code>https://script.google.com/macros/s/AKfycby.../exec</code>. Vous en aurez besoin à l'étape suivante. Si vous fermez la fenêtre sans la copier, vous devrez créer un nouveau déploiement.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 6 -->
+      <div class="step">
+        <div class="step-line"></div>
+        <div class="step-num-col"><div class="step-num">6</div></div>
+        <div class="step-body">
+          <div class="step-tag">Connexion du script</div>
+          <h3>Intégrer l'URL du script dans votre code</h3>
+          <p>Retournez dans votre <code>index.html</code> sur GitHub. Cherchez la ligne suivante (vers la ligne 870) avec <strong>Ctrl+F</strong> :</p>
+          <div class="code-label">Ligne à localiser</div>
+          <div class="code-block"><span class="k">const</span> <span class="v">SCRIPT_URL</span> = <span class="s">'VOTRE_URL_GOOGLE_APPS_SCRIPT_ICI'</span>;</div>
+          <p>Remplacez le texte entre guillemets par votre URL de déploiement :</p>
+          <div class="code-label">Après modification</div>
+          <div class="code-block"><span class="k">const</span> <span class="v">SCRIPT_URL</span> = <span class="s">'https://script.google.com/macros/s/<span class="v">VotreID</span>/exec'</span>;</div>
+          <p>Sauvegardez en cliquant sur <strong>Commit changes</strong>.</p>
+          <div class="callout callout-info">
+            <span class="callout-icon">ℹ️</span>
+            <div>Si vous modifiez le script Apps ultérieurement (correction d'un bug, par exemple), vous devrez créer un <strong>nouveau déploiement</strong> et mettre à jour cette URL dans le code. Un script modifié sans nouveau déploiement conserve l'ancienne version en production.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 7 -->
+      <div class="step">
+        <div class="step-line"></div>
+        <div class="step-num-col"><div class="step-num">7</div></div>
+        <div class="step-body">
+          <div class="step-tag">Mise en ligne</div>
+          <h3>Activer GitHub Pages et tester le TAVI</h3>
+          <p><strong>7.1 — Activer Pages.</strong> Dans votre dépôt GitHub, allez dans <strong>Settings</strong> (en haut) → <strong>Pages</strong> dans le menu de gauche. Sous <strong>Source</strong>, sélectionnez la branche <strong>main</strong> et cliquez sur <strong>Save</strong>. Attendez 2–3 minutes.</p>
+          <p>Votre TAVI est en ligne à l'URL :</p>
+          <div class="code-label">Votre URL publique</div>
+          <div class="code-block">https://<span class="v">votre-username</span>.github.io/<span class="v">nom-du-depot</span>/</div>
+          <p><strong>7.2 — Tester.</strong> Ouvrez l'URL et faites un test complet du début à la fin, puis vérifiez que les données arrivent bien dans votre Google Sheet.</p>
+          <ul class="checklist">
+            <li><span class="check-box"></span>L'interface s'affiche correctement et vos termes inducteurs apparaissent.</li>
+            <li><span class="check-box"></span>Le formulaire de données démographiques fonctionne.</li>
+            <li><span class="check-box"></span>La saisie des associations est fluide pour chaque terme.</li>
+            <li><span class="check-box"></span>Les données arrivent bien dans le Google Sheet après soumission.</li>
+            <li><span class="check-box"></span>Les colonnes correspondent aux en-têtes définis à l'Étape 5.1.</li>
+          </ul>
+          <div class="callout callout-warn">
+            <span class="callout-icon">⚠️</span>
+            <div>Si les données n'arrivent pas dans le Google Sheet, vérifiez : (1) que vous avez bien autorisé le script Apps lors du déploiement, (2) que l'URL dans le code est correcte, (3) que les en-têtes du Google Sheet correspondent exactement au modèle.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 8 -->
+      <div class="step">
+        <div class="step-num-col"><div class="step-num">8</div></div>
+        <div class="step-body">
+          <div class="step-tag">Personnalisation optionnelle &amp; attribution</div>
+          <h3>Adapter l'apparence et conserver les références</h3>
+          <p>Le TAVI est fonctionnel tel quel. Vous pouvez néanmoins ajuster son apparence selon votre contexte de recherche.</p>
+
+          <p><strong>Les couleurs</strong> (cherchez <code>:root</code> vers la ligne 15) :</p>
+          <div class="code-label">Variables de couleur</div>
+          <div class="code-block"><span class="k">:root</span> {
+    <span class="v">--primary</span>: <span class="s">#1a4d2e</span>;   <span class="co">/* Couleur principale */</span>
+    <span class="v">--accent</span>:  <span class="s">#e8ab5e</span>;   <span class="co">/* Couleur d'accentuation */</span>
+}</div>
+
+          <p><strong>Le titre</strong> (cherchez <code>&lt;h1&gt;</code> vers la ligne 580) et <strong>le texte d'introduction</strong> (vers la ligne 625) peuvent être personnalisés selon votre objet de recherche.</p>
+
+          <div class="callout callout-legal">
+            <span class="callout-icon">⚖️</span>
+            <div>Conservez impérativement les références méthodologiques dans le pied de page de l'application (ligne ~905) : <code>Test d'Associations Verbales (TAV) d'après Abric (2003) et Vergès (1992) — Lamolet (2026)</code>. Cette mention est obligatoire dans le code <em>et</em> dans toute publication scientifique utilisant les données produites.</div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /steps -->
+  </div>
+</div>
+
+<!-- ── SECTION : ANALYSE ── -->
+<div class="section">
+  <div class="container">
+    <div class="section-eyebrow">Utilisation des données collectées</div>
+    <h2>Analyser les données dans Jamovi, SPSS ou R</h2>
+    <p class="lead">Le TAVI produit un flux de données structurées vers votre Google Sheet. Voici les repères méthodologiques pour dimensionner votre collecte et analyser vos résultats.</p>
+
+    <div class="intro-grid">
+      <div class="intro-card">
+        <h3>📊 Dans Jamovi</h3>
+        <p>Exportez votre Google Sheet en <strong>CSV</strong>. Importez-le dans Jamovi (<em>Fichier → Ouvrir</em>). Utilisez <em>Analyses → Fréquences</em> pour les tris à plat et calculez le rang moyen par terme pour identifier le noyau central.</p>
+      </div>
+      <div class="intro-card">
+        <h3>📐 Dans SPSS ou R</h3>
+        <p>Importez le CSV directement. Dans R, les packages <code>FactoMineR</code> et <code>explor</code> permettent des analyses prototypiques avancées. Calculez : fréquence d'évocation et rang moyen pour chaque association.</p>
+      </div>
+      <div class="intro-card">
+        <h3>🎯 Noyau central</h3>
+        <p>Croisez fréquence élevée et rang faible : les mots qui apparaissent souvent <em>et</em> en premier constituent le noyau central de la représentation (Vergès, 1992).</p>
+      </div>
+      <div class="intro-card">
+        <h3>💾 Sauvegarde longue durée</h3>
+        <p>Exportez régulièrement votre Google Sheet en CSV et conservez-le. Le Google Sheet peut être supprimé ou devenir inaccessible ; le CSV local est votre seule sauvegarde pérenne.</p>
+      </div>
+    </div>
+
+    <table class="reco-table" style="margin-top:1.5rem;">
+      <thead>
+        <tr>
+          <th>Paramètre</th>
+          <th>Recommandation</th>
+          <th>Justification</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="reco-id">N</span></td>
+          <td>80 participants minimum ; 100–150 pour comparaisons robustes</td>
+          <td>Abric (2003) — seuil de saturation prototypique</td>
+        </tr>
+        <tr>
+          <td><span class="reco-id">Inducteurs</span></td>
+          <td>3–5 termes (court, ~5–6 min) ; 6–8 termes (~8–10 min)</td>
+          <td>Au-delà de 8, le taux d'abandon augmente significativement</td>
+        </tr>
+        <tr>
+          <td><span class="reco-id">Export</span></td>
+          <td>CSV depuis Google Sheets</td>
+          <td>Compatible Jamovi, SPSS, R, Excel directement</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ── SECTION : LEGAL ── -->
+<div class="section" id="legal">
+  <div class="container">
+    <div class="section-eyebrow">Propriété intellectuelle</div>
+    <h2>Licence d'utilisation et attribution</h2>
+    <p class="lead">Le TAVI est mis à disposition de la communauté scientifique sous licence Creative Commons BY-SA 4.0, dans un esprit de partage et de reproductibilité.</p>
+
+    <div class="legal-banner">
+      <h3>Comment citer le TAVI dans vos travaux</h3>
+      <p>Toute publication, communication ou rapport utilisant le TAVI ou les données qu'il a permis de produire doit inclure la mention suivante :</p>
+      <div class="credit">
+        Lamolet (2026). <em>TAVI — Test d'Associations Verbales Informatisé</em> [outil de collecte en ligne, GitHub Pages]. D'après Abric (2003) et Vergès (1992).
+      </div>
+      <p style="margin-top:1rem; font-size:.83rem;">Dans le code source de toute version adaptée, la ligne suivante doit apparaître dans le pied de page de l'application : <code style="background:rgba(255,255,255,.1);padding:.1rem .4rem;border-radius:3px">d'après Abric (2003) et Vergès (1992) — Lamolet (2026)</code></p>
+    </div>
+
+    <div class="callout callout-tip" style="margin-top:1.5rem;">
+      <span class="callout-icon">🤝</span>
+      <div>Vous avez adapté le TAVI à un terrain original et vos résultats vous semblent utiles à la communauté ? N'hésitez pas à contacter l'auteur : <strong>ferdinand.lamolet@etu-univ-amu.fr</strong>. Ce guide est mis à disposition sous licence <strong>CC BY-SA 4.0</strong> — vous êtes libre de le partager et l'adapter en citant la source.</div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  TAVI — Test d'Associations Verbales Informatisé · <strong style="color:#A8BFD4">Lamolet (2026)</strong> · Protocole de réutilisation v1.0 · d'après Abric (2003) &amp; Vergès (1992)
+</footer>
+
+</body>
+</html>
