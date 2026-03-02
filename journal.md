@@ -14,7 +14,7 @@ La distinction concept / notion / catégorie a demandé plusieurs reformulations
 
 #### Sur la Validation des Acquis de l'Expérience
 
-La VAE est apparue tardivement dans la recherche, mais elle est devenue un cas exemplaire. Elle a précisément pour objet de permettre la reconnaissance des compétences acquises hors de l'école, elle constitue donc une réponse institutionnelle directe au problème du jeune du Micro-Lycée. Pourtant, elle reste quasi absente des parcours de raccrochage, et son usage chez les moins de 25 ans demeure marginal. Ce paradoxe n'est pas un oubli : il est cohérent avec une catégorie qui impose le retour à la norme, et non la reconnaissance de ce qui a pu être construit ailleurs. Ce n'est pas un outil qui manque, c'est la catégorie qui empêche de le mobiliser.
+La VAE est apparue tardivement dans la recherche, mais elle est devenue un cas exemplaire. Elle a précisément pour objet de permettre la reconnaissance des compétences acquises hors de l'école, elle constitue donc une réponse institutionnelle directe au problème du jeune du Micro-Lycée. Pourtant, elle reste quasi absente des parcours de raccrochage, et son usage chez les moins de 25 ans demeure marginal. Ce paradoxe n'est pas un oubli, il est cohérent avec une catégorie qui impose le retour à la norme, et non la reconnaissance de ce qui a pu être construit ailleurs. Ce n'est pas un outil qui manque, c'est la catégorie qui empêche de le mobiliser.
 
 ---
 
