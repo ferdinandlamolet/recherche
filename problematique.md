@@ -44,4 +44,7 @@ La question de recherche, telle qu'elle est formulée à ce stade :
 
 ---
 
-→ [Cadre épistémologique](epistemologie.md) — les outils théoriques pour saisir ce problème
+→ [Cadre épistémologique](epistemologie.md) (les outils théoriques pour saisir ce problème)
+
+---
+*Ferdinand Lamolet (2026)*
