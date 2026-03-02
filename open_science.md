@@ -6,7 +6,7 @@
 
 Cette recherche est conduite dans une logique de **science ouverte**. Cela signifie que les protocoles, les corpus, les données, les outils et les résultats sont rendus accessibles à mesure qu'ils se construisent, pas comme vitrine, mais comme engagement.
 
-L'idée est simple : si les instruments cognitifs que nous utilisons pour penser un phénomène méritent d'être examinés, les instruments de la recherche eux-mêmes méritent d'être soumis au même examen. La transparence sur les méthodes, les données et les évolutions théoriques est une condition de cette cohérence.
+L'idée est simple, si les instruments cognitifs que nous utilisons pour penser un phénomène méritent d'être examinés, les instruments de la recherche eux-mêmes méritent d'être soumis au même examen. La transparence sur les méthodes, les données et les évolutions théoriques est une condition de cette cohérence.
 
 ---
 
