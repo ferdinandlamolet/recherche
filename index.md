@@ -53,11 +53,11 @@ Le noyau de cette hypothèse n'est pas que les acteurs manquent d'outils ou de f
 
 Pour soumettre cette hypothèse à l'épreuve empirique, le protocole saisit la représentation à ses deux niveaux constitutifs — là où elle s'objectivise dans les textes, et là où elle s'intériorise dans les structures cognitives des professionnels.
 
-**Analyse de corpus** — Trente documents francophones (textes scientifiques, documents institutionnels, supports de formation) codés selon une grille structurée autour de quatre dimensions théoriques : axiologique, normative, agentive, recognitive. Codage coopératif avec calcul de fidélité inter-juges.
+**Analyse de corpus** - Trente documents francophones (textes scientifiques, documents institutionnels, supports de formation) codés selon une grille structurée autour de quatre dimensions théoriques : axiologique, normative, agentive, recognitive. Codage coopératif avec calcul de fidélité inter-juges.
 
-**Test d'Associations Verbales** — Administré à au moins 80 professionnels du secondaire (LP et LGT, par plan de stratification croisé). Cinq inducteurs : *Décrocheur*, *Réussite*, *Compétence*, *Raccrochage*, *Choix*. Passation informatisée, délai de réponse limité à 20 secondes par inducteur pour accéder aux associations automatiques.
+**Test d'Associations Verbales** - Administré à au moins 80 professionnels du secondaire (LP et LGT, par plan de stratification croisé). Cinq inducteurs : *Décrocheur*, *Réussite*, *Compétence*, *Raccrochage*, *Choix*. Passation informatisée, délai de réponse limité à 20 secondes par inducteur pour accéder aux associations automatiques.
 
-La comparaison entre les deux niveaux est précisément ce que la question de recherche impose de saisir. Si les registres dominants dans le corpus se retrouvent dans les associations spontanées, c'est la robustesse du noyau central qui se trouve confirmée. Si des inducteurs comme *Compétence* ou *Choix* activent des associations différentes, c'est la cartographie des fissures de la représentation qui devient l'objet d'analyse — et avec elle, les espaces d'intervention.
+La comparaison entre les deux niveaux est précisément ce que la question de recherche impose de saisir. Si les registres dominants dans le corpus se retrouvent dans les associations spontanées, c'est la robustesse du noyau central qui se trouve confirmée. Si des inducteurs comme *Compétence* ou *Choix* activent des associations différentes, c'est la cartographie des fissures de la représentation qui devient l'objet d'analyse, et avec elle des espaces d'intervention.
 
 ---
 
