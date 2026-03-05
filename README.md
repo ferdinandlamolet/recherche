@@ -6,7 +6,7 @@
 ### Le *décrochage scolaire* en France
 **Généalogie d'une catégorie, anatomie d'un obstacle**
 
-[Dépôt de recherche](https://ferdinandlamolet.github.io) (2026).
+[Dépôt de recherche](https://ferdinandlamolet.github.io) (2026)
 
 ---
 
@@ -40,7 +40,7 @@ Trois outils développés pour l'enquête, librement réutilisables.
 
 ### Réutilisation
 
-Licence MIT - les outils peuvent être librement utilisés, modifiés et redistribués avec conservation de la mention d'auteur.
+Licence MIT - les outils peuvent être librement utilisés, modifiés et redistribués avec conservation de la mention d'auteur
 
 ---
 **Ferdinand Lamolet** (2026)
