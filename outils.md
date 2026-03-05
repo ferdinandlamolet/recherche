@@ -1,6 +1,6 @@
 ## Instruments & outils
 
-Ces outils sont des instruments au service d'un problème, ils n'en sont pas le cœur. Ils ont été développés pour opérationnaliser le dispositif d'enquête décrit dans la page [dispositif de recherche](dispositif.md) et peuvent être réutilisés librement pour d'autres recherches partageant des préoccupations similaires.
+Ces outils sont des instruments au service d'un problème, ils n'en sont pas le cœur. Ils ont été développés pour opérationnaliser le dispositif d'enquête et peuvent être réutilisés librement pour d'autres recherches partageant des préoccupations similaires.
 
 ---
 
@@ -37,12 +37,4 @@ AléaScope répond à un problème pratique de constitution du corpus : comment 
 🔭 [Application AléaScope](https://ferdinandlamolet.github.io/alea-scope.html)
 
 ---
-
-### Réutilisation
-
-Ces trois outils sont développés dans une logique de science ouverte. Ils peuvent être adaptés à d'autres terrains, d'autres inducteurs, d'autres grilles de codage. Les protocoles sont documentés de manière à permettre une reproduction indépendante.
-
-→ [Licence & réutilisation](open_science.md)
-
----
-*Ferdinand Lamolet (2026)*
+**Ferdinand Lamolet** (2026)
