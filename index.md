@@ -65,9 +65,11 @@ La comparaison entre les deux niveaux est précisément ce que la question de re
 
 Trois outils ont été développés pour conduire cette enquête et sont mis à disposition librement.
 
-- [**TAVI**](outils/tavi/) — Test d'Associations Verbales Informatisé. Passation individuelle, collecte automatisée, limitation du temps de réponse, export des données brutes.
-- [**PAC**](outils/pac/) — Plateforme d'Analyse de Corpus. Codage coopératif multi-codeurs, calcul automatique des coefficients de fidélité inter-juges, export des grilles.
-- [**AléaScope**](outils/aleascope/) — Outil de stratification d'échantillon pour le plan de passation du TAV.
+- [**TAVI**](outils/tavi/) - Test d'Associations Verbales Informatisé
+
+- [**PAC**](outils/pac/) - Plateforme d'Analyse de Corpus
+
+- [**AléaScope**](outils/aleascope/) - Outil de stratification d'échantillons
 
 ---
 
@@ -77,7 +79,5 @@ Cette recherche est conduite en **sciences de l'éducation et de la formation** 
 
 Les outils sont publiés sous **licence MIT** - libres d'utilisation, de modification et de redistribution, avec conservation de la mention d'auteur.
 
-**Ferdinand Lamolet** · ferdinand.lamolet@etu.univ-amu.fr
 
----
-*Ferdinand Lamolet (2026)*
+**Ferdinand Lamolet** · ferdinand.lamolet@etu.univ-amu.fr
