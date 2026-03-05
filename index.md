@@ -65,11 +65,11 @@ La comparaison entre les deux niveaux est précisément ce que la question de re
 
 Trois outils ont été développés pour conduire cette enquête et sont mis à disposition librement.
 
-- [**TAVI**](outils/tavi/) - Test d'Associations Verbales Informatisé
+- [**TAVI**](https://ferdinandlamolet.github.io/tav-décrochage.html) - Test d'Associations Verbales Informatisé · [Protocole d'utilisation →](https://ferdinandlamolet.github.io/tav-protocole.html)
 
-- [**PAC**](outils/pac/) - Plateforme d'Analyse de Corpus
+- [**PAC**](https://ferdinandlamolet.github.io/pac-obstacle.html) - Plateforme d'Analyse de Corpus · [Protocole d'utilisation →](https://ferdinandlamolet.github.io/pac-protocole.html)
 
-- [**AléaScope**](outils/aleascope/) - Outil de stratification d'échantillons
+- [**AléaScope**](https://ferdinandlamolet.github.io/aleascope.html) - Outil de stratification d'échantillons
 
 ---
 
