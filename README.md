@@ -40,7 +40,4 @@ Trois outils développés pour l'enquête, librement réutilisables.
 
 ### Réutilisation
 
-Licence MIT - les outils peuvent être librement utilisés, modifiés et redistribués avec conservation de la mention d'auteur
-
----
-**Ferdinand Lamolet** (2026)
+Licence MIT - les outils peuvent être librement utilisés, modifiés et redistribués avec conservation de la mention d'auteur **Ferdinand Lamolet** (2026)
