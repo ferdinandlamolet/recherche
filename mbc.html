@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MBC — Matrice Bimodale de Confrontation</title>
+<title>MBC - Matrice Bimodale de Confrontation</title>
 <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -154,7 +154,7 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);display:flex
 <body>
 
 <header>
-  <div class="brand">🔬 MBC <em>— Matrice Bimodale de Confrontation</em></div>
+  <div class="brand">🔬 MBC <em>- Matrice Bimodale de Confrontation</em></div>
   <div id="status">Aucune donnée</div>
 </header>
 
@@ -170,11 +170,11 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);display:flex
 <!-- ═══ IMPORT ═══ -->
 <div class="panel on" id="panel-import">
   <div class="alert al-i">
-    <strong>MBC</strong> opère la confrontation bimodale entre le niveau cognitif (TAVI — associations libres des professionnels) et le niveau discursif (PAC — codage du corpus). Ce ne sont pas deux mesures du même objet : ce sont deux niveaux irréductibles d'une même réalité, dont la mise en regard rend visible un écart que ni l'un ni l'autre instrument ne pourrait produire seul (Lamolet, 2026, §IV).
+    <strong>MBC</strong> opère la confrontation bimodale entre le niveau cognitif (TAVI) et le niveau discursif (PAC). Ce ne sont pas deux mesures du même objet : ce sont deux niveaux irréductibles d'une même réalité, dont la mise en regard rend visible un écart que ni l'un ni l'autre instrument ne pourrait produire seul (Lamolet, 2026).
   </div>
   <div class="up-grid">
     <div>
-      <div class="sl">Niveau cognitif — TAVI</div>
+      <div class="sl">Niveau cognitif - TAVI</div>
       <div class="up-zone" id="z-tavi"
            onclick="document.getElementById('f-tavi').click()"
            ondragover="ev(event,'z-tavi')" ondrop="df(event,'tavi')" ondragleave="dl('z-tavi')">
@@ -187,7 +187,7 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);display:flex
       <div id="prev-tavi"></div>
     </div>
     <div>
-      <div class="sl">Niveau discursif — PAC</div>
+      <div class="sl">Niveau discursif - PAC</div>
       <div class="up-zone" id="z-pac"
            onclick="document.getElementById('f-pac').click()"
            ondragover="ev(event,'z-pac')" ondrop="df(event,'pac')" ondragleave="dl('z-pac')">
@@ -214,11 +214,11 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);display:flex
     <div class="cb">
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;font-size:.8rem;line-height:1.65;color:var(--ink-2);">
         <div style="padding:.85rem;background:var(--navy-lt);border-radius:5px;border-left:3px solid var(--navy);">
-          <strong style="color:var(--navy);display:block;margin-bottom:.3rem;">Niveau cognitif — TAVI</strong>
+          <strong style="color:var(--navy);display:block;margin-bottom:.3rem;">Niveau cognitif - TAVI</strong>
           Mesure l'incorporation cognitive des présupposés normatifs : valeurs, hiérarchies affectives et catégorisations portées comme évidences affectives. Accède à la <em>couche axiologique automatique</em> de la représentation — ce que le sujet produit avant de réfléchir (Bachelard, 1938 ; Abric, 2003). <strong>Ce que le TAVI ne mesure pas :</strong> la dimension normative au sens foucaldien, ni les attitudes délibérées.
         </div>
         <div style="padding:.85rem;background:var(--accent-lt);border-radius:5px;border-left:3px solid var(--accent);">
-          <strong style="color:var(--accent);display:block;margin-bottom:.3rem;">Niveau discursif — PAC</strong>
+          <strong style="color:var(--accent);display:block;margin-bottom:.3rem;">Niveau discursif - PAC</strong>
           Mesure les conditions de possibilité de l'énonciation : ce que la catégorie peut dire, les distinctions qu'elle peut tracer, avant même qu'un jugement délibéré ne s'exerce. Opère sur des <em>présupposés de genre discursif</em> indépendants des intentions des auteurs (Foucault, 1969). <strong>Ce que la PAC ne mesure pas :</strong> l'incorporation cognitive individuelle ni les attitudes professionnelles.
         </div>
       </div>
@@ -240,7 +240,7 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);display:flex
     </div>
     <div class="cb">
       <div class="alert al-i">
-        Codez chaque terme selon son registre sémantique. <strong style="color:var(--accent);">N</strong> = normativo-déficitaire (aligne avec une contrainte discursive forte : abandon, manque, diplôme…). <strong style="color:var(--green);">A</strong> = agentif-alternatif (résistance ou divergence : trajectoire, savoir-faire, choix…). Le <strong>Score d'Incorporation Cognitive (SIC)</strong> est calculé comme la part de saillance portée par le registre N : SIC = Σ saillance(N) / Σ saillance(N+A), mis à l'échelle 0–4. Les pré-codages proposés sont issus du lexique théorique (Lamolet, 2026) — <em>à valider empiriquement sur le corpus réel</em>.
+        Codez chaque terme selon son registre sémantique. <strong style="color:var(--accent);">N</strong> = normativo-déficitaire (aligne avec une contrainte discursive forte : abandon, manque, diplôme…). <strong style="color:var(--green);">A</strong> = agentif-alternatif (résistance ou divergence : trajectoire, savoir-faire, choix…). Le <strong>Score d'Incorporation Cognitive (SIC)</strong> est calculé comme la part de saillance portée par le registre N : SIC = Σ saillance(N) / Σ saillance(N+A), mis à l'échelle 0–4. Les pré-codages proposés sont issus du lexique théorique (Lamolet, 2026) - <em>à valider empiriquement sur le corpus réel</em>.
       </div>
       <div class="itabs" id="itabs"></div>
       <div id="icontent"></div>
@@ -252,7 +252,7 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);display:flex
 <div class="panel" id="panel-pac">
   <div class="srow" id="pac-stats"></div>
   <div class="card">
-    <div class="ch"><span class="ct">Scores moyens par dimension — niveau discursif</span><span style="font-size:.72rem;color:var(--ink-3);">0 = obstacle thématisé · 4 = obstacle maximal</span></div>
+    <div class="ch"><span class="ct">Scores moyens par dimension - niveau discursif</span><span style="font-size:.72rem;color:var(--ink-3);">0 = obstacle thématisé · 4 = obstacle maximal</span></div>
     <div class="cb" id="pac-dims"></div>
   </div>
   <div class="card">
@@ -264,7 +264,7 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);display:flex
 <!-- ═══ MATRIX ═══ -->
 <div class="panel" id="panel-matrix">
   <div class="alert al-i">
-    Pour chaque paire théoriquement pertinente (Tableau 4, Lamolet 2026), la matrice confronte le score discursif PAC
+    Pour chaque paire théoriquement pertinente, la matrice confronte le score discursif PAC
     <span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:3px;background:var(--navy);color:#fff;font-weight:700;font-size:.7rem;vertical-align:middle;margin:0 2px;">D</span>
     et le score d'incorporation cognitive TAVI
     <span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:3px;border:2px solid var(--navy);font-weight:700;font-size:.7rem;vertical-align:middle;margin:0 2px;">T</span>.
@@ -297,10 +297,10 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);display:flex
       </div>
       <div class="cblk c3">
         <div class="cblk-t">Configuration 3 — Décalage structurel (|Δ| ≥ 1,5 ou tensions intra-TAVI)</div>
-        <p>L'écart est suffisamment prononcé pour signaler soit une résistance active de la représentation professionnelle face au discours institutionnel, soit une tension interne à la représentation (inducteurs a priori proches produisant des SIC divergents). Identifier ces fissures, c'est identifier des espaces où une intervention sur les pratiques est pensable (Lamolet, 2026, §4.6). Ces zones constituent une donnée de première importance sur la structure interne de la représentation.</p>
+        <p>L'écart est suffisamment prononcé pour signaler soit une résistance active de la représentation professionnelle face au discours institutionnel, soit une tension interne à la représentation (inducteurs a priori proches produisant des SIC divergents). Identifier ces fissures, c'est identifier des espaces où une intervention sur les pratiques est pensable (Lamolet, 2026). Ces zones constituent une donnée de première importance sur la structure interne de la représentation.</p>
       </div>
       <div style="margin-top:1rem;padding:.75rem;background:var(--bg);border-radius:5px;font-size:.77rem;color:var(--ink-2);line-height:1.6;border:1px solid var(--border);">
-        <strong>Conditions de réfutation partielle</strong> (Popper, 1959 ; Lamolet, 2026, §4.8) : des scores majoritairement bas sur les dimensions PAC, couplés à des SIC faibles et des associations diversifiées (Compétence, Choix), signalerait que la catégorie n'opère pas comme un <em>achievement word</em> négatif dans la littérature récente, et que les professionnels disposent de ressources cognitives pour penser les trajectoires non certifiées. Ce résultat serait un résultat en soi, pas un échec du protocole.
+        <strong>Conditions de réfutation partielle</strong> (Popper, 1959 ; Lamolet, 2026) : des scores majoritairement bas sur les dimensions PAC, couplés à des SIC faibles et des associations diversifiées (Compétence, Choix), signalerait que la catégorie n'opère pas comme un <em>achievement word</em> négatif dans la littérature récente, et que les professionnels disposent de ressources cognitives pour penser les trajectoires non certifiées. Ce résultat serait un résultat en soi, pas un échec du protocole.
       </div>
     </div>
   </div>
@@ -320,7 +320,7 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);display:flex
 </div>
 
 <footer style="text-align:center;padding:1.25rem;font-family:'DM Mono',monospace;font-size:.68rem;color:#9C9690;border-top:1px solid #DDD8CF;margin-top:2rem;">
-  MBC — Matrice Bimodale de Confrontation · Ferdinand Lamolet (2026) · CC BY-SA 4.0
+  MBC - Matrice Bimodale de Confrontation · Ferdinand Lamolet (2026) · MIT Licence
 </footer>
 
 <script>
@@ -339,7 +339,7 @@ const DIMS = ['D1','D2','D3','D4'];
 const INDS = ['Décrocheur','Réussite','Compétence','Raccrochage','Choix'];
 const C1=0.75, C2=1.50;
 
-// Lexique théorique pré-semé (Lamolet, 2026) — à valider empiriquement
+// Lexique théorique pré-semé (Lamolet, 2026) à valider empiriquement
 const SEED = {
   'décrocheur':{
     N:['abandon','manque','échec','exclusion','fragilité','risque','problème','difficultés','aide','prise en charge','désintérêt','démotivation','absent','refus','passif','élève en difficulté','perdre','décrocher'],
@@ -580,7 +580,7 @@ function renderInd(ind){
     ? `<div style="display:flex;align-items:center;gap:.85rem;padding:.7rem .9rem;background:var(--navy-lt);border-radius:5px;margin-bottom:.85rem;">
         <div style="font-family:'Libre Baskerville',serif;font-size:1.5rem;font-weight:700;color:var(--navy);">${sc.toFixed(2)}</div>
         <div>
-          <div style="font-size:.79rem;font-weight:600;color:var(--navy);">Score d'Incorporation Cognitive (SIC) — <em>${ind}</em></div>
+          <div style="font-size:.79rem;font-weight:600;color:var(--navy);">Score d'Incorporation Cognitive (SIC) - <em>${ind}</em></div>
           <div style="font-size:.71rem;color:var(--ink-2);">0 = register alternatif dominant · 4 = register normativo-déficitaire dominant</div>
         </div>
         <div class="sic-bar" style="width:100px;height:10px;margin-left:.5rem;"><div class="sic-fill" style="width:${(sc/4*100).toFixed(1)}%;background:${scCol(sc)};"></div></div>
