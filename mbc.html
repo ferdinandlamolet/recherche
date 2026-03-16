@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MBC — Matrice Bimodale de Confrontation</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#F5F2ED; --surface:#FFFFFF; --border:#DDD8CF;
+  --ink:#1C1A17; --ink-2:#5C5750; --ink-3:#9C9690;
+  --accent:#B85C38; --accent-lt:#F5E8E2;
+  --navy:#1E2D40; --navy-lt:#EDF1F5;
+  --green:#2D6A4F; --green-lt:#D8EDE5;
+  --amber:#92600A; --amber-lt:#FEF3C7;
+  --r:6px; --sh:0 1px 3px rgba(0,0,0,.07),0 4px 16px rgba(0,0,0,.05);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{font-size:14px;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;}
+
+header{background:var(--navy);color:#fff;padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:52px;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.2);}
+.brand{font-family:'Libre Baskerville',serif;font-size:1rem;display:flex;align-items:center;gap:.5rem;}
+.brand em{color:#A8BFD4;font-style:normal;}
+#status{font-size:.7rem;color:#A8BFD4;font-family:'DM Mono',monospace;}
+
+nav{background:var(--surface);border-bottom:1px solid var(--border);display:flex;overflow-x:auto;padding:0 1.5rem;}
+.tb{padding:.7rem .95rem;font-size:.76rem;font-weight:500;color:var(--ink-2);background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;letter-spacing:.04em;text-transform:uppercase;transition:color .15s,border-color .15s;white-space:nowrap;font-family:'DM Sans',sans-serif;}
+.tb:hover{color:var(--ink);}
+.tb.on{color:var(--accent);border-bottom-color:var(--accent);}
+
+.panel{display:none;padding:1.5rem 2rem;max-width:1080px;margin:0 auto;}
+.panel.on{display:block;}
+
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);margin-bottom:1.25rem;overflow:hidden;}
+.ch{padding:.8rem 1.2rem;border-bottom:1px solid var(--border);background:#FAFAF8;display:flex;align-items:center;justify-content:space-between;}
+.ct{font-family:'Libre Baskerville',serif;font-size:.9rem;font-weight:700;}
+.cb{padding:1.2rem;}
+
+.btn{display:inline-flex;align-items:center;gap:.3rem;padding:.42rem .95rem;font-size:.78rem;font-weight:600;border-radius:5px;border:1px solid transparent;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s;}
+.btn-p{background:var(--navy);color:#fff;border-color:var(--navy);}
+.btn-p:hover{background:#263A52;}
+.btn-o{background:transparent;color:var(--ink-2);border-color:var(--border);}
+.btn-o:hover{background:var(--bg);}
+.btn-sm{padding:.25rem .6rem;font-size:.72rem;}
+
+.alert{padding:.6rem .95rem;border-radius:5px;font-size:.8rem;margin-bottom:1rem;line-height:1.55;}
+.al-i{background:var(--navy-lt);color:var(--navy);border:1px solid #B8CCE0;}
+.al-w{background:var(--amber-lt);color:var(--amber);border:1px solid #FDE68A;}
+.al-g{background:var(--green-lt);color:var(--green);border:1px solid #A7D7C5;}
+
+/* Upload */
+.up-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;}
+.up-zone{border:2px dashed var(--border);border-radius:8px;padding:1.75rem;text-align:center;cursor:pointer;transition:border-color .2s,background .2s;}
+.up-zone:hover,.up-zone.drag{border-color:var(--navy);background:var(--navy-lt);}
+.up-zone.ok{border-color:var(--green);background:var(--green-lt);border-style:solid;}
+.up-icon{font-size:1.8rem;margin-bottom:.4rem;}
+.up-title{font-weight:600;font-size:.9rem;margin-bottom:.2rem;}
+.up-sub{font-size:.74rem;color:var(--ink-3);}
+
+/* Inducteur tabs */
+.itabs{display:flex;gap:.4rem;margin-bottom:1rem;flex-wrap:wrap;}
+.itab{padding:.35rem .85rem;border:1px solid var(--border);border-radius:99px;font-size:.75rem;cursor:pointer;background:var(--surface);transition:all .15s;}
+.itab:hover{border-color:var(--navy);}
+.itab.on{background:var(--navy);color:#fff;border-color:var(--navy);}
+
+/* Vergès grid */
+.vgrid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:5px;overflow:hidden;}
+.vcell{background:var(--surface);padding:.9rem;}
+.vcell-h{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.6rem;padding-bottom:.4rem;border-bottom:1px solid var(--border);}
+.vcell.noy .vcell-h{color:var(--green);}
+.vcell.p1 .vcell-h{color:var(--amber);}
+.vcell.p2 .vcell-h{color:var(--navy);}
+.vcell.mg .vcell-h{color:var(--ink-3);}
+.vword{display:flex;align-items:center;gap:.35rem;padding:.15rem 0;border-bottom:1px solid #F0EDE8;font-size:.78rem;}
+.vword:last-child{border-bottom:none;}
+.vword-t{flex:1;font-family:'DM Mono',monospace;}
+.vword-m{font-size:.68rem;color:var(--ink-3);}
+
+/* Word coding rows */
+.wrow{display:flex;align-items:center;gap:.4rem;padding:.3rem 0;border-bottom:1px solid #F0EDE8;}
+.wrow:last-child{border-bottom:none;}
+.wt{flex:1;font-family:'DM Mono',monospace;font-size:.8rem;}
+.wm{font-size:.7rem;color:var(--ink-3);font-family:'DM Mono',monospace;min-width:90px;}
+.wbtns{display:flex;gap:.22rem;}
+.wb{width:30px;height:26px;font-size:.7rem;font-weight:700;border:1px solid var(--border);border-radius:3px;cursor:pointer;background:var(--surface);font-family:'DM Mono',monospace;transition:all .1s;}
+.wb:hover{background:var(--bg);}
+.wb.nsel{background:var(--accent);color:#fff;border-color:var(--accent);}
+.wb.asel{background:var(--green);color:#fff;border-color:var(--green);}
+.wb.xsel{background:var(--ink-3);color:#fff;border-color:var(--ink-3);}
+
+/* Stats row */
+.srow{display:flex;gap:.85rem;margin-bottom:1.25rem;flex-wrap:wrap;}
+.sbox{background:var(--surface);border:1px solid var(--border);border-radius:5px;padding:.85rem 1rem;text-align:center;min-width:90px;flex:1;}
+.snum{font-family:'Libre Baskerville',serif;font-size:1.7rem;font-weight:700;color:var(--navy);}
+.slab{font-size:.72rem;color:var(--ink-2);margin-top:.15rem;}
+
+/* PAC bars */
+.dbar{display:flex;align-items:center;gap:.7rem;margin-bottom:.65rem;}
+.dbar-l{width:155px;font-size:.79rem;flex-shrink:0;}
+.dbar-t{flex:1;height:18px;background:#EEEAE4;border-radius:2px;overflow:hidden;}
+.dbar-f{height:100%;border-radius:2px;transition:width .4s;}
+.dbar-v{font-family:'DM Mono',monospace;font-size:.78rem;min-width:28px;text-align:right;}
+
+/* ─── CONFRONTATION MATRIX ─── */
+.mx{overflow-x:auto;}
+.mxt{border-collapse:collapse;width:100%;}
+.mxt th{padding:.55rem .65rem;font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;text-align:center;background:#FAFAF8;border:1px solid var(--border);color:var(--ink-2);}
+.mxt th.dth{text-align:left;width:145px;background:#F5F2ED;}
+.mxt td{padding:.5rem .55rem;border:1px solid var(--border);vertical-align:top;}
+.mxt td.dtd{background:#FAFAF8;vertical-align:middle;}
+.mxt td.nc{background:#FAFAF8;text-align:center;color:var(--ink-3);font-size:.7rem;}
+.ci{min-width:118px;}
+.cscores{display:flex;align-items:center;gap:.35rem;margin-bottom:.35rem;}
+.sp{display:flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:4px;font-family:'Libre Baskerville',serif;font-size:.95rem;font-weight:700;}
+.sp-d{background:var(--navy);color:#fff;}
+.sp-t{border:2px solid;}
+.sarr{font-size:.78rem;color:var(--ink-3);}
+.dv{font-family:'DM Mono',monospace;font-size:.75rem;font-weight:700;}
+.cfg{display:inline-block;padding:.12rem .4rem;border-radius:3px;font-size:.68rem;font-weight:700;font-family:'DM Mono',monospace;}
+.cfg.c1{background:var(--green-lt);color:var(--green);}
+.cfg.c2{background:var(--amber-lt);color:var(--amber);}
+.cfg.c3{background:var(--accent-lt);color:var(--accent);}
+.cfg.nd{background:var(--bg);color:var(--ink-3);}
+.cl{font-size:.67rem;color:var(--ink-3);text-align:center;}
+
+/* Interpretation */
+.cblk{border-left:4px solid;padding:.8rem 1rem;margin-bottom:.85rem;border-radius:0 5px 5px 0;}
+.cblk.c1{border-color:var(--green);background:var(--green-lt);}
+.cblk.c2{border-color:var(--amber);background:var(--amber-lt);}
+.cblk.c3{border-color:var(--accent);background:var(--accent-lt);}
+.cblk-t{font-weight:700;font-size:.9rem;margin-bottom:.35rem;}
+.cblk p{font-size:.79rem;line-height:1.6;color:var(--ink-2);}
+.citem{margin-top:.4rem;font-size:.76rem;padding:.28rem .5rem;background:rgba(255,255,255,.55);border-radius:3px;}
+.citem strong{font-family:'DM Mono',monospace;}
+
+/* SIC mini-bar inline */
+.sic-bar{width:80px;height:8px;background:#EEEAE4;border-radius:2px;overflow:hidden;display:inline-block;vertical-align:middle;margin-left:.4rem;}
+.sic-fill{height:100%;border-radius:2px;}
+
+.sl{font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-3);margin-bottom:.65rem;}
+.mono{font-family:'DM Mono',monospace;font-size:.76rem;color:var(--ink-2);}
+.empty{text-align:center;padding:2rem;color:var(--ink-3);font-size:.88rem;}
+.mt1{margin-top:.75rem;} .mt2{margin-top:1.25rem;}
+.gap{display:flex;gap:.65rem;flex-wrap:wrap;align-items:center;}
+
+@media(max-width:700px){
+  .up-grid,.vgrid{grid-template-columns:1fr;}
+  .panel{padding:1rem;}
+  .srow{grid-template-columns:1fr 1fr;}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">🔬 MBC <em>— Matrice Bimodale de Confrontation</em></div>
+  <div id="status">Aucune donnée</div>
+</header>
+
+<nav>
+  <button class="tb on" onclick="showTab('import',this)">① Import</button>
+  <button class="tb" onclick="showTab('tavi',this)">② Analyse TAVI</button>
+  <button class="tb" onclick="showTab('pac',this)">③ Analyse PAC</button>
+  <button class="tb" onclick="showTab('matrix',this)">④ Matrice</button>
+  <button class="tb" onclick="showTab('configs',this)">⑤ Configurations</button>
+  <button class="tb" onclick="showTab('export',this)">Export</button>
+</nav>
+
+<!-- ═══ IMPORT ═══ -->
+<div class="panel on" id="panel-import">
+  <div class="alert al-i">
+    <strong>MBC</strong> opère la confrontation bimodale entre le niveau cognitif (TAVI — associations libres des professionnels) et le niveau discursif (PAC — codage du corpus). Ce ne sont pas deux mesures du même objet : ce sont deux niveaux irréductibles d'une même réalité, dont la mise en regard rend visible un écart que ni l'un ni l'autre instrument ne pourrait produire seul (Lamolet, 2026, §IV).
+  </div>
+  <div class="up-grid">
+    <div>
+      <div class="sl">Niveau cognitif — TAVI</div>
+      <div class="up-zone" id="z-tavi"
+           onclick="document.getElementById('f-tavi').click()"
+           ondragover="ev(event,'z-tavi')" ondrop="df(event,'tavi')" ondragleave="dl('z-tavi')">
+        <div class="up-icon">🧠</div>
+        <div class="up-title">Export CSV du TAVI</div>
+        <div class="up-sub">Séparateur · ; · UTF-8</div>
+        <div class="up-sub" style="margin-top:.4rem;" id="fn-tavi">Cliquer ou glisser-déposer</div>
+      </div>
+      <input type="file" id="f-tavi" accept=".csv" style="display:none" onchange="lf(event,'tavi')">
+      <div id="prev-tavi"></div>
+    </div>
+    <div>
+      <div class="sl">Niveau discursif — PAC</div>
+      <div class="up-zone" id="z-pac"
+           onclick="document.getElementById('f-pac').click()"
+           ondragover="ev(event,'z-pac')" ondrop="df(event,'pac')" ondragleave="dl('z-pac')">
+        <div class="up-icon">📚</div>
+        <div class="up-title">codage_enrichi.csv (PAC)</div>
+        <div class="up-sub">Export recommandé de la PAC</div>
+        <div class="up-sub" style="margin-top:.4rem;" id="fn-pac">Cliquer ou glisser-déposer</div>
+      </div>
+      <input type="file" id="f-pac" accept=".csv" style="display:none" onchange="lf(event,'pac')">
+      <div id="prev-pac"></div>
+    </div>
+  </div>
+  <div class="card mt2">
+    <div class="ch"><span class="ct">Session</span></div>
+    <div class="cb gap">
+      <button class="btn btn-o" onclick="exJson()">💾 Sauvegarder (JSON)</button>
+      <button class="btn btn-o" onclick="document.getElementById('f-sess').click()">📂 Restaurer</button>
+      <input type="file" id="f-sess" accept=".json" style="display:none" onchange="imJson(event)">
+      <button class="btn btn-o btn-sm" onclick="reset()" style="margin-left:auto;color:var(--accent)">🗑 Réinitialiser</button>
+    </div>
+  </div>
+  <div class="card">
+    <div class="ch"><span class="ct">Fondement théorique des niveaux d'analyse</span></div>
+    <div class="cb">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;font-size:.8rem;line-height:1.65;color:var(--ink-2);">
+        <div style="padding:.85rem;background:var(--navy-lt);border-radius:5px;border-left:3px solid var(--navy);">
+          <strong style="color:var(--navy);display:block;margin-bottom:.3rem;">Niveau cognitif — TAVI</strong>
+          Mesure l'incorporation cognitive des présupposés normatifs : valeurs, hiérarchies affectives et catégorisations portées comme évidences affectives. Accède à la <em>couche axiologique automatique</em> de la représentation — ce que le sujet produit avant de réfléchir (Bachelard, 1938 ; Abric, 2003). <strong>Ce que le TAVI ne mesure pas :</strong> la dimension normative au sens foucaldien, ni les attitudes délibérées.
+        </div>
+        <div style="padding:.85rem;background:var(--accent-lt);border-radius:5px;border-left:3px solid var(--accent);">
+          <strong style="color:var(--accent);display:block;margin-bottom:.3rem;">Niveau discursif — PAC</strong>
+          Mesure les conditions de possibilité de l'énonciation : ce que la catégorie peut dire, les distinctions qu'elle peut tracer, avant même qu'un jugement délibéré ne s'exerce. Opère sur des <em>présupposés de genre discursif</em> indépendants des intentions des auteurs (Foucault, 1969). <strong>Ce que la PAC ne mesure pas :</strong> l'incorporation cognitive individuelle ni les attitudes professionnelles.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ TAVI ═══ -->
+<div class="panel" id="panel-tavi">
+  <div class="srow" id="tavi-stats"></div>
+  <div class="card">
+    <div class="ch">
+      <span class="ct">Analyse prototypique et codage sémantique</span>
+      <span style="font-size:.72rem;color:var(--ink-3);">
+        <span style="color:var(--accent);font-weight:700;">N</span> normativo-déficitaire ·
+        <span style="color:var(--green);font-weight:700;">A</span> agentif-alternatif ·
+        <span style="color:var(--ink-3);font-weight:700;">Ø</span> non pertinent
+      </span>
+    </div>
+    <div class="cb">
+      <div class="alert al-i">
+        Codez chaque terme selon son registre sémantique. <strong style="color:var(--accent);">N</strong> = normativo-déficitaire (aligne avec une contrainte discursive forte : abandon, manque, diplôme…). <strong style="color:var(--green);">A</strong> = agentif-alternatif (résistance ou divergence : trajectoire, savoir-faire, choix…). Le <strong>Score d'Incorporation Cognitive (SIC)</strong> est calculé comme la part de saillance portée par le registre N : SIC = Σ saillance(N) / Σ saillance(N+A), mis à l'échelle 0–4. Les pré-codages proposés sont issus du lexique théorique (Lamolet, 2026) — <em>à valider empiriquement sur le corpus réel</em>.
+      </div>
+      <div class="itabs" id="itabs"></div>
+      <div id="icontent"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ PAC ═══ -->
+<div class="panel" id="panel-pac">
+  <div class="srow" id="pac-stats"></div>
+  <div class="card">
+    <div class="ch"><span class="ct">Scores moyens par dimension — niveau discursif</span><span style="font-size:.72rem;color:var(--ink-3);">0 = obstacle thématisé · 4 = obstacle maximal</span></div>
+    <div class="cb" id="pac-dims"></div>
+  </div>
+  <div class="card">
+    <div class="ch"><span class="ct">Scores par nature de document</span></div>
+    <div class="cb" id="pac-by-type"></div>
+  </div>
+</div>
+
+<!-- ═══ MATRIX ═══ -->
+<div class="panel" id="panel-matrix">
+  <div class="alert al-i">
+    Pour chaque paire théoriquement pertinente (Tableau 4, Lamolet 2026), la matrice confronte le score discursif PAC
+    <span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:3px;background:var(--navy);color:#fff;font-weight:700;font-size:.7rem;vertical-align:middle;margin:0 2px;">D</span>
+    et le score d'incorporation cognitive TAVI
+    <span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:3px;border:2px solid var(--navy);font-weight:700;font-size:.7rem;vertical-align:middle;margin:0 2px;">T</span>.
+    Δ signé : D&gt;0 = contrainte discursive ≫ incorporation cognitive · D&lt;0 = incorporation cognitive ≫ contrainte discursive.
+    Seuils : <span class="cfg c1">C1</span> convergence |Δ|&lt;0,75 · <span class="cfg c2">C2</span> décalage partiel 0,75≤|Δ|&lt;1,5 · <span class="cfg c3">C3</span> décalage structurel |Δ|≥1,5.
+  </div>
+  <div class="card">
+    <div class="ch"><span class="ct">Matrice bimodale de confrontation</span></div>
+    <div class="cb"><div class="mx" id="mxwrap"></div></div>
+  </div>
+  <div class="card">
+    <div class="ch"><span class="ct">Comparaison LP / LGT</span><span style="font-size:.72rem;color:var(--ink-3);">SIC par inducteur et par filière (Lamolet, 2026, §4.7)</span></div>
+    <div class="cb" id="lplgt"></div>
+  </div>
+</div>
+
+<!-- ═══ CONFIGS ═══ -->
+<div class="panel" id="panel-configs">
+  <div id="cfgs-computed"></div>
+  <div class="card mt2">
+    <div class="ch"><span class="ct">Cadre interprétatif des configurations (Lamolet, 2026, §4.6)</span></div>
+    <div class="cb">
+      <div class="cblk c1">
+        <div class="cblk-t">Configuration 1 — Convergence forte (|Δ| &lt; 0,75)</div>
+        <p>Les scores PAC élevés sur une dimension correspondent à une incorporation cognitive forte (SIC élevé pour les inducteurs liés). La contrainte discursive a produit la structure cognitive. Ces dimensions constituent probablement des éléments du noyau central de la représentation (Abric, 1994). La convergence ne confirme pas simplement l'hypothèse : elle en précise la profondeur et identifie quels obstacles sont les plus ancrés.</p>
+      </div>
+      <div class="cblk c2">
+        <div class="cblk-t">Configuration 2 — Décalage partiel (0,75 ≤ |Δ| &lt; 1,5)</div>
+        <p>La contrainte discursive et l'incorporation cognitive divergent partiellement. Ce décalage est théoriquement attendu sur la dimension recognitive (D4) pour les enseignants de LP, dont l'expérience quotidienne les confronte à des formes de compétences hors certification. Il signale que la contrainte discursive n'opère pas uniformément selon les positions institutionnelles. Un décalage D≫T signifie que la littérature naturalise davantage que les professionnels ne l'ont incorporé ; T≫D signifie l'inverse.</p>
+      </div>
+      <div class="cblk c3">
+        <div class="cblk-t">Configuration 3 — Décalage structurel (|Δ| ≥ 1,5 ou tensions intra-TAVI)</div>
+        <p>L'écart est suffisamment prononcé pour signaler soit une résistance active de la représentation professionnelle face au discours institutionnel, soit une tension interne à la représentation (inducteurs a priori proches produisant des SIC divergents). Identifier ces fissures, c'est identifier des espaces où une intervention sur les pratiques est pensable (Lamolet, 2026, §4.6). Ces zones constituent une donnée de première importance sur la structure interne de la représentation.</p>
+      </div>
+      <div style="margin-top:1rem;padding:.75rem;background:var(--bg);border-radius:5px;font-size:.77rem;color:var(--ink-2);line-height:1.6;border:1px solid var(--border);">
+        <strong>Conditions de réfutation partielle</strong> (Popper, 1959 ; Lamolet, 2026, §4.8) : des scores majoritairement bas sur les dimensions PAC, couplés à des SIC faibles et des associations diversifiées (Compétence, Choix), signalerait que la catégorie n'opère pas comme un <em>achievement word</em> négatif dans la littérature récente, et que les professionnels disposent de ressources cognitives pour penser les trajectoires non certifiées. Ce résultat serait un résultat en soi, pas un échec du protocole.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ EXPORT ═══ -->
+<div class="panel" id="panel-export">
+  <div class="alert al-g">✓ CSV encodés UTF-8 BOM · séparateur ; · compatibles R, jamovi, Sphinx. Pour l'analyse statistique, importer <code>mbc_complet.csv</code>.</div>
+  <div class="card">
+    <div class="ch"><span class="ct">Fichiers CSV</span></div>
+    <div class="cb gap">
+      <button class="btn btn-o" onclick="xcsv('matrix')">📄 matrice_confrontation.csv</button>
+      <button class="btn btn-o" onclick="xcsv('tavi')">📄 tavi_sic.csv</button>
+      <button class="btn btn-p" onclick="xcsv('full')">📊 mbc_complet.csv</button>
+    </div>
+  </div>
+</div>
+
+<footer style="text-align:center;padding:1.25rem;font-family:'DM Mono',monospace;font-size:.68rem;color:#9C9690;border-top:1px solid #DDD8CF;margin-top:2rem;">
+  MBC — Matrice Bimodale de Confrontation · Ferdinand Lamolet (2026) · CC BY-SA 4.0
+</footer>
+
+<script>
+// ════════════════════════════════════════════════════════
+// CONSTANTS THÉORIQUES
+// ════════════════════════════════════════════════════════
+
+// Mapping dimensions PAC → inducteurs TAV (Tableau 4, Lamolet 2026)
+const DM = {
+  D1:{ label:'Axiologique', cadre:'Scheffler (1960) ; Peters (1967) ; Gallie (1956)', inds:['Décrocheur','Réussite'] },
+  D2:{ label:'Normative',   cadre:'Foucault (1975) ; Bachelard (1938)',             inds:['Réussite','Raccrochage'] },
+  D3:{ label:'Agentive',    cadre:'Hacking (1995) ; Ricœur (1990)',                 inds:['Choix','Décrocheur'] },
+  D4:{ label:'Recognitive', cadre:'Fricker (2007) ; Hacking (1999)',                inds:['Compétence','Choix'] },
+};
+const DIMS = ['D1','D2','D3','D4'];
+const INDS = ['Décrocheur','Réussite','Compétence','Raccrochage','Choix'];
+const C1=0.75, C2=1.50;
+
+// Lexique théorique pré-semé (Lamolet, 2026) — à valider empiriquement
+const SEED = {
+  'décrocheur':{
+    N:['abandon','manque','échec','exclusion','fragilité','risque','problème','difficultés','aide','prise en charge','désintérêt','démotivation','absent','refus','passif','élève en difficulté','perdre','décrocher'],
+    A:['trajectoire','choix','projet','identité','sujet','expérience','compétences','liberté','stratégie','décision','parcours','biographie']
+  },
+  'réussite':{
+    N:['diplôme','bac','certification','résultats','notes','mention','performance','compétition','école','institution','brevet','examen','validation','réussite scolaire'],
+    A:['projet','épanouissement','bien-être','sens','compétences','savoir-faire','autonomie','bonheur','accomplissement','confiance','hors-école','vie']
+  },
+  'compétence':{
+    N:['certification','diplôme','programme','évaluation','notation','référentiel','curriculum','scolaire','académique','bac pro','certifier','valider','académique'],
+    A:['savoir-faire','expérience','pratique','terrain','informel','hors-école','vie','non certifié','acquis','reconnaissance','vae','débrouillardise','aptitude']
+  },
+  'raccrochage':{
+    N:['retour','réintégration','remédiation','rattrapage','normalisation','insertion','diplôme','norme','récupération','réparation','remise à niveau','réintégrer','école'],
+    A:['trajectoire','sens','projet','autonomie','choix','chemin','reconstruction','identité','propre','nouveau départ']
+  },
+  'choix':{
+    N:['contrainte','subi','fatalité','déterminisme','milieu','famille','social','impossibilité','contraint','forcé','déterminé','pas le choix'],
+    A:['stratégie','délibération','liberté','projet','décision','autonomie','sens','volonté','conscient','intentionnel','réfléchi']
+  }
+};
+
+// ════════════════════════════════════════════════════════
+// DONNÉES
+// ════════════════════════════════════════════════════════
+let DB = { tavi:[], pac:[], coding:{} };
+let activeInd = 'Décrocheur';
+
+function nrm(s){ return String(s||'').toLowerCase().trim().replace(/\s+/g,' '); }
+function ky(ind,w){ return nrm(ind)+':'+nrm(w); }
+function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function med(arr){ if(!arr.length) return 0; const s=[...arr].sort((a,b)=>a-b), m=Math.floor(s.length/2); return s.length%2?s[m]:(s[m-1]+s[m])/2; }
+function scCol(v){ if(isNaN(v)) return 'var(--ink-3)'; if(v<1.5) return 'var(--green)'; if(v<2.5) return 'var(--amber)'; return 'var(--accent)'; }
+
+function save(){ try{ localStorage.setItem('mbc_v2',JSON.stringify(DB)); }catch(e){} }
+function load(){
+  try{ const d=localStorage.getItem('mbc_v2'); if(d){ const p=JSON.parse(d); DB={tavi:p.tavi||[],pac:p.pac||[],coding:p.coding||{}}; } }catch(e){}
+  seedCoding();
+}
+function seedCoding(){
+  INDS.forEach(ind=>{
+    const s=SEED[nrm(ind)]||{};
+    (s.N||[]).forEach(w=>{ const k=ky(ind,w); if(!(k in DB.coding)) DB.coding[k]='N'; });
+    (s.A||[]).forEach(w=>{ const k=ky(ind,w); if(!(k in DB.coding)) DB.coding[k]='A'; });
+  });
+}
+
+// ════════════════════════════════════════════════════════
+// CSV PARSER
+// ════════════════════════════════════════════════════════
+function parseCSV(txt){
+  txt = txt.replace(/^\uFEFF/,'');
+  const lines = txt.split(/\r?\n/).filter(l=>l.trim());
+  if(!lines.length) return [];
+  const hdrs = splitLine(lines[0]).map(h=>h.trim().replace(/^"|"$/g,''));
+  return lines.slice(1).map(l=>{
+    const v=splitLine(l);
+    const o={};
+    hdrs.forEach((h,i)=>{ o[h]=(v[i]||'').replace(/^"|"$/g,'').trim(); });
+    return o;
+  }).filter(r=>Object.values(r).some(v=>v));
+}
+function splitLine(l){
+  const r=[]; let c='',q=false;
+  for(let i=0;i<l.length;i++){
+    if(l[i]==='"') q=!q;
+    else if(l[i]===';'&&!q){ r.push(c);c=''; }
+    else c+=l[i];
+  }
+  r.push(c); return r;
+}
+
+// ════════════════════════════════════════════════════════
+// FILE HANDLING
+// ════════════════════════════════════════════════════════
+function lf(e,t){ const f=e.target.files[0]; if(!f) return; const r=new FileReader(); r.onload=ev=>proc(ev.target.result,t,f.name); r.readAsText(f,'UTF-8'); }
+function ev(e,z){ e.preventDefault(); document.getElementById(z).classList.add('drag'); }
+function dl(z){ document.getElementById(z).classList.remove('drag'); }
+function df(e,t){ e.preventDefault(); dl('z-'+t); const f=e.dataTransfer.files[0]; if(!f) return; const r=new FileReader(); r.onload=ev=>proc(ev.target.result,t,f.name); r.readAsText(f,'UTF-8'); }
+
+function proc(txt,type,fname){
+  const rows=parseCSV(txt);
+  if(!rows.length){ alert('Fichier vide ou format non reconnu.'); return; }
+  if(type==='tavi'){
+    if(!('inducteur' in rows[0])||!('mot' in rows[0])){ alert('Colonnes manquantes : "inducteur" et "mot" requis dans le CSV TAVI.'); return; }
+    DB.tavi=rows.filter(r=>r.inducteur&&r.mot);
+    seedCoding();
+    document.getElementById('fn-tavi').textContent=fname;
+    document.getElementById('z-tavi').classList.add('ok');
+    document.getElementById('prev-tavi').innerHTML=`<div class="alert al-g" style="margin-top:.5rem">✓ ${DB.tavi.length} associations chargées.</div>`;
+  } else {
+    const hasDim = DIMS.some(d=>Object.keys(rows[0]).some(h=>h.startsWith(d+'_')||h===d));
+    if(!hasDim){ alert('Colonnes de dimensions PAC (D1_..., D2_...) non trouvées.'); return; }
+    DB.pac=rows;
+    document.getElementById('fn-pac').textContent=fname;
+    document.getElementById('z-pac').classList.add('ok');
+    document.getElementById('prev-pac').innerHTML=`<div class="alert al-g" style="margin-top:.5rem">✓ ${rows.length} extraits chargés.</div>`;
+  }
+  save(); updStatus();
+}
+
+function updStatus(){
+  const ta=DB.tavi.length, pa=DB.pac.length;
+  document.getElementById('status').textContent=
+    `TAVI : ${ta} assoc. · PAC : ${pa} extraits`;
+}
+
+// ════════════════════════════════════════════════════════
+// TAVI ANALYSIS
+// ════════════════════════════════════════════════════════
+function wordStats(ind){
+  const rows=DB.tavi.filter(r=>nrm(r.inducteur)===nrm(ind));
+  const map={};
+  rows.forEach(r=>{
+    const nw=nrm(r.mot); if(!nw) return;
+    const rg=parseInt(r.rang)||3;
+    if(!map[nw]) map[nw]={orig:r.mot,f:0,sr:0};
+    map[nw].f++; map[nw].sr+=rg;
+  });
+  return Object.entries(map).map(([nw,d])=>({
+    nw, orig:d.orig, f:d.f,
+    mr:d.sr/d.f,
+    sal:d.f*(6-d.sr/d.f),
+    code: DB.coding[ky(ind,nw)]||null
+  })).sort((a,b)=>b.sal-a.sal);
+}
+
+function sic(ind){
+  const ws=wordStats(ind);
+  const cd=ws.filter(w=>w.code==='N'||w.code==='A');
+  if(!cd.length) return null;
+  const sN=cd.filter(w=>w.code==='N').reduce((a,b)=>a+b.sal,0);
+  const sA=cd.reduce((a,b)=>a+b.sal,0);
+  return sA?((sN/sA)*4):null;
+}
+
+function sicRows(rows,ind){
+  const map={};
+  rows.forEach(r=>{ const nw=nrm(r.mot||''); if(!nw) return; const rg=parseInt(r.rang)||3; if(!map[nw]) map[nw]={f:0,sr:0}; map[nw].f++; map[nw].sr+=rg; });
+  const ws=Object.entries(map).map(([nw,d])=>({ nw,f:d.f,mr:d.sr/d.f,sal:d.f*(6-d.sr/d.f),code:DB.coding[ky(ind,nw)]||null }));
+  const cd=ws.filter(w=>w.code==='N'||w.code==='A');
+  if(!cd.length) return null;
+  const sN=cd.filter(w=>w.code==='N').reduce((a,b)=>a+b.sal,0);
+  const sA=cd.reduce((a,b)=>a+b.sal,0);
+  return sA?((sN/sA)*4):null;
+}
+
+function uniqPartic(){
+  const seen=new Set();
+  return DB.tavi.filter(r=>{ const k=(r.timestamp||'')+(r.sexe||'')+(r.age||''); if(seen.has(k)) return false; seen.add(k); return true; });
+}
+
+// ════════════════════════════════════════════════════════
+// PAC ANALYSIS
+// ════════════════════════════════════════════════════════
+function pacVal(row,dim){
+  const hdrs=Object.keys(row);
+  const m=hdrs.find(h=>h.startsWith(dim+'_')||h===dim);
+  return m?row[m]:'';
+}
+function pacMeans(){
+  const r={};
+  DIMS.forEach(d=>{
+    const vs=DB.pac.map(row=>parseFloat(pacVal(row,d))).filter(v=>!isNaN(v));
+    r[d]=vs.length?(vs.reduce((a,b)=>a+b,0)/vs.length):null;
+  });
+  return r;
+}
+
+// ════════════════════════════════════════════════════════
+// MATRIX COMPUTATION
+// ════════════════════════════════════════════════════════
+function computeMx(){
+  const pm=pacMeans(); const mx={};
+  DIMS.forEach(dim=>{
+    mx[dim]={};
+    INDS.forEach(ind=>{
+      const active=DM[dim].inds.includes(ind);
+      if(!active){ mx[dim][ind]={active:false}; return; }
+      const ps=pm[dim];
+      const ts=sic(ind);
+      const dAbs=(ps!==null&&ts!==null)?Math.abs(ps-ts):null;
+      const dSgn=(ps!==null&&ts!==null)?(ps-ts):null;
+      let cfg='nd';
+      if(dAbs!==null){ if(dAbs<C1) cfg='c1'; else if(dAbs<C2) cfg='c2'; else cfg='c3'; }
+      mx[dim][ind]={active:true,ps,ts,dAbs,dSgn,cfg};
+    });
+  });
+  return mx;
+}
+
+// ════════════════════════════════════════════════════════
+// RENDERS
+// ════════════════════════════════════════════════════════
+
+function renderTAVI(){
+  if(!DB.tavi.length){
+    document.getElementById('tavi-stats').innerHTML='<div class="alert al-w">Aucune donnée TAVI chargée.</div>';
+    document.getElementById('itabs').innerHTML='';
+    document.getElementById('icontent').innerHTML='';
+    return;
+  }
+  const np=uniqPartic().length, na=DB.tavi.filter(r=>r.mot).length;
+  const nc=DB.tavi.filter(r=>{ const k=ky(r.inducteur||'',r.mot||''); const c=DB.coding[k]; return c==='N'||c==='A'; }).length;
+  document.getElementById('tavi-stats').innerHTML=`
+    <div class="sbox"><div class="snum">${np}</div><div class="slab">Participants</div></div>
+    <div class="sbox"><div class="snum">${na}</div><div class="slab">Associations</div></div>
+    <div class="sbox"><div class="snum">${nc}</div><div class="slab">Mots codés</div></div>
+    <div class="sbox"><div class="snum">${Math.round(nc/Math.max(na,1)*100)}%</div><div class="slab">Taux codage</div></div>
+  `;
+  document.getElementById('itabs').innerHTML=INDS.map(ind=>{
+    const sc=sic(ind); const has=DB.tavi.some(r=>nrm(r.inducteur)===nrm(ind));
+    return `<div class="itab ${activeInd===ind?'on':''}" onclick="selInd('${ind}')">${ind}${has?'':' ⚠'}</div>`;
+  }).join('');
+  renderInd(activeInd);
+}
+
+function selInd(ind){
+  activeInd=ind;
+  document.querySelectorAll('.itab').forEach((t,i)=>t.classList.toggle('on',INDS[i]===ind));
+  renderInd(ind);
+}
+
+function renderInd(ind){
+  const ws=wordStats(ind);
+  const sc=sic(ind);
+  if(!ws.length){ document.getElementById('icontent').innerHTML='<div class="empty">Aucune association pour cet inducteur.</div>'; return; }
+
+  const freqs=ws.map(w=>w.f), rangs=ws.map(w=>w.mr);
+  const mf=med(freqs), mr=med(rangs);
+  const noy=ws.filter(w=>w.f>=mf&&w.mr<=mr);
+  const p1 =ws.filter(w=>w.f>=mf&&w.mr> mr);
+  const p2 =ws.filter(w=>w.f< mf&&w.mr<=mr);
+  const mg =ws.filter(w=>w.f< mf&&w.mr> mr);
+
+  const sicHtml = sc!==null
+    ? `<div style="display:flex;align-items:center;gap:.85rem;padding:.7rem .9rem;background:var(--navy-lt);border-radius:5px;margin-bottom:.85rem;">
+        <div style="font-family:'Libre Baskerville',serif;font-size:1.5rem;font-weight:700;color:var(--navy);">${sc.toFixed(2)}</div>
+        <div>
+          <div style="font-size:.79rem;font-weight:600;color:var(--navy);">Score d'Incorporation Cognitive (SIC) — <em>${ind}</em></div>
+          <div style="font-size:.71rem;color:var(--ink-2);">0 = register alternatif dominant · 4 = register normativo-déficitaire dominant</div>
+        </div>
+        <div class="sic-bar" style="width:100px;height:10px;margin-left:.5rem;"><div class="sic-fill" style="width:${(sc/4*100).toFixed(1)}%;background:${scCol(sc)};"></div></div>
+        <span style="font-family:'DM Mono',monospace;font-size:.8rem;color:${scCol(sc)};font-weight:700;">${sc.toFixed(2)}/4</span>
+      </div>`
+    : `<div class="alert al-w" style="margin-bottom:.85rem;">SIC non calculable — aucun mot codé N ou A pour cet inducteur. Effectuez le codage sémantique pour activer la confrontation.</div>`;
+
+  document.getElementById('icontent').innerHTML=`
+    ${sicHtml}
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;">
+      <div>
+        <div class="sl">Analyse prototypique (Vergès, 1992) — f̄=${mf.toFixed(1)} · R̄m=${mr.toFixed(2)}</div>
+        <div class="vgrid">
+          <div class="vcell noy"><div class="vcell-h">🟢 Noyau probable · f≥${mf.toFixed(1)} R̄≤${mr.toFixed(2)}</div>${protoW(noy,ind)}</div>
+          <div class="vcell p1" ><div class="vcell-h">🟡 Périphérie 1 · f≥${mf.toFixed(1)} R̄>${mr.toFixed(2)}</div>${protoW(p1,ind)}</div>
+          <div class="vcell p2" ><div class="vcell-h">🔵 Périphérie 2 · f<${mf.toFixed(1)} R̄≤${mr.toFixed(2)}</div>${protoW(p2,ind)}</div>
+          <div class="vcell mg" ><div class="vcell-h">⚪ Marginal · f<${mf.toFixed(1)} R̄>${mr.toFixed(2)}</div>${protoW(mg,ind)}</div>
+        </div>
+        <div style="font-size:.7rem;color:var(--ink-3);margin-top:.4rem;">f = fréquence · R̄ = rang moyen d'importance (1=plus important)</div>
+      </div>
+      <div>
+        <div class="sl">Codage sémantique — tous les termes (saillance décroissante)</div>
+        <div style="max-height:380px;overflow-y:auto;border:1px solid var(--border);border-radius:5px;padding:.5rem .6rem;">
+          ${ws.slice(0,100).map(w=>wRow(w,ind)).join('')}
+        </div>
+        <div style="font-size:.69rem;color:var(--ink-3);margin-top:.35rem;">Saillance = f × (6 − R̄). Pré-codages : lexique théorique Lamolet (2026). Modifier selon les données empiriques.</div>
+      </div>
+    </div>
+  `;
+}
+
+function protoW(ws,ind){
+  if(!ws.length) return '<div style="color:var(--ink-3);font-size:.75rem;font-style:italic;padding:.2rem 0;">—</div>';
+  return ws.slice(0,10).map(w=>{
+    const c=DB.coding[ky(ind,w.nw)];
+    const b=c==='N'?`<span style="font-size:.62rem;padding:.08rem .28rem;border-radius:2px;background:var(--accent);color:#fff;font-family:'DM Mono',monospace;">N</span>`
+            :c==='A'?`<span style="font-size:.62rem;padding:.08rem .28rem;border-radius:2px;background:var(--green);color:#fff;font-family:'DM Mono',monospace;">A</span>`:``;
+    return `<div class="vword"><span class="vword-t">${esc(w.orig)}</span><span class="vword-m">f=${w.f} R̄=${w.mr.toFixed(1)}</span>${b}</div>`;
+  }).join('');
+}
+
+function wRow(w,ind){
+  const c=DB.coding[ky(ind,w.nw)]||null;
+  return `<div class="wrow" data-ind="${esc(ind)}" data-nw="${esc(w.nw)}">
+    <span class="wt">${esc(w.orig)}</span>
+    <span class="wm">f=${w.f} R̄=${w.mr.toFixed(1)} S=${w.sal.toFixed(1)}</span>
+    <div class="wbtns">
+      <button class="wb ${c==='N'?'nsel':''}" onclick="cw(this,'N')">N</button>
+      <button class="wb ${c==='A'?'asel':''}" onclick="cw(this,'A')">A</button>
+      <button class="wb ${c==='X'?'xsel':''}" onclick="cw(this,'X')">Ø</button>
+    </div>
+  </div>`;
+}
+
+function cw(btn,code){
+  const row=btn.closest('.wrow');
+  const ind=row.dataset.ind, nw=row.dataset.nw;
+  const k=ky(ind,nw);
+  if(DB.coding[k]===code) delete DB.coding[k];
+  else DB.coding[k]=code;
+  save();
+  renderInd(activeInd);
+}
+
+// ─────────────────────────────────────────────
+function renderPAC(){
+  if(!DB.pac.length){
+    document.getElementById('pac-stats').innerHTML='<div class="alert al-w">Aucune donnée PAC chargée.</div>';
+    document.getElementById('pac-dims').innerHTML='';
+    document.getElementById('pac-by-type').innerHTML='';
+    return;
+  }
+  const nDocs=[...new Set(DB.pac.map(r=>r.ID_Doc||'').filter(Boolean))].length;
+  const pm=pacMeans();
+  document.getElementById('pac-stats').innerHTML=`
+    <div class="sbox"><div class="snum">${nDocs}</div><div class="slab">Documents</div></div>
+    <div class="sbox"><div class="snum">${DB.pac.length}</div><div class="slab">Extraits</div></div>
+    ${DIMS.map(d=>`<div class="sbox"><div class="snum" style="font-size:1.3rem;color:${scCol(pm[d]||0)}">${pm[d]!==null?pm[d].toFixed(2):'—'}</div><div class="slab">${d} ${DM[d].label}</div></div>`).join('')}
+  `;
+  let h=`<div style="display:flex;justify-content:space-between;font-size:.7rem;color:var(--ink-3);margin-bottom:.6rem;"><span style="color:var(--green);">◀ 0 Obstacle thématisé</span><span style="color:var(--accent);">Obstacle maximal 4 ▶</span></div>`;
+  DIMS.forEach(d=>{
+    const v=pm[d]; const pct=v!==null?(v/4*100).toFixed(1):0;
+    h+=`<div class="dbar">
+      <div class="dbar-l"><strong>${d}</strong> — ${DM[d].label}</div>
+      <div class="dbar-t"><div class="dbar-f" style="width:${pct}%;background:${scCol(v||0)};"></div></div>
+      <div class="dbar-v" style="color:${scCol(v||0)}">${v!==null?v.toFixed(2):'—'}</div>
+    </div>`;
+  });
+  document.getElementById('pac-dims').innerHTML=h;
+
+  const types=[...new Set(DB.pac.map(r=>r.Nature_Document||'').filter(Boolean))];
+  if(types.length<2){ document.getElementById('pac-by-type').innerHTML='<div class="empty">Au moins 2 natures de documents requises pour la comparaison.</div>'; return; }
+  let t=`<p style="font-size:.78rem;color:var(--ink-2);margin-bottom:.85rem;">${DB.pac.length} extraits · ${nDocs} documents · ${types.length} natures</p>
+  <table style="width:100%;border-collapse:collapse;font-size:.79rem;">
+  <thead><tr><th style="text-align:left;padding:.45rem .7rem;border-bottom:1px solid var(--border);font-size:.7rem;">Dim.</th>${types.map(t=>`<th style="padding:.45rem .5rem;border-bottom:1px solid var(--border);font-size:.69rem;text-align:center;" title="${esc(t)}">${esc(t.length>18?t.slice(0,16)+'…':t)}</th>`).join('')}</tr></thead><tbody>`;
+  DIMS.forEach(d=>{
+    t+=`<tr><td style="padding:.35rem .7rem;font-weight:600;">${d} ${DM[d].label}</td>`;
+    types.forEach(tp=>{
+      const sub=DB.pac.filter(r=>(r.Nature_Document||'')===tp);
+      const vs=sub.map(r=>parseFloat(pacVal(r,d))).filter(v=>!isNaN(v));
+      const m=vs.length?(vs.reduce((a,b)=>a+b,0)/vs.length).toFixed(2):'—';
+      t+=`<td style="text-align:center;font-family:'DM Mono',monospace;font-weight:700;color:${scCol(parseFloat(m)||0)};padding:.35rem .5rem;">${m}</td>`;
+    });
+    t+='</tr>';
+  });
+  t+='</tbody></table>';
+  document.getElementById('pac-by-type').innerHTML=t;
+}
+
+// ─────────────────────────────────────────────
+function renderMatrix(){
+  if(!DB.tavi.length&&!DB.pac.length){ document.getElementById('mxwrap').innerHTML='<div class="empty">Chargez les deux fichiers CSV.</div>'; renderLPLGT(); return; }
+  const mx=computeMx();
+  let h=`<table class="mxt"><thead><tr><th class="dth">Dimension PAC</th>${INDS.map(i=>`<th>${i}</th>`).join('')}</tr></thead><tbody>`;
+  DIMS.forEach(dim=>{
+    const pm=mx[dim];
+    const dMean=DB.pac.length?pacMeans()[dim]:null;
+    h+=`<tr>
+      <td class="dtd">
+        <div style="font-family:'DM Mono',monospace;font-size:.78rem;font-weight:700;color:var(--navy);">${dim}</div>
+        <div style="font-size:.73rem;color:var(--ink-2);">${DM[dim].label}</div>
+        ${dMean!==null?`<div style="font-size:.68rem;font-family:'DM Mono',monospace;color:${scCol(dMean)};font-weight:700;margin-top:.15rem;">D̄=${dMean.toFixed(2)}</div>`:''}
+      </td>`;
+    INDS.forEach(ind=>{
+      const c=pm[ind];
+      if(!c.active){ h+=`<td class="nc">—</td>`; return; }
+      const {ps,ts,dAbs,dSgn,cfg}=c;
+      const tc=ts!==null?scCol(ts):'var(--ink-3)';
+      const dCol=dAbs!==null?(dAbs<C1?'var(--green)':dAbs<C2?'var(--amber)':'var(--accent)'):'var(--ink-3)';
+      h+=`<td><div class="ci">
+        <div class="cscores">
+          <div>
+            <div class="sp sp-d" title="Score PAC moyen — ${dim}">${ps!==null?ps.toFixed(1):'—'}</div>
+            <div class="cl">PAC</div>
+          </div>
+          <div class="sarr">↔</div>
+          <div>
+            <div class="sp sp-t" style="border-color:${tc};color:${tc};" title="SIC TAVI — ${ind}">${ts!==null?ts.toFixed(1):'—'}</div>
+            <div class="cl">TAV</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:.35rem;">
+          <span class="dv" style="color:${dCol};">Δ${dSgn!==null?(dSgn>=0?'+':'')+dSgn.toFixed(2):'—'}</span>
+          <span class="cfg ${cfg}">${cfg==='nd'?'N/D':cfg.toUpperCase()}</span>
+        </div>
+        ${dSgn!==null?`<div style="font-size:.65rem;color:var(--ink-3);margin-top:.2rem;">${dSgn>0.1?'D ≫ T':dSgn<-0.1?'T ≫ D':'≈'}</div>`:''}
+      </div></td>`;
+    });
+    h+='</tr>';
+  });
+  h+='</tbody></table>';
+  document.getElementById('mxwrap').innerHTML=h;
+  renderLPLGT();
+}
+
+function renderLPLGT(){
+  const el=document.getElementById('lplgt');
+  if(!DB.tavi.length){ el.innerHTML='<div class="empty">Données TAVI requises.</div>'; return; }
+  const hasF=DB.tavi.some(r=>r.typeStructure&&(r.typeStructure==='Lycée Professionnel'||r.typeStructure.includes('Général')));
+  if(!hasF){ el.innerHTML='<div class="empty">Données de filière LP/LGT non disponibles (champ "typeStructure" vide ou non reconnu).</div>'; return; }
+
+  let h=`<p style="font-size:.79rem;color:var(--ink-2);margin-bottom:.85rem;">Un écart LP/LGT sur la dimension recognitive (Compétence, Choix) est théoriquement attendu : les enseignants de LP sont structurellement plus confrontés à des compétences non certifiées (Lamolet, 2026, §4.7).</p>
+  <table style="width:100%;border-collapse:collapse;font-size:.79rem;">
+  <thead><tr>
+    <th style="text-align:left;padding:.4rem .7rem;border-bottom:1px solid var(--border);font-size:.7rem;">Inducteur</th>
+    <th style="padding:.4rem .5rem;border-bottom:1px solid var(--border);font-size:.7rem;text-align:center;">SIC Global</th>
+    <th style="padding:.4rem .5rem;border-bottom:1px solid var(--border);font-size:.7rem;text-align:center;color:var(--navy);">LP</th>
+    <th style="padding:.4rem .5rem;border-bottom:1px solid var(--border);font-size:.7rem;text-align:center;color:var(--accent);">LGT</th>
+    <th style="padding:.4rem .5rem;border-bottom:1px solid var(--border);font-size:.7rem;text-align:center;">Δ (LP−LGT)</th>
+    <th style="padding:.4rem .5rem;border-bottom:1px solid var(--border);font-size:.7rem;text-align:center;">Interprétation</th>
+  </tr></thead><tbody>`;
+
+  INDS.forEach(ind=>{
+    const glob=sic(ind);
+    const lpR=DB.tavi.filter(r=>nrm(r.inducteur)===nrm(ind)&&r.typeStructure==='Lycée Professionnel');
+    const lgtR=DB.tavi.filter(r=>nrm(r.inducteur)===nrm(ind)&&(r.typeStructure==='Lycée Général et Technologique'||r.typeStructure==='LGT'));
+    const lpS=sicRows(lpR,ind); const lgtS=sicRows(lgtR,ind);
+    const ecN=(lpS!==null&&lgtS!==null)?(lpS-lgtS):null;
+    const ecS=ecN!==null?ecN.toFixed(2):'—';
+    const ecC=ecN!==null?(ecN<-0.4?'var(--green)':ecN>0.4?'var(--accent)':'var(--ink-2)'):'var(--ink-3)';
+    
+    let interp='';
+    if(ecN!==null){
+      if(Math.abs(ecN)>=0.5){
+        interp = ecN < 0
+          ? 'LP plus alternatif — résistance recognitive attendue (D4)'
+          : 'LGT plus alternatif — écart inattendu';
+      } else interp='Pas d\'écart significatif entre filières';
+    }
+
+    h+=`<tr>
+      <td style="padding:.35rem .7rem;font-weight:600;">${ind}</td>
+      <td style="text-align:center;font-family:'DM Mono',monospace;font-weight:700;color:${scCol(glob||0)};">${glob!==null?glob.toFixed(2):'—'}</td>
+      <td style="text-align:center;font-family:'DM Mono',monospace;color:var(--navy);font-weight:600;">${lpS!==null?lpS.toFixed(2)+'<span style="font-size:.66rem;color:var(--ink-3);"> n='+Math.ceil(lpR.length/5)+'</span>':'—'}</td>
+      <td style="text-align:center;font-family:'DM Mono',monospace;color:var(--accent);font-weight:600;">${lgtS!==null?lgtS.toFixed(2)+'<span style="font-size:.66rem;color:var(--ink-3);"> n='+Math.ceil(lgtR.length/5)+'</span>':'—'}</td>
+      <td style="text-align:center;font-family:'DM Mono',monospace;font-weight:700;color:${ecC};">${ecS}</td>
+      <td style="font-size:.73rem;color:var(--ink-2);">${interp}</td>
+    </tr>`;
+  });
+  h+='</tbody></table>';
+  el.innerHTML=h;
+}
+
+// ─────────────────────────────────────────────
+function renderConfigs(){
+  if(!DB.tavi.length||!DB.pac.length){
+    document.getElementById('cfgs-computed').innerHTML='<div class="alert al-w">Chargez les deux fichiers CSV pour générer les configurations analytiques.</div>';
+    return;
+  }
+  const mx=computeMx();
+  const c1=[],c2=[],c3=[];
+  DIMS.forEach(dim=>DM[dim].inds.forEach(ind=>{
+    const c=mx[dim][ind];
+    if(c.active&&c.cfg!=='nd'){ ({c1,c2,c3}[c.cfg]||[]).push({dim,ind,c}); [c1,c2,c3][['c1','c2','c3'].indexOf(c.cfg)].push({dim,ind,c}); }
+  }));
+
+  // Tensions intra-TAVI
+  const intra=[];
+  for(let i=0;i<INDS.length;i++) for(let j=i+1;j<INDS.length;j++){
+    const a=INDS[i],b=INDS[j];
+    const sharedDim=DIMS.find(d=>DM[d].inds.includes(a)&&DM[d].inds.includes(b));
+    if(!sharedDim) continue;
+    const sa=sic(a),sb=sic(b);
+    if(sa===null||sb===null) continue;
+    const ec=Math.abs(sa-sb);
+    if(ec>=C2) intra.push({a,b,sa,sb,ec,dim:sharedDim});
+  }
+
+  let h='';
+  function cSection(arr,cls,title,desc){
+    if(!arr.length) return '';
+    return `<div class="cblk ${cls}">
+      <div class="cblk-t">${title} (${arr.length} paire${arr.length>1?'s':''})</div>
+      <p>${desc}</p>
+      ${arr.map(({dim,ind,c})=>`<div class="citem"><strong>${dim}×${ind}</strong> — PAC D̄=${c.ps!==null?c.ps.toFixed(2):'—'} / SIC=${c.ts!==null?c.ts.toFixed(2):'—'} · Δ=${c.dSgn!==null?(c.dSgn>=0?'+':'')+c.dSgn.toFixed(2):'—'}${c.dSgn!==null?(c.dSgn>0.1?' · contrainte discursive ≫ incorporation':c.dSgn<-0.1?' · incorporation ≫ contrainte discursive':' · équilibre'):''}. Cadre : ${DM[dim].cadre}.</div>`).join('')}
+    </div>`;
+  }
+
+  if(c1.length||c2.length||c3.length||intra.length){
+    h+=cSection(c1,'c1','⬤ Configuration 1 — Convergence forte','Le discours institutionnel et scientifique a produit les structures cognitives automatiques des professionnels. Ces paires constituent probablement le noyau central de la représentation sociale de la catégorie (Abric, 1994).');
+    h+=cSection(c2,'c2','◐ Configuration 2 — Décalage partiel','Zones de résistance ou d\'hétérogénéité : la contrainte discursive et l\'incorporation cognitive divergent. Particulièrement attendu sur D4 Recognitive pour les enseignants de LP.');
+    if(c3.length||intra.length){
+      h+=`<div class="cblk c3">
+        <div class="cblk-t">○ Configuration 3 — Décalage structurel</div>
+        <p>Zones de tension prononcée entre niveaux, ou entre inducteurs partageant une dimension. Ce sont les lieux où la représentation se fissure — des espaces où une intervention sur les pratiques devient pensable (Lamolet, 2026, §4.6).</p>
+        ${c3.map(({dim,ind,c})=>`<div class="citem"><strong>${dim}×${ind}</strong> — PAC=${c.ps!==null?c.ps.toFixed(2):'—'} / SIC=${c.ts!==null?c.ts.toFixed(2):'—'} · |Δ|=${c.dAbs!==null?c.dAbs.toFixed(2):'—'}</div>`).join('')}
+        ${intra.map(({a,b,sa,sb,ec,dim})=>`<div class="citem"><strong>Tension intra-TAVI : ${a} vs ${b}</strong> (dimension partagée : ${dim} ${DM[dim].label}) — SIC(${a})=${sa.toFixed(2)} vs SIC(${b})=${sb.toFixed(2)} · |Δ|=${ec.toFixed(2)} — Tension interne à la représentation : les deux inducteurs activent des registres cognitifs divergents malgré leur proximité théorique.</div>`).join('')}
+      </div>`;
+    }
+  } else {
+    h='<div class="alert al-w">Aucune configuration calculable. Vérifiez que les mots TAVI sont codés (N/A) dans l\'onglet Analyse TAVI.</div>';
+  }
+
+  // Résumé global
+  const pm=pacMeans(); const allSIC=INDS.map(i=>sic(i)).filter(s=>s!==null);
+  const meanPAC=DIMS.map(d=>pm[d]).filter(v=>v!==null);
+  if(allSIC.length&&meanPAC.length){
+    const mP=(meanPAC.reduce((a,b)=>a+b,0)/meanPAC.length).toFixed(2);
+    const mT=(allSIC.reduce((a,b)=>a+b,0)/allSIC.length).toFixed(2);
+    h+=`<div style="padding:.75rem;background:var(--bg);border:1px solid var(--border);border-radius:5px;font-size:.78rem;color:var(--ink-2);line-height:1.65;margin-top:.5rem;">
+      <strong>Résumé global :</strong> Score PAC moyen = <strong style="font-family:'DM Mono',monospace;color:${scCol(parseFloat(mP))}">${mP}/4</strong> · SIC TAVI moyen = <strong style="font-family:'DM Mono',monospace;color:${scCol(parseFloat(mT))}">${mT}/4</strong> · Écart global = <strong style="font-family:'DM Mono',monospace;">${(parseFloat(mP)-parseFloat(mT)).toFixed(2)}</strong>.
+      ${parseFloat(mP)>parseFloat(mT)+0.5?'La contrainte discursive est globalement plus forte que l\'incorporation cognitive : la littérature naturalise davantage que les professionnels n\'ont incorporé.'
+        :parseFloat(mT)>parseFloat(mP)+0.5?'L\'incorporation cognitive est globalement plus forte que la contrainte discursive : les professionnels ont incorporé des présupposés que la littérature récente a partiellement dépassés.'
+        :'Les deux niveaux sont globalement équilibrés — la convergence domine sur l\'ensemble du protocole.'}
+    </div>`;
+  }
+
+  document.getElementById('cfgs-computed').innerHTML=h;
+}
+
+// ════════════════════════════════════════════════════════
+// EXPORT
+// ════════════════════════════════════════════════════════
+function xcsv(type){
+  const BOM='\uFEFF'; let c='',fn='';
+  const row=arr=>arr.map(v=>`"${String(v??'').replace(/"/g,'""')}"`).join(';')+'\r\n';
+  if(type==='matrix'){
+    fn='matrice_confrontation.csv';
+    c=BOM+row(['Dimension','Label','Cadre_theorique','Inducteur','Actif','Score_PAC','SIC_TAVI','Delta_signe','Delta_abs','Configuration']);
+    const mx=computeMx();
+    DIMS.forEach(d=>INDS.forEach(i=>{ const cel=mx[d][i]; c+=row([d,DM[d].label,DM[d].cadre,i,cel.active?'oui':'non',cel.active&&cel.ps!==null?cel.ps.toFixed(3):'',cel.active&&cel.ts!==null?cel.ts.toFixed(3):'',cel.active&&cel.dSgn!==null?cel.dSgn.toFixed(3):'',cel.active&&cel.dAbs!==null?cel.dAbs.toFixed(3):'',cel.active?cel.cfg:'']); }));
+  } else if(type==='tavi'){
+    fn='tavi_sic.csv';
+    c=BOM+row(['Inducteur','Mot_normalise','Mot_original','Frequence','Rang_moyen','Saillance','Codage_semantique','Registre']);
+    INDS.forEach(ind=>wordStats(ind).forEach(w=>{ const cod=w.code||''; const reg=cod==='N'?'normativo-déficitaire':cod==='A'?'agentif-alternatif':cod==='X'?'non pertinent':'non codé'; c+=row([ind,w.nw,w.orig,w.f,w.mr.toFixed(3),w.sal.toFixed(3),cod,reg]); }));
+  } else {
+    fn='mbc_complet.csv';
+    c=BOM+row(['Dimension','Label','Cadre_theorique','Inducteur','Actif','Score_PAC','SIC_TAVI','Delta_signe','Delta_abs','Configuration','Interpretation_theorique']);
+    const mx=computeMx();
+    const interps={'c1':'Convergence forte — noyau central probable','c2':'Décalage partiel — résistance ou hétérogénéité de filière','c3':'Décalage structurel — tension dans la représentation','nd':'Données insuffisantes'};
+    DIMS.forEach(d=>INDS.forEach(i=>{ const cel=mx[d][i]; c+=row([d,DM[d].label,DM[d].cadre,i,cel.active?'oui':'non',cel.active&&cel.ps!==null?cel.ps.toFixed(3):'',cel.active&&cel.ts!==null?cel.ts.toFixed(3):'',cel.active&&cel.dSgn!==null?cel.dSgn.toFixed(3):'',cel.active&&cel.dAbs!==null?cel.dAbs.toFixed(3):'',cel.active?cel.cfg:'',cel.active?(interps[cel.cfg]||''):'']); }));
+  }
+  const blob=new Blob([c],{type:'text/csv;charset=utf-8;'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a'); a.href=url; a.download=fn; a.click(); URL.revokeObjectURL(url);
+}
+function exJson(){
+  const blob=new Blob([JSON.stringify(DB,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a'); a.href=url; a.download='mbc_session.json'; a.click(); URL.revokeObjectURL(url);
+}
+function imJson(e){
+  const f=e.target.files[0]; if(!f) return;
+  const r=new FileReader(); r.onload=ev=>{ try{ const d=JSON.parse(ev.target.result); if(d.tavi&&d.pac){ DB={tavi:d.tavi||[],pac:d.pac||[],coding:d.coding||{}}; seedCoding(); save(); updStatus(); alert('✓ Session restaurée.'); } else alert('Fichier invalide.'); }catch{ alert('Erreur de lecture.'); } }; r.readAsText(f); e.target.value='';
+}
+function reset(){ if(!confirm('Réinitialiser toutes les données ?')) return; DB={tavi:[],pac:[],coding:{}}; seedCoding(); save(); updStatus(); ['z-tavi','z-pac'].forEach(id=>document.getElementById(id).classList.remove('ok')); alert('Session réinitialisée.'); }
+
+// ════════════════════════════════════════════════════════
+// TABS
+// ════════════════════════════════════════════════════════
+const TAB_RENDERS = {tavi:renderTAVI,pac:renderPAC,matrix:renderMatrix,configs:renderConfigs};
+function showTab(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.tb').forEach(b=>b.classList.remove('on'));
+  document.getElementById('panel-'+id).classList.add('on');
+  if(btn) btn.classList.add('on');
+  if(TAB_RENDERS[id]) TAB_RENDERS[id]();
+}
+
+// ════════════════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════════════════
+load(); updStatus();
+</script>
+</body>
+</html>
