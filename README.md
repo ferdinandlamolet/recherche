@@ -16,9 +16,9 @@ Trois outils développés pour l'enquête, librement réutilisables.
 
 | | Description | Accès | Protocole |
 |-------|-------------|-------|-----------|
-| **TAVI** | Test d'Associations Verbales Informatisé | [Ouvrir](https://ferdinandlamolet.github.io/tavi/) | [Protocole](https://ferdinandlamolet.github.io/tav-protocole.html) |
-| **PAC** | Plateforme d'Analyse de Corpus | [Ouvrir](https://ferdinandlamolet.github.io/pac/) | [Protocole](https://ferdinandlamolet.github.io/pac-protocole.html) |
-| **AléaScope** | Stratification d'échantillon | [Ouvrir](https://ferdinandlamolet.github.io/aleascope/) | x |
+| **TAVI** | Test d'Associations Verbales Informatisé | [Ouvrir](https://ferdinandlamolet.github.io/tav.html) | [Protocole](https://ferdinandlamolet.github.io/tav-protocole.html) |
+| **PAC** | Plateforme d'Analyse de Corpus | [Ouvrir](https://ferdinandlamolet.github.io/pac.html) | [Protocole](https://ferdinandlamolet.github.io/pac-protocole.html) |
+| **AléaScope** | Stratification d'échantillon | [Ouvrir](https://ferdinandlamolet.github.io/aleascope.html) | x |
 
 ---
 
@@ -28,8 +28,8 @@ Trois outils développés pour l'enquête, librement réutilisables.
 /
 ├── index                             # Page d'accueil
 ├── outils
-│   ├── tav-raccrochage.html          # Source TAVI
-│   ├── pac-obstacles.html            # Source PAC
+│   ├── tav.html                      # Source TAVI
+│   ├── pac.html                      # Source PAC
 │   └── aleascope.html                # Source AléaScope
 └── protocoles
     ├── tav-protocole.html
