@@ -26,7 +26,8 @@ Trois outils développés pour l'enquête, librement réutilisables.
 
 ```
 /
-├── index                             # Page d'accueil
+├── readme                            # Page d'accueil
+│   ├── index                         # Projet de Recherche
 ├── outils
 │   ├── tav.html                      # Source TAVI
 │   ├── pac.html                      # Source PAC
