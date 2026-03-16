@@ -11,7 +11,7 @@ C'est cette hypothèse qui a orienté la recherche vers un objet inhabituel, non
 
 ---
 
-### Ce que cette recherche examine
+### Sur quoi porte cette recherche
 
 Cette recherche porte sur la catégorie *décrochage scolaire* : sa généalogie, son statut épistémologique, ses effets cognitifs et institutionnels. Elle s'intéresse à la manière dont un terme structure les représentations professionnelles et invisibilise des trajectoires qui ne correspondent pas à la norme qu'il présuppose.
 
@@ -43,7 +43,7 @@ C'est une **catégorie** : un outil de classement institutionnel qui fonctionne 
 
 La généalogie du terme, l'analyse de ses effets théoriques et les observations d'une revue de vingt-sept travaux (2015–2025) convergent vers une hypothèse :
 
-> La catégorie du *décrochage scolaire*, par sa généalogie et son ancrage institutionnel, est-elle constitutive d'une *représentation sociale* dont la structure produit une équivalence entre rupture agentive et abandon, rendant cognitivement indisponible, pour les professionnels qui l'emploient, la question de ce qui a été construit hors de l'école ?
+> Dans quelle mesure la catégorie du *décrochage scolaire* rend-elle structurellement indisponible la question des apprentissages construits hors de l'institution scolaire ?
 
 Le noyau de cette hypothèse n'est pas que les acteurs manquent d'outils ou de formation. C'est que la structure de la représentation sociale portée par la catégorie produit cet effet avant même que s'exerce un jugement délibéré.
 
