@@ -19,6 +19,7 @@ Trois outils développés pour l'enquête, librement réutilisables.
 | **TAVI** | Test d'Associations Verbales Informatisé | [Ouvrir](https://ferdinandlamolet.github.io/tav.html) | [Protocole](https://ferdinandlamolet.github.io/tav-protocole.html) |
 | **PAC** | Plateforme d'Analyse de Corpus | [Ouvrir](https://ferdinandlamolet.github.io/pac.html) | [Protocole](https://ferdinandlamolet.github.io/pac-protocole.html) |
 | **AléaScope** | Stratification d'échantillon | [Ouvrir](https://ferdinandlamolet.github.io/aleascope.html) | x |
+| **MBC** | Matrice Bimodale de Confrontation | [Ouvrir](https://ferdinandlamolet.github.io/mbc.html) | x |
 
 ---
 
@@ -32,6 +33,7 @@ Trois outils développés pour l'enquête, librement réutilisables.
 │   ├── tav.html                      # Source TAVI
 │   ├── pac.html                      # Source PAC
 │   └── aleascope.html                # Source AléaScope
+│   └── mbc.html                      # Source MBC
 └── protocoles
     ├── tav-protocole.html
     └── pac-protocole.html
