@@ -154,7 +154,7 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);display:flex
 <body>
 
 <header>
-  <div class="brand">🔬 MBC <em>- Matrice Bimodale de Confrontation</em></div>
+  <div class="brand">💊 MBC <em>- Matrice Bimodale de Confrontation</em></div>
   <div id="status">Aucune donnée</div>
 </header>
 
@@ -186,6 +186,18 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);display:flex
       <input type="file" id="f-tavi" accept=".csv" style="display:none" onchange="lf(event,'tavi')">
       <div id="prev-tavi"></div>
     </div>
+    <div class="mt2">
+    <div class="sl">Lexique sémantique - VLX (facultatif)</div>
+    <div class="up-zone" id="z-vlx"
+       onclick="document.getElementById('f-vlx').click()">
+    <div class="up-icon">🍒</div>
+    <div class="up-title">lexique_valide.json (VLX)</div>
+    <div class="up-sub">Remplace les pré-codages théoriques par les codes validés empiriquement</div>
+    <div class="up-sub" style="margin-top:.4rem;" id="fn-vlx">Cliquer pour importer</div>
+  </div>
+  <input type="file" id="f-vlx" accept=".json" style="display:none" onchange="loadVLX(event)">
+  <div id="prev-vlx"></div>
+</div>
     <div>
       <div class="sl">Niveau discursif - PAC</div>
       <div class="up-zone" id="z-pac"
@@ -320,7 +332,7 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);display:flex
 </div>
 
 <footer style="text-align:center;padding:1.25rem;font-family:'DM Mono',monospace;font-size:.68rem;color:#9C9690;border-top:1px solid #DDD8CF;margin-top:2rem;">
-  MBC - Matrice Bimodale de Confrontation · Ferdinand Lamolet (2026) · MIT Licence
+  Matrice Bimodale de Confrontation - Ferdinand Lamolet (2026) · MIT Licence
 </footer>
 
 <script>
@@ -328,7 +340,7 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);display:flex
 // CONSTANTS THÉORIQUES
 // ════════════════════════════════════════════════════════
 
-// Mapping dimensions PAC → inducteurs TAV (Tableau 4, Lamolet 2026)
+// Mapping dimensions PAC → inducteurs TAV (Lamolet 2026)
 const DM = {
   D1:{ label:'Axiologique', cadre:'Scheffler (1960) ; Peters (1967) ; Gallie (1956)', inds:['Décrocheur','Réussite'] },
   D2:{ label:'Normative',   cadre:'Foucault (1975) ; Bachelard (1938)',             inds:['Réussite','Raccrochage'] },
@@ -366,7 +378,7 @@ const SEED = {
 // ════════════════════════════════════════════════════════
 // DONNÉES
 // ════════════════════════════════════════════════════════
-let DB = { tavi:[], pac:[], coding:{} };
+let DB = { tavi:[], pac:[], coding:{}, vlx:false };
 let activeInd = 'Décrocheur';
 
 function nrm(s){ return String(s||'').toLowerCase().trim().replace(/\s+/g,' '); }
@@ -447,6 +459,52 @@ function updStatus(){
   document.getElementById('status').textContent=
     `TAVI : ${ta} assoc. · PAC : ${pa} extraits`;
 }
+
+function loadVLX(e){
+  const f = e.target.files[0]; if(!f) return;
+  const r = new FileReader();
+  r.onload = ev => {
+    try {
+      const data = JSON.parse(ev.target.result);
+      const lex = data.lexique || data; // tolère JSON brut ou enveloppé
+      if(!Array.isArray(lex)) throw new Error('Format inattendu');
+
+      let n = 0;
+      lex.forEach(item => {
+        const ind = String(item.inducteur||'').trim();
+        const mot = String(item.terme||'').trim();
+        const code = String(item.code||'').trim();
+        if(!ind || !mot || !['N','A','Ø'].includes(code)) return;
+        DB.coding[ky(ind, mot)] = code === 'Ø' ? 'X' : code; // MBC utilise 'X' pour Ø
+        n++;
+      });
+
+      DB.vlx = true;
+      const alpha = data.alpha_krippendorff;
+      document.getElementById('fn-vlx').textContent = f.name;
+      document.getElementById('z-vlx').classList.add('ok');
+      document.getElementById('prev-vlx').innerHTML =
+        `<div class="alert al-g" style="margin-top:.5rem">
+          ✓ ${n} paires chargées depuis VLX${alpha !== null && alpha !== undefined ? ` · α = ${alpha}` : ''}.
+          Le SIC sera calculé sur la base du codage empiriquement validé.
+        </div>`;
+      save(); updStatus();
+    } catch(err) {
+      alert('Erreur lecture VLX JSON :\n' + err.message);
+    }
+  };
+  r.readAsText(f, 'UTF-8');
+  e.target.value = '';
+}
+```
+
+---
+
+**Alerte TAVI : afficher la source du codage**
+
+Dans `renderTAVI()`, l'alerte existante contient :
+```
+Les pré-codages proposés sont issus du lexique théorique (Lamolet, 2026) - <em>à valider empiriquement sur le corpus réel</em>.
 
 // ════════════════════════════════════════════════════════
 // TAVI ANALYSIS
