@@ -16,6 +16,16 @@ Dans le cadre de cette recherche, le TAVI est utilisé pour accéder aux structu
 
 ---
 
+### αK.27 - Codage sémantique à fiabilité contrôlée
+
+Outil de codage collaboratif en ligne conçu pour rompre la circularité méthodologique : lorsque le chercheur a lui-même construit le dispositif d'enquête, il ne peut coder seul les résultats sans risquer de projeter ses présupposés théoriques sur les données qu'il est censé découvrir. L'outil confie le codage à plusieurs juges indépendants, maintenus à l'écart de l'hypothèse de recherche, dont les catégorisations sont mesurées par l'alpha de Krippendorff (α).
+
+αK.27 est utilisé pour coder le registre sémantique des termes issus du TAVI et court-circuiter le risque de circularité à projeter ses propres présupposés sur les données recueillies.
+
+🔭 [Application αK.27](https://ferdinandlamolet.github.io/ak27.html)
+
+---
+
 ### PAC - Plateforme d'Analyse de Corpus
 
 Plateforme coopérative d'analyse et de codage de corpus en ligne, conçue pour identifier les obstacles épistémologiques et présupposés normatifs dans la littérature scientifique. Les codages sont réalisés à partir d'une grille structurée, et les données sont exportables au format CSV (compatible Sphinx, jamovi et autres logiciels d'analyse).
