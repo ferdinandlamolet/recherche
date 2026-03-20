@@ -3,140 +3,774 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VLX - Validateur du Lexique Sémantique</title>
+<title>αK.27 - Codage sémantique à fiabilité contrôlée</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&family=Sora:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
+/* ── TOKENS ─────────────────────────────────────────────── */
 :root {
-  --bg:#fafaf8;--bg2:#f2f1eb;--bg3:#e8e7e0;--border:#d4d2c8;
-  --text:#1a1a18;--text2:#6b6a64;--text3:#9c9a93;
-  --N:#922b2b;--N-bg:#fdf0f0;--N-mid:#e57373;
-  --A:#2a6445;--A-bg:#eef7f2;--A-mid:#66bb8a;
-  --O:#555552;--O-bg:#f4f4f2;--O-mid:#999994;
-  --warn:#b45309;--warn-bg:#fffbeb;--ok:#166534;--ok-bg:#f0fdf4;
-  --r:12px;--r-sm:8px;
+  --bg:        #f7f5f0;
+  --bg-card:   #fdfcf9;
+  --bg-raised: #ffffff;
+  --bg-sunken: #eeeae2;
+  --border:    #ddd9ce;
+  --border-strong: #c8c3b5;
+
+  --ink:       #1c1a16;
+  --ink-2:     #5c5849;
+  --ink-3:     #9c9889;
+  --ink-ghost: #c4c0b3;
+
+  --N:         #9b2626;
+  --N-soft:    #f9efef;
+  --N-mid:     #d97070;
+  --A:         #1f6644;
+  --A-soft:    #edf7f2;
+  --A-mid:     #5aaa82;
+  --O:         #5c5849;
+  --O-soft:    #f0ede6;
+  --O-mid:     #9c9889;
+
+  --accent:    #1c1a16;
+  --warn:      #8a5c00;
+  --warn-bg:   #fff8ea;
+  --ok:        #1a5e36;
+  --ok-bg:     #edf7f2;
+
+  --radius:    14px;
+  --radius-sm: 8px;
+  --radius-xs: 5px;
+  --shadow-sm: 0 1px 4px rgba(28,26,22,.06), 0 0 0 1px var(--border);
+  --shadow-md: 0 4px 20px rgba(28,26,22,.08), 0 0 0 1px var(--border);
+  --shadow-lg: 0 12px 48px rgba(28,26,22,.12), 0 0 0 1px var(--border);
+  --trans: .2s cubic-bezier(.4,0,.2,1);
 }
-@media(prefers-color-scheme:dark){:root{
-  --bg:#191917;--bg2:#222220;--bg3:#2c2c29;--border:#3a3a36;
-  --text:#e6e4dc;--text2:#a0a09a;--text3:#666660;
-  --N:#f87171;--N-bg:#2d1515;--N-mid:#dc4444;
-  --A:#6ee7a0;--A-bg:#0e2419;--A-mid:#38a169;
-  --O:#a0a09a;--O-bg:#252522;--O-mid:#666660;
-  --warn:#fbbf24;--warn-bg:#2a1d04;--ok:#86efac;--ok-bg:#0d2414;
-}}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Georgia','Times New Roman',serif;background:var(--bg);color:var(--text);font-size:16px;line-height:1.65;min-height:100vh}
-.screen{max-width:700px;margin:0 auto;padding:48px 24px 80px}
-.hidden{display:none!important}
-.center{text-align:center}
-h1{font-size:22px;font-weight:400;letter-spacing:-.3px;margin-bottom:6px}
-h2{font-size:19px;font-weight:400;letter-spacing:-.2px;margin-bottom:12px}
-h3{font-size:15px;font-weight:600;margin-bottom:8px;font-family:-apple-system,sans-serif}
-p{color:var(--text2);margin-bottom:12px;font-size:15px}
-small{font-size:13px;color:var(--text3);font-family:-apple-system,sans-serif}
-.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:24px;margin-bottom:16px}
-.card-flat{background:var(--bg3);border:none;border-radius:var(--r-sm);padding:16px}
-button{cursor:pointer;font-family:-apple-system,sans-serif;font-size:14px;border:none;border-radius:var(--r-sm);padding:9px 18px;transition:opacity .15s,filter .15s}
-button:hover{opacity:.82}
-button:disabled{opacity:.38;cursor:not-allowed}
-.btn-primary{background:var(--text);color:var(--bg);font-weight:500}
-.btn-secondary{background:var(--bg3);color:var(--text);border:1px solid var(--border)}
-.btn-N{background:var(--N-bg);color:var(--N);border:2px solid var(--N);padding:18px 10px;font-size:14px;font-weight:600;line-height:1.4;font-family:-apple-system,sans-serif;border-radius:var(--r);text-align:center}
-.btn-A{background:var(--A-bg);color:var(--A);border:2px solid var(--A);padding:18px 10px;font-size:14px;font-weight:600;line-height:1.4;font-family:-apple-system,sans-serif;border-radius:var(--r);text-align:center}
-.btn-O{background:var(--O-bg);color:var(--O);border:2px solid var(--O-mid);padding:18px 10px;font-size:14px;font-weight:600;line-height:1.4;font-family:-apple-system,sans-serif;border-radius:var(--r);text-align:center}
-.btn-N.selected{box-shadow:0 0 0 3px var(--N)}
-.btn-A.selected{box-shadow:0 0 0 3px var(--A)}
-.btn-O.selected{box-shadow:0 0 0 3px var(--O-mid)}
-input[type="text"],input[type="url"],textarea{width:100%;font-family:-apple-system,sans-serif;font-size:14px;background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:var(--r-sm);padding:10px 14px;outline:none;transition:border-color .15s}
-input:focus,textarea:focus{border-color:var(--text2)}
-textarea{resize:vertical}
-label{font-size:13px;font-family:-apple-system,sans-serif;color:var(--text2);margin-bottom:5px;display:block;font-weight:500}
-.field{margin-bottom:16px}
-.progress-bar{height:3px;background:var(--border);border-radius:2px;overflow:hidden;margin-bottom:28px}
-.progress-fill{height:100%;background:var(--text);border-radius:2px;transition:width .4s ease}
-.badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:600;font-family:-apple-system,sans-serif}
-.badge-N{background:var(--N-bg);color:var(--N)}
-.badge-A{background:var(--A-bg);color:var(--A)}
-.badge-O{background:var(--O-bg);color:var(--O-mid)}
-.badge-ok{background:var(--ok-bg);color:var(--ok)}
-.badge-warn{background:var(--warn-bg);color:var(--warn)}
-.badge-err{background:var(--N-bg);color:var(--N)}
-.alert-warn{padding:12px 16px;border-radius:var(--r-sm);font-size:14px;font-family:-apple-system,sans-serif;margin-bottom:16px;background:var(--warn-bg);color:var(--warn);border:1px solid #fcd34d}
-.alert-ok{padding:12px 16px;border-radius:var(--r-sm);font-size:14px;font-family:-apple-system,sans-serif;margin-bottom:16px;background:var(--ok-bg);color:var(--ok);border:1px solid var(--A-mid)}
-.nav-back{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-family:-apple-system,sans-serif;color:var(--text3);cursor:pointer;background:none;border:none;padding:0;margin-bottom:32px}
-.nav-back:hover{color:var(--text2);opacity:1}
-.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-.row-between{display:flex;gap:10px;align-items:center;justify-content:space-between}
-.stat-row{display:flex;justify-content:space-between;align-items:baseline;padding:10px 0;border-bottom:1px solid var(--border);font-family:-apple-system,sans-serif;font-size:14px}
-.stat-row:last-child{border-bottom:none}
-.stat-val{font-size:22px;font-weight:300;letter-spacing:-.5px;font-family:Georgia,serif}
-.alpha-box{text-align:center;padding:32px 24px;border:1px solid var(--border);border-radius:var(--r);background:var(--bg2);margin-bottom:16px}
-.alpha-num{font-size:56px;font-weight:300;letter-spacing:-3px;line-height:1;margin-bottom:6px}
-.term-card{border:1px solid var(--border);border-radius:var(--r);padding:40px 32px;margin:24px 0;background:var(--bg2);text-align:center}
-.term-big{font-size:42px;letter-spacing:-1px;line-height:1.1}
-.ind-chip{display:inline-block;margin-top:14px;padding:4px 14px;border-radius:20px;background:var(--bg3);border:1px solid var(--border);font-size:13px;font-family:-apple-system,sans-serif;color:var(--text2)}
-.term-id{font-size:11px;color:var(--text3);font-family:-apple-system,sans-serif;margin-top:8px}
-.btn-trio{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
-.confirm-note{background:var(--bg3);border-radius:var(--r-sm);padding:14px 16px;margin:12px 0 16px;border-left:3px solid var(--border)}
-.confirm-note.N{border-left-color:var(--N)}
-.confirm-note.A{border-left-color:var(--A)}
-.confirm-note.O{border-left-color:var(--O-mid)}
-.ind-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
-.ind-tab{padding:5px 12px;border-radius:20px;font-size:13px;font-family:-apple-system,sans-serif;background:var(--bg3);border:1px solid var(--border);color:var(--text2);cursor:pointer}
-.ind-tab.active{background:var(--text);color:var(--bg);border-color:var(--text)}
-.scroll-box{max-height:320px;overflow-y:auto;border:1px solid var(--border);border-radius:var(--r-sm)}
-.trow{display:flex;align-items:center;padding:7px 12px;border-bottom:1px solid var(--border);gap:8px;font-family:-apple-system,sans-serif;font-size:13px}
-.trow:last-child{border-bottom:none}
-.res-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0}
-@media(max-width:480px){.res-grid{grid-template-columns:1fr}}
-.res-box{padding:12px 14px;border-radius:var(--r-sm);background:var(--bg3);border:1px solid var(--border);font-family:-apple-system,sans-serif}
-.res-name{font-size:11px;color:var(--text3);font-weight:500;margin-bottom:5px;text-transform:uppercase;letter-spacing:.05em}
-.res-note{font-size:12px;color:var(--text3);font-style:italic;margin-top:4px}
-details{margin-bottom:16px}
-summary{cursor:pointer;font-size:13px;font-family:-apple-system,sans-serif;color:var(--text3);padding:8px 0;user-select:none}
-pre{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r-sm);padding:16px;font-family:'Menlo','Consolas',monospace;font-size:11px;overflow-x:auto;line-height:1.6;color:var(--text2);white-space:pre}
-hr{border:none;border-top:1px solid var(--border);margin:24px 0}
-.mt-8{margin-top:8px}.mt-16{margin-top:16px}.mt-24{margin-top:24px}
-.loading{color:var(--text3);font-family:-apple-system,sans-serif;font-size:14px;text-align:center;padding:32px}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg:        #171612;
+    --bg-card:   #1f1d18;
+    --bg-raised: #27251e;
+    --bg-sunken: #111009;
+    --border:    #333028;
+    --border-strong: #4a4639;
+
+    --ink:       #e8e4d9;
+    --ink-2:     #a09c90;
+    --ink-3:     #66624f;
+    --ink-ghost: #3a3730;
+
+    --N:         #f28080;
+    --N-soft:    #2a1313;
+    --N-mid:     #d05555;
+    --A:         #70d4a0;
+    --A-soft:    #0d2018;
+    --A-mid:     #3a9966;
+    --O:         #a09c90;
+    --O-soft:    #222018;
+    --O-mid:     #66624f;
+
+    --warn:      #e0a830;
+    --warn-bg:   #241b06;
+    --ok:        #70d4a0;
+    --ok-bg:     #0d2018;
+
+    --shadow-sm: 0 1px 4px rgba(0,0,0,.3), 0 0 0 1px var(--border);
+    --shadow-md: 0 4px 20px rgba(0,0,0,.4), 0 0 0 1px var(--border);
+    --shadow-lg: 0 12px 48px rgba(0,0,0,.5), 0 0 0 1px var(--border);
+  }
+}
+
+/* ── RESET + BASE ───────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Sora', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.6;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── SCREENS ────────────────────────────────────────────── */
+.screen { max-width: 660px; margin: 0 auto; padding: 48px 20px 96px; animation: fadeUp .35s ease both; }
+.hidden { display: none !important; }
+.center { text-align: center; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── TYPOGRAPHY ─────────────────────────────────────────── */
+h1 {
+  font-family: 'Lora', Georgia, serif;
+  font-size: 26px;
+  font-weight: 500;
+  letter-spacing: -.5px;
+  line-height: 1.25;
+  margin-bottom: 8px;
+  color: var(--ink);
+}
+h2 {
+  font-family: 'Lora', Georgia, serif;
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: -.4px;
+  margin-bottom: 14px;
+}
+h3 {
+  font-family: 'Sora', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 12px;
+}
+p { color: var(--ink-2); font-size: 14px; line-height: 1.7; margin-bottom: 14px; }
+small { font-size: 12px; color: var(--ink-3); font-family: 'Sora', sans-serif; }
+code { font-family: 'DM Mono', monospace; font-size: 12px; background: var(--bg-sunken); padding: 1px 5px; border-radius: 3px; }
+
+/* ── LOGO / BRAND ───────────────────────────────────────── */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 36px;
+}
+.brand-icon {
+  font-size: 28px;
+  flex-shrink: 0;
+  cursor: default;
+  display: inline-block;
+  transition: transform .25s cubic-bezier(.34,1.56,.64,1);
+}
+.brand-icon:hover {
+  transform: scale(1.5);
+}
+.brand-text { flex: 1; }
+.brand-name { font-family: 'Lora', serif; font-size: 17px; font-weight: 500; letter-spacing: -.2px; }
+.brand-name .brand-alpha { font-size: 24px; line-height: 1; vertical-align: bottom; }
+.brand-sub { font-size: 11px; color: var(--ink-3); letter-spacing: .03em; }
+
+/* ── CARDS ──────────────────────────────────────────────── */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 14px;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow var(--trans);
+}
+.card-sunken {
+  background: var(--bg-sunken);
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 16px;
+}
+.card-clickable {
+  cursor: pointer;
+  transition: box-shadow var(--trans), transform var(--trans);
+}
+.card-clickable:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+.card-clickable:active { transform: translateY(0); }
+
+/* ── NAV MENU CARDS (home screen) ───────────────────────── */
+.menu-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px 22px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  display: flex; align-items: center; gap: 16px;
+  transition: box-shadow var(--trans), transform var(--trans);
+  box-shadow: var(--shadow-sm);
+  text-decoration: none; color: inherit;
+}
+.menu-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+.menu-card:active { transform: translateY(0); }
+.menu-step {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: var(--bg-sunken);
+  border: 1.5px solid var(--border-strong);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 600; color: var(--ink-2);
+  flex-shrink: 0;
+  font-family: 'DM Mono', monospace;
+}
+.menu-body { flex: 1; }
+.menu-title { font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 2px; }
+.menu-desc { font-size: 13px; color: var(--ink-3); }
+.menu-arrow { color: var(--ink-ghost); font-size: 18px; }
+
+/* ── BUTTONS ────────────────────────────────────────────── */
+button {
+  cursor: pointer;
+  font-family: 'Sora', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 10px 20px;
+  transition: background var(--trans), box-shadow var(--trans), opacity var(--trans), transform var(--trans);
+  outline: none;
+  letter-spacing: .01em;
+}
+button:hover { opacity: .88; }
+button:active { transform: scale(.98); }
+button:disabled { opacity: .38; cursor: not-allowed; transform: none; }
+
+.btn-primary {
+  background: var(--ink);
+  color: var(--bg);
+}
+.btn-primary:hover { opacity: 1; background: var(--ink-2); }
+
+.btn-secondary {
+  background: var(--bg-raised);
+  color: var(--ink-2);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-danger {
+  background: var(--N-soft);
+  color: var(--N);
+  border: 1.5px solid var(--N-mid);
+}
+
+/* Code choice buttons */
+.code-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 22px 12px;
+  border-radius: var(--radius);
+  border: 2px solid transparent;
+  cursor: pointer;
+  font-family: 'Sora', sans-serif;
+  transition: all var(--trans);
+  position: relative;
+  overflow: hidden;
+}
+.code-btn::before {
+  content: '';
+  position: absolute; inset: 0;
+  opacity: 0;
+  transition: opacity var(--trans);
+}
+.code-btn:hover::before { opacity: 1; }
+.code-btn:hover { transform: translateY(-2px); }
+.code-btn:active { transform: translateY(0); }
+
+.code-btn-N { background: var(--N-soft); color: var(--N); border-color: var(--N-mid); }
+.code-btn-N::before { background: var(--N); }
+.code-btn-N:hover { background: var(--N); color: #fff; border-color: var(--N); }
+
+.code-btn-A { background: var(--A-soft); color: var(--A); border-color: var(--A-mid); }
+.code-btn-A::before { background: var(--A); }
+.code-btn-A:hover { background: var(--A); color: #fff; border-color: var(--A); }
+
+.code-btn-O { background: var(--O-soft); color: var(--O); border-color: var(--O-mid); }
+.code-btn-O::before { background: var(--O); }
+.code-btn-O:hover { background: var(--O); color: #fff; border-color: var(--O); }
+
+.code-btn.selected {
+  box-shadow: 0 0 0 4px currentColor;
+  transform: translateY(-2px);
+}
+.code-btn-label { font-size: 10px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; opacity: .6; }
+.code-btn-name { font-size: 13px; font-weight: 600; line-height: 1.35; text-align: center; }
+
+/* ── FORM ELEMENTS ──────────────────────────────────────── */
+.field { margin-bottom: 18px; }
+label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 7px;
+}
+input[type="text"], input[type="url"], textarea {
+  width: 100%;
+  font-family: 'Sora', sans-serif;
+  font-size: 14px;
+  background: var(--bg-raised);
+  color: var(--ink);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 11px 15px;
+  outline: none;
+  transition: border-color var(--trans), box-shadow var(--trans);
+  box-shadow: var(--shadow-sm);
+}
+input:focus, textarea:focus {
+  border-color: var(--ink-2);
+  box-shadow: 0 0 0 3px rgba(28,26,22,.08);
+}
+textarea { resize: vertical; min-height: 80px; }
+
+/* ── PROGRESS BAR ───────────────────────────────────────── */
+.progress-wrap {
+  margin-bottom: 32px;
+  position: relative;
+}
+.progress-track {
+  height: 2px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: visible;
+  position: relative;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--ink);
+  border-radius: 2px;
+  transition: width .5s cubic-bezier(.4,0,.2,1);
+  position: relative;
+}
+.progress-fill::after {
+  content: '';
+  position: absolute; right: -3px; top: -3px;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--ink);
+}
+
+/* ── BADGES ─────────────────────────────────────────────── */
+.badge {
+  display: inline-flex; align-items: center;
+  padding: 3px 9px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  font-family: 'Sora', sans-serif;
+  letter-spacing: .02em;
+}
+.badge-N { background: var(--N-soft); color: var(--N); }
+.badge-A { background: var(--A-soft); color: var(--A); }
+.badge-O { background: var(--O-soft); color: var(--O); }
+.badge-ok { background: var(--ok-bg); color: var(--ok); }
+.badge-warn { background: var(--warn-bg); color: var(--warn); }
+.badge-err { background: var(--N-soft); color: var(--N); }
+.badge-neutral { background: var(--bg-sunken); color: var(--ink-2); border: 1px solid var(--border); }
+
+/* ── ALERTS ─────────────────────────────────────────────── */
+.alert {
+  padding: 13px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-family: 'Sora', sans-serif;
+  margin-bottom: 16px;
+  line-height: 1.55;
+  border: 1px solid transparent;
+}
+.alert-warn { background: var(--warn-bg); color: var(--warn); border-color: #f0d080; }
+.alert-ok   { background: var(--ok-bg);   color: var(--ok);   border-color: var(--A-mid); }
+
+/* ── NAV BACK ───────────────────────────────────────────── */
+.nav-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: .03em;
+  color: var(--ink-3);
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  margin-bottom: 36px;
+  transition: color var(--trans);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+.nav-back:hover { color: var(--ink-2); opacity: 1; }
+
+/* ── LAYOUT UTILS ───────────────────────────────────────── */
+.row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.row-between { display: flex; gap: 10px; align-items: center; justify-content: space-between; }
+.btn-trio { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+
+/* ── STAT ROWS ──────────────────────────────────────────── */
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+  color: var(--ink-2);
+}
+.stat-row:last-child { border-bottom: none; padding-bottom: 0; }
+.stat-row:first-child { padding-top: 0; }
+.stat-val {
+  font-family: 'Lora', Georgia, serif;
+  font-size: 26px;
+  font-weight: 400;
+  color: var(--ink);
+  letter-spacing: -.5px;
+}
+
+/* ── ALPHA DISPLAY ──────────────────────────────────────── */
+.alpha-showcase {
+  text-align: center;
+  padding: 40px 24px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-card);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 16px;
+}
+.alpha-number {
+  font-family: 'Lora', Georgia, serif;
+  font-size: 72px;
+  font-weight: 400;
+  letter-spacing: -4px;
+  line-height: 1;
+  color: var(--ink);
+  margin-bottom: 10px;
+}
+.alpha-label {
+  font-size: 13px;
+  color: var(--ink-3);
+  font-family: 'Sora', sans-serif;
+  margin-bottom: 14px;
+  letter-spacing: .02em;
+}
+.alpha-threshold {
+  font-size: 11px;
+  color: var(--ink-ghost);
+  font-family: 'DM Mono', monospace;
+  margin-top: 10px;
+}
+
+/* ── TERM DISPLAY (coder) ───────────────────────────────── */
+.term-showcase {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 48px 32px 36px;
+  margin: 24px 0;
+  text-align: center;
+  box-shadow: var(--shadow-md);
+  position: relative;
+  overflow: hidden;
+}
+.term-showcase::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--N-mid), var(--A-mid));
+  opacity: .4;
+}
+.term-word {
+  font-family: 'Lora', Georgia, serif;
+  font-size: 48px;
+  font-weight: 500;
+  letter-spacing: -2px;
+  line-height: 1.1;
+  color: var(--ink);
+  margin-bottom: 16px;
+}
+.term-inducer-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 24px;
+  background: var(--bg-sunken);
+  border: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--ink-3);
+  font-family: 'Sora', sans-serif;
+  font-weight: 500;
+}
+.term-inducer-chip span { color: var(--ink-2); font-weight: 600; }
+.term-id-label {
+  margin-top: 12px;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--ink-ghost);
+}
+
+/* ── CONFIRM PANEL ──────────────────────────────────────── */
+.confirm-panel {
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-top: 16px;
+  background: var(--bg-card);
+  animation: fadeUp .2s ease both;
+}
+.confirm-panel.N { border-color: var(--N-mid); }
+.confirm-panel.A { border-color: var(--A-mid); }
+.confirm-panel.O { border-color: var(--O-mid); }
+.confirm-header {
+  font-size: 13px;
+  font-weight: 600;
+  font-family: 'Sora', sans-serif;
+  margin-bottom: 14px;
+  display: flex; align-items: center; gap: 8px;
+}
+
+/* ── TABS ───────────────────────────────────────────────── */
+.tabs {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+  padding: 4px;
+  background: var(--bg-sunken);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  width: fit-content;
+  max-width: 100%;
+}
+.tab {
+  padding: 6px 14px;
+  border-radius: 5px;
+  font-size: 12px;
+  font-family: 'Sora', sans-serif;
+  font-weight: 500;
+  color: var(--ink-3);
+  cursor: pointer;
+  transition: all var(--trans);
+  white-space: nowrap;
+}
+.tab.active {
+  background: var(--bg-raised);
+  color: var(--ink);
+  box-shadow: var(--shadow-sm);
+}
+.tab:hover:not(.active) { color: var(--ink-2); }
+
+/* ── SCROLL BOX + TABLE ROWS ────────────────────────────── */
+.scroll-box {
+  max-height: 320px;
+  overflow-y: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-raised);
+}
+.trow {
+  display: flex;
+  align-items: center;
+  padding: 8px 14px;
+  border-bottom: 1px solid var(--border);
+  gap: 10px;
+  font-family: 'Sora', sans-serif;
+  font-size: 13px;
+  transition: background var(--trans);
+}
+.trow:last-child { border-bottom: none; }
+.trow:hover { background: var(--bg-sunken); }
+
+/* ── RESOLUTION GRID ────────────────────────────────────── */
+.res-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 14px 0;
+}
+@media (max-width: 480px) { .res-grid { grid-template-columns: 1fr; } }
+.res-box {
+  padding: 14px 16px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-sunken);
+  border: 1px solid var(--border);
+  font-family: 'Sora', sans-serif;
+}
+.res-name {
+  font-size: 10px;
+  color: var(--ink-3);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  margin-bottom: 7px;
+}
+.res-note { font-size: 12px; color: var(--ink-3); font-style: italic; margin-top: 6px; }
+
+/* ── DETAILS / COLLAPSIBLE ──────────────────────────────── */
+details {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+summary {
+  cursor: pointer;
+  font-size: 13px;
+  font-family: 'Sora', sans-serif;
+  font-weight: 500;
+  color: var(--ink-2);
+  padding: 13px 18px;
+  user-select: none;
+  background: var(--bg-sunken);
+  list-style: none;
+  display: flex; align-items: center; gap: 8px;
+  transition: background var(--trans);
+}
+summary:hover { background: var(--bg-card); }
+details[open] summary { border-bottom: 1px solid var(--border); }
+details > *:not(summary) { padding: 0; }
+
+/* ── PRE / CODE BLOCKS ──────────────────────────────────── */
+pre {
+  background: var(--bg-sunken);
+  border: 1px solid var(--border);
+  border-radius: 0;
+  padding: 20px;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  overflow-x: auto;
+  line-height: 1.7;
+  color: var(--ink-2);
+  white-space: pre;
+}
+
+/* ── DIVIDER ────────────────────────────────────────────── */
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 28px 0;
+}
+
+/* ── SPACING UTILS ──────────────────────────────────────── */
+.mt-8  { margin-top:  8px; }
+.mt-12 { margin-top: 12px; }
+.mt-16 { margin-top: 16px; }
+.mt-24 { margin-top: 24px; }
+.mb-8  { margin-bottom:  8px; }
+.mb-16 { margin-bottom: 16px; }
+
+/* ── LOADING STATE ──────────────────────────────────────── */
+.loading {
+  text-align: center;
+  padding: 48px 24px;
+  color: var(--ink-3);
+  font-family: 'Sora', sans-serif;
+  font-size: 14px;
+}
+.loading::after {
+  content: '';
+  display: block;
+  width: 24px; height: 24px;
+  border: 2px solid var(--border);
+  border-top-color: var(--ink-2);
+  border-radius: 50%;
+  animation: spin .8s linear infinite;
+  margin: 16px auto 0;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── DONE SCREEN ────────────────────────────────────────── */
+.done-icon {
+  width: 72px; height: 72px;
+  border-radius: 50%;
+  background: var(--A-soft);
+  border: 2px solid var(--A-mid);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 28px;
+  margin: 0 auto 24px;
+}
+
+/* ── SETTINGS GEAR ──────────────────────────────────────── */
+.icon-btn {
+  width: 36px; height: 36px;
+  border-radius: 8px;
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  font-size: 16px;
+  box-shadow: var(--shadow-sm);
+  transition: all var(--trans);
+  flex-shrink: 0;
+}
+.icon-btn:hover { box-shadow: var(--shadow-md); transform: translateY(-1px); }
+
+/* ── SECTION LABEL ──────────────────────────────────────── */
+.section-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--ink-ghost);
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* ── RESP ───────────────────────────────────────────────── */
+@media (max-width: 520px) {
+  .screen { padding: 32px 16px 80px; }
+  .term-word { font-size: 36px; }
+  .alpha-number { font-size: 56px; }
+  .brand { margin-bottom: 28px; }
+}
 </style>
 </head>
 <body>
 
 <!-- ══════ SETUP ══════ -->
 <div id="screen-setup" class="screen">
-  <div style="margin-bottom:40px">
-    <div style="font-size:22px;margin-bottom:10px">🍒</div>
-    <h1>VLX - Validateur du Lexique Sémantique</h1>
-    <p style="color:var(--text3)">Double codage aveugle par inducteur (Alpha de Krippendorff) · Export PDF + JSON</p>
+  <div class="brand">
+    <div class="brand-icon">🍒</div>
+    <div class="brand-text">
+      <div class="brand-name"><span class="brand-alpha">α</span>K.27</div>
+      <div class="brand-sub">Codage sémantique à fiabilité contrôlée</div>
+    </div>
   </div>
+
+  <h2>Connexion Google Sheets</h2>
+  <p>Renseignez l'URL du Web App Apps Script déployé depuis votre Google Sheet pour synchroniser les codages en temps réel.</p>
+
   <div class="card">
-    <h3>Connexion Google Sheets</h3>
-    <p>URL du Web App Apps Script déployé depuis votre Google Sheet.</p>
     <div class="field">
       <label>URL du Web App</label>
       <input type="url" id="script-url" placeholder="https://script.google.com/macros/s/…/exec">
     </div>
     <div class="row">
-      <button class="btn-primary" onclick="testConn()">Tester</button>
-      <span id="conn-status" style="font-size:13px;color:var(--text3);font-family:sans-serif"></span>
+      <button class="btn-primary" onclick="testConn()">Tester la connexion</button>
+      <span id="conn-status" style="font-size:12px;color:var(--ink-3);font-family:'Sora',sans-serif"></span>
     </div>
   </div>
+
   <details>
-    <summary>⚙ Apps Script — code à déployer</summary>
-    <div class="card mt-8">
-      <ol style="color:var(--text2);font-size:13px;font-family:sans-serif;line-height:2.2;padding-left:18px;margin-bottom:14px">
-        <li>Google Sheet → Extensions → Apps Script</li>
-        <li>Remplacez tout le contenu par le code ci-dessous</li>
-        <li>Déployer → Nouveau déploiement → App Web</li>
-        <li>Exécuter en tant que : <strong>Moi</strong> · Accès : <strong>Tout le monde</strong></li>
-        <li>Copiez l'URL et collez-la ci-dessus</li>
-      </ol>
-<pre id="gas-code">/* Validateur du Lexique Sémantique
+    <summary>⚙ Code Apps Script à déployer</summary>
+    <div>
+      <div style="padding:16px 18px;background:var(--bg-card);border-bottom:1px solid var(--border)">
+        <ol style="color:var(--ink-2);font-size:13px;font-family:'Sora',sans-serif;line-height:2.3;padding-left:18px">
+          <li>Google Sheet → Extensions → Apps Script</li>
+          <li>Remplacez tout le contenu par le code ci-dessous</li>
+          <li>Déployer → Nouveau déploiement → App Web</li>
+          <li>Exécuter en tant que : <strong>Moi</strong> · Accès : <strong>Tout le monde</strong></li>
+          <li>Copiez l'URL et collez-la ci-dessus</li>
+        </ol>
+        <button class="btn-secondary mt-8" onclick="copyGas()">Copier le code</button>
+      </div>
+<pre id="gas-code">/* αK.27 - Codage sémantique à fiabilité contrôlée
    Ferdinand Lamolet (2026) · MIT Licence */
 const SS = SpreadsheetApp.getActiveSpreadsheet();
 function doGet(e) {
   const p = e.parameter; let r;
   try {
     switch(p.action) {
-      case 'ping':           r={ok:true,msg:'VLX connecté'}; break;
+      case 'ping':           r={ok:true,msg:'αK.27 connecté'}; break;
       case 'get_lexique':    r=getLexique(); break;
       case 'save_lexique':   r=saveLexique(JSON.parse(decodeURIComponent(p.data))); break;
       case 'append_lexique': r=appendLexique(JSON.parse(decodeURIComponent(p.data))); break;
@@ -156,29 +790,29 @@ function sh(name,headers){
   return s;
 }
 function getLexique(){
-  const s=sh('VLX_Lexique',['id','inducteur','terme']);
+  const s=sh('AK27_Lexique',['id','inducteur','terme']);
   const d=s.getDataRange().getValues();
   if(d.length<=1)return{ok:true,terms:[]};
   return{ok:true,terms:d.slice(1).map(r=>({id:r[0],inducteur:r[1],terme:r[2]}))};
 }
 function saveLexique(terms){
-  const s=sh('VLX_Lexique',['id','inducteur','terme']);
+  const s=sh('AK27_Lexique',['id','inducteur','terme']);
   s.clearContents(); s.appendRow(['id','inducteur','terme']);
   terms.forEach(t=>s.appendRow([t.id,t.inducteur,t.terme]));
   return{ok:true};
 }
 function appendLexique(terms){
-  const s=sh('VLX_Lexique',['id','inducteur','terme']);
+  const s=sh('AK27_Lexique',['id','inducteur','terme']);
   terms.forEach(t=>s.appendRow([t.id,t.inducteur,t.terme]));
   return{ok:true};
 }
 function saveCodage(e){
-  sh('VLX_Codages',['timestamp','codeur','term_id','inducteur','terme','code','note'])
+  sh('AK27_Codages',['timestamp','codeur','term_id','inducteur','terme','code','note'])
     .appendRow([new Date().toISOString(),e.codeur,e.term_id,e.inducteur,e.terme,e.code,e.note||'']);
   return{ok:true};
 }
 function getCodages(){
-  const s=SS.getSheetByName('VLX_Codages');
+  const s=SS.getSheetByName('AK27_Codages');
   if(!s)return{ok:true,codings:[]};
   const d=s.getDataRange().getValues();
   if(d.length<=1)return{ok:true,codings:[]};
@@ -187,12 +821,12 @@ function getCodages(){
   }))};
 }
 function saveResolution(e){
-  sh('VLX_Resolutions',['timestamp','term_id','inducteur','terme','code_final','note'])
+  sh('AK27_Resolutions',['timestamp','term_id','inducteur','terme','code_final','note'])
     .appendRow([new Date().toISOString(),e.term_id,e.inducteur,e.terme,e.code_final,e.note||'']);
   return{ok:true};
 }
 function getResolutions(){
-  const s=SS.getSheetByName('VLX_Resolutions');
+  const s=SS.getSheetByName('AK27_Resolutions');
   if(!s)return{ok:true,resolutions:[]};
   const d=s.getDataRange().getValues();
   if(d.length<=1)return{ok:true,resolutions:[]};
@@ -200,52 +834,65 @@ function getResolutions(){
     timestamp:r[0],term_id:r[1],inducteur:r[2],terme:r[3],code_final:r[4],note:r[5]||''
   }))};
 }</pre>
-      <button class="btn-secondary mt-8" onclick="copyGas()">Copier le code</button>
     </div>
   </details>
-  <button class="btn-primary mt-8" onclick="goHome()">Continuer →</button>
+
+  <button class="btn-primary mt-12" onclick="goHome()">Continuer →</button>
 </div>
 
 <!-- ══════ HOME ══════ -->
 <div id="screen-home" class="screen hidden">
-  <div class="row-between" style="margin-bottom:36px;align-items:flex-start">
-    <div>
-      <div style="font-size:20px;margin-bottom:6px">🍒</div>
-      <h1>VLX - Validateur du Lexique</h1>
-      <small>Protocole bimodal (Lamolet, 2026)</small>
+  <div class="row-between" style="margin-bottom:40px;align-items:flex-start">
+    <div class="brand" style="margin-bottom:0">
+      <div class="brand-icon">🍒</div>
+      <div class="brand-text">
+        <div class="brand-name"><span class="brand-alpha">α</span>K.27</div>
+        <div class="brand-sub">Fiabilité inter-juges (Krippendroff, 1980)</div>
+      </div>
     </div>
-    <button class="btn-secondary" style="font-size:13px;padding:7px 12px" onclick="showScreen('setup')">⚙</button>
+    <button class="icon-btn" onclick="showScreen('setup')" title="Paramètres">⚙</button>
   </div>
-  <div style="display:grid;gap:10px;margin-bottom:24px">
-    <div class="card" style="cursor:pointer;border-left:3px solid var(--border)" onclick="showScreen('admin')">
-      <div class="row-between"><div>
-        <h3 style="margin-bottom:2px">① Admin - Constituer le lexique</h3>
-        <p style="margin:0;font-size:13px">Importer le CSV TAVI · colonnes Inducteur + Mot · dédupliquer · publier.</p>
-      </div><span style="color:var(--text3);font-size:18px">→</span></div>
+
+  <div class="section-label">Modules</div>
+  <div style="display:grid;gap:8px;margin-bottom:28px">
+    <div class="menu-card" onclick="showScreen('admin')">
+      <div class="menu-step">①</div>
+      <div class="menu-body">
+        <div class="menu-title">Admin - Constituer le lexique</div>
+        <div class="menu-desc">Importer CSV TAVI · déduplication · publication.</div>
+      </div>
+      <div class="menu-arrow">›</div>
     </div>
-    <div class="card" style="cursor:pointer;border-left:3px solid var(--border)" onclick="showScreen('coder-id')">
-      <div class="row-between"><div>
-        <h3 style="margin-bottom:2px">② Codeur - Codage aveugle</h3>
-        <p style="margin:0;font-size:13px">Chaque terme affiché avec son inducteur. Ordre aléatoire par codeur.</p>
-      </div><span style="color:var(--text3);font-size:18px">→</span></div>
+    <div class="menu-card" onclick="showScreen('coder-id')">
+      <div class="menu-step">②</div>
+      <div class="menu-body">
+        <div class="menu-title">Codeur - Codage aveugle</div>
+        <div class="menu-desc">Terme affiché avec son inducteur. Ordre aléatoire par codeur.</div>
+      </div>
+      <div class="menu-arrow">›</div>
     </div>
-    <div class="card" style="cursor:pointer;border-left:3px solid var(--border)" onclick="loadSynth()">
-      <div class="row-between"><div>
-        <h3 style="margin-bottom:2px">③ Synthèse - Alpha de Krippendorff</h3>
-        <p style="margin:0;font-size:13px">Accord global et par inducteur · distribution des désaccords.</p>
-      </div><span style="color:var(--text3);font-size:18px">→</span></div>
+    <div class="menu-card" onclick="loadSynth()">
+      <div class="menu-step">③</div>
+      <div class="menu-body">
+        <div class="menu-title">Synthèse - Alpha de Krippendorff</div>
+        <div class="menu-desc">Accord global et par inducteur · distribution des désaccords.</div>
+      </div>
+      <div class="menu-arrow">›</div>
     </div>
-    <div class="card" style="cursor:pointer;border-left:3px solid var(--border)" onclick="loadResolution()">
-      <div class="row-between"><div>
-        <h3 style="margin-bottom:2px">④ Résolution - Délibérer et exporter</h3>
-        <p style="margin:0;font-size:13px">Désaccords par inducteur · Export PDF justificatif + JSON pour la MBC.</p>
-      </div><span style="color:var(--text3);font-size:18px">→</span></div>
+    <div class="menu-card" onclick="loadResolution()">
+      <div class="menu-step">④</div>
+      <div class="menu-body">
+        <div class="menu-title">Résolution - Délibérer et exporter</div>
+        <div class="menu-desc">Désaccords par inducteur · export PDF + JSON pour la MBC.</div>
+      </div>
+      <div class="menu-arrow">›</div>
     </div>
   </div>
-  <div class="card-flat" style="font-size:13px;color:var(--text3);font-family:sans-serif;line-height:1.6">
-    <strong style="color:var(--text2)">Architecture par inducteur.</strong>
-    Un même mot peut recevoir des codes différents selon l'inducteur pour lequel il a été produit
-    (<em>liberté</em> produit pour <em>Décrocheur</em> ≠ <em>liberté</em> produit pour <em>Raccrochage</em>).
+
+  <div class="card-sunken" style="font-size:13px;color:var(--ink-3);line-height:1.65">
+    <strong style="color:var(--ink-2);font-size:12px;font-weight:600;letter-spacing:.03em">Architecture par inducteur.</strong>
+    <span style="display:block;margin-top:4px">Un même mot peut recevoir des codes différents selon l'inducteur pour lequel il a été produit
+    (<em>liberté</em> pour <em>Décrocheur</em> ≠ <em>liberté</em> pour <em>Raccrochage</em>).</span>
   </div>
 </div>
 
@@ -254,16 +901,17 @@ function getResolutions(){
   <button class="nav-back" onclick="showScreen('home')">← Retour</button>
   <h2>Constituer le lexique</h2>
   <p>Importez le CSV exporté depuis Google Sheets TAVI. Les colonnes <strong>Inducteur</strong> et <strong>Mot</strong> sont détectées automatiquement (insensible à la casse, séparateur auto). Les paires dupliquées sont supprimées.</p>
+
   <div class="card">
     <div class="field">
       <label>Fichier CSV du TAVI</label>
       <div class="row">
         <button class="btn-secondary" onclick="qs('#csv-in').click()">Choisir le fichier…</button>
-        <span id="csv-name" style="font-size:13px;color:var(--text3);font-family:sans-serif"></span>
+        <span id="csv-name" style="font-size:13px;color:var(--ink-3);font-family:'Sora',sans-serif"></span>
       </div>
       <input type="file" id="csv-in" accept=".csv,.tsv,.txt" style="display:none" onchange="importCSV(event)">
     </div>
-    <p style="font-size:13px;margin-bottom:8px">Ou collez manuellement des paires <code style="font-family:monospace;font-size:12px">inducteur;mot</code> (une par ligne) :</p>
+    <p style="font-size:13px;margin-bottom:8px">Ou collez manuellement des paires <code>inducteur;mot</code> (une par ligne) :</p>
     <div class="field">
       <textarea id="admin-manual" rows="6" placeholder="décrocheur;abandon&#10;décrocheur;liberté&#10;réussite;diplôme&#10;compétence;mécanique"></textarea>
     </div>
@@ -271,17 +919,18 @@ function getResolutions(){
   </div>
 
   <div id="admin-preview" class="hidden">
-    <div class="row-between mb-8" style="flex-wrap:wrap;gap:8px">
-      <h3 style="margin:0">Prévisualisation</h3>
+    <div class="row-between mb-16" style="flex-wrap:wrap;gap:8px;align-items:center">
+      <div class="section-label" style="margin:0;padding:0;border:none">Prévisualisation</div>
       <div class="row" style="gap:6px" id="prev-stats"></div>
     </div>
-    <div class="ind-tabs" id="prev-tabs"></div>
+    <div class="tabs" id="prev-tabs"></div>
     <div class="scroll-box" id="prev-table"></div>
     <div class="row mt-16">
       <button class="btn-primary" id="btn-pub" onclick="publishLex()">Publier dans Google Sheets ↑</button>
-      <span id="pub-status" style="font-size:13px;color:var(--text3);font-family:sans-serif"></span>
+      <span id="pub-status" style="font-size:12px;color:var(--ink-3);font-family:'Sora',sans-serif"></span>
     </div>
   </div>
+
   <hr>
   <button class="btn-secondary" onclick="viewCurrentLex()">Voir le lexique actuel ↓</button>
   <div id="cur-lex" class="hidden mt-16 scroll-box"></div>
@@ -292,47 +941,62 @@ function getResolutions(){
   <button class="nav-back" onclick="showScreen('home')">← Retour</button>
   <h2>Identification du codeur</h2>
   <p>Utilisez toujours le même identifiant pour reprendre une session interrompue.</p>
+
   <div class="card">
     <div class="field">
       <label>Identifiant de codeur</label>
       <input type="text" id="coder-name-in" placeholder="ex : Codeur_A, Marie_L, Juge_02…">
     </div>
-    <div id="warn-resume" class="alert-warn hidden">Session partielle détectée. Vous reprendrez sur les termes restants.</div>
+    <div id="warn-resume" class="alert alert-warn hidden">Session partielle détectée. Vous reprendrez sur les termes restants.</div>
     <button class="btn-primary" onclick="startCoding()">Commencer →</button>
   </div>
-  <div class="card-flat mt-16" style="font-size:13px;color:var(--text3);font-family:sans-serif">
-    <strong style="color:var(--text2)">Consigne.</strong> L'inducteur est affiché avec chaque terme. Codez le registre sémantique dominant dans ce contexte, indépendamment des pré-codages théoriques.
+
+  <div class="card-sunken mt-16" style="font-size:13px;color:var(--ink-3);line-height:1.65">
+    <strong style="color:var(--ink-2);font-weight:600">Consigne.</strong>
+    L'inducteur est affiché avec chaque terme. Codez le registre sémantique dominant dans ce contexte,
+    indépendamment des pré-codages théoriques.
   </div>
 </div>
 
 <!-- ══════ CODER ══════ -->
 <div id="screen-coder" class="screen hidden">
-  <div class="progress-bar"><div class="progress-fill" id="cod-prog" style="width:0%"></div></div>
-  <div class="row-between" style="font-family:sans-serif;margin-bottom:16px">
-    <small id="cod-counter"></small>
-    <small id="cod-id" style="color:var(--text3)"></small>
+  <div class="progress-wrap">
+    <div class="row-between" style="margin-bottom:10px">
+      <small id="cod-counter" style="font-family:'DM Mono',monospace;font-size:11px;color:var(--ink-3)"></small>
+      <small id="cod-id" style="color:var(--ink-ghost);font-family:'Sora',sans-serif;font-size:11px"></small>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="cod-prog" style="width:0%"></div></div>
   </div>
-  <div class="term-card">
-    <div class="term-big" id="cod-term">—</div>
-    <div class="ind-chip" id="cod-ind">—</div>
-    <div class="term-id" id="cod-tid"></div>
+
+  <div class="term-showcase">
+    <div class="term-word" id="cod-term">—</div>
+    <div class="term-inducer-chip">pour · <span id="cod-ind">—</span></div>
+    <div class="term-id-label" id="cod-tid"></div>
   </div>
-  <p class="center" style="font-family:sans-serif;font-size:13px;margin-bottom:16px">Registre sémantique dominant pour ce terme dans ce contexte</p>
+
+  <p class="center" style="font-family:'Sora',sans-serif;font-size:12px;font-weight:500;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-3);margin-bottom:16px">
+    Registre sémantique dominant
+  </p>
+
   <div class="btn-trio">
-    <button class="btn-N" id="btn-code-N" onclick="selectCode('N')">
-      <div style="font-size:10px;opacity:.7;margin-bottom:4px;letter-spacing:.04em">N</div>Normativo-déficitaire
+    <button class="code-btn code-btn-N" id="btn-code-N" onclick="selectCode('N')">
+      <span class="code-btn-label">N</span>
+      <span class="code-btn-name">Normativo-déficitaire</span>
     </button>
-    <button class="btn-A" id="btn-code-A" onclick="selectCode('A')">
-      <div style="font-size:10px;opacity:.7;margin-bottom:4px;letter-spacing:.04em">A</div>Agentif-alternatif
+    <button class="code-btn code-btn-A" id="btn-code-A" onclick="selectCode('A')">
+      <span class="code-btn-label">A</span>
+      <span class="code-btn-name">Agentif-alternatif</span>
     </button>
-    <button class="btn-O" id="btn-code-O" onclick="selectCode('Ø')">
-      <div style="font-size:10px;opacity:.7;margin-bottom:4px;letter-spacing:.04em">Ø</div>Non pertinent
+    <button class="code-btn code-btn-O" id="btn-code-O" onclick="selectCode('Ø')">
+      <span class="code-btn-label">Ø</span>
+      <span class="code-btn-name">Non pertinent</span>
     </button>
   </div>
-  <div id="confirm-sec" class="hidden mt-16">
-    <div class="confirm-note" id="confirm-box">
-      <div style="font-size:13px;font-weight:600;font-family:sans-serif;margin-bottom:8px" id="confirm-lbl"></div>
-      <div class="field" style="margin-bottom:10px">
+
+  <div id="confirm-sec" class="hidden">
+    <div class="confirm-panel" id="confirm-box">
+      <div class="confirm-header" id="confirm-lbl"></div>
+      <div class="field" style="margin-bottom:12px">
         <label>Note justificative (facultative)</label>
         <textarea id="cod-note" rows="2" placeholder="Pourquoi ce registre dans ce contexte ?"></textarea>
       </div>
@@ -342,51 +1006,77 @@ function getResolutions(){
       </div>
     </div>
   </div>
-  <details style="margin-top:28px">
+
+  <details style="margin-top:32px">
     <summary>Définitions des trois registres</summary>
-    <div class="card mt-8" style="font-size:14px">
-      <p style="margin-bottom:12px"><strong style="color:var(--N)">N — Normativo-déficitaire.</strong> Renvoie à une norme scolaire, un manque, une absence, un échec. Positionne l'individu en déficit face à l'institution. <em style="color:var(--text3)">Ex : abandon, risque, retard, échec.</em></p>
-      <p style="margin-bottom:12px"><strong style="color:var(--A)">A — Agentif-alternatif.</strong> Renvoie à une trajectoire propre, une capacité construite, un choix. <em style="color:var(--text3)">Ex : mécanique, compétence, autonomie, expérience.</em></p>
-      <p style="margin-bottom:0"><strong style="color:var(--O)">Ø — Non pertinent.</strong> Terme neutre, sans valeur catégorisante pour la représentation du décrochage. <em style="color:var(--text3)">Ex : école, famille, classe.</em></p>
+    <div style="padding:20px;background:var(--bg-card)">
+      <p style="margin-bottom:14px">
+        <strong style="color:var(--N)">N — Normativo-déficitaire.</strong>
+        Renvoie à une norme scolaire, un manque, une absence, un échec. Positionne l'individu en déficit face à l'institution.
+        <em style="color:var(--ink-3)">Ex : abandon, risque, retard, échec.</em>
+      </p>
+      <p style="margin-bottom:14px">
+        <strong style="color:var(--A)">A — Agentif-alternatif.</strong>
+        Renvoie à une trajectoire propre, une capacité construite, un choix.
+        <em style="color:var(--ink-3)">Ex : mécanique, compétence, autonomie, expérience.</em>
+      </p>
+      <p style="margin-bottom:0">
+        <strong style="color:var(--O)">Ø — Non pertinent.</strong>
+        Terme neutre, sans valeur catégorisante pour la représentation du décrochage.
+        <em style="color:var(--ink-3)">Ex : école, famille, classe.</em>
+      </p>
     </div>
   </details>
 </div>
 
 <!-- ══════ CODER DONE ══════ -->
 <div id="screen-coder-done" class="screen hidden center">
-  <div style="font-size:52px;margin-bottom:20px">✓</div>
+  <div class="done-icon">✓</div>
   <h2>Codage enregistré</h2>
-  <p id="done-msg"></p>
-  <button class="btn-primary mt-16" onclick="showScreen('home')">Retour à l'accueil</button>
+  <p id="done-msg" style="max-width:320px;margin:0 auto 24px"></p>
+  <button class="btn-primary" onclick="showScreen('home')">Retour à l'accueil</button>
 </div>
 
 <!-- ══════ SYNTH ══════ -->
 <div id="screen-synth" class="screen hidden">
   <button class="nav-back" onclick="showScreen('home')">← Retour</button>
-  <h2>Synthèse — Accord inter-juges</h2>
-  <div id="synth-load" class="loading">Chargement…</div>
+  <h2>Accord inter-juges</h2>
+  <div id="synth-load" class="loading">Chargement des données</div>
   <div id="synth-body" class="hidden">
     <div class="card">
       <div class="stat-row"><span>Paires (inducteur × terme)</span><span class="stat-val" id="s-n">—</span></div>
       <div class="stat-row"><span>Codeurs ayant participé</span><span class="stat-val" id="s-c">—</span></div>
       <div class="stat-row"><span>Paires codées par ≥ 2 codeurs</span><span class="stat-val" id="s-coded">—</span></div>
     </div>
-    <div class="alpha-box">
-      <div class="alpha-num" id="s-alpha">—</div>
-      <div style="font-size:13px;color:var(--text2);font-family:sans-serif;margin-bottom:8px">α de Krippendorff global (nominale)</div>
+
+    <div class="alpha-showcase">
+      <div class="alpha-number" id="s-alpha">—</div>
+      <div class="alpha-label">α de Krippendorff global · métrique nominale</div>
       <span class="badge" id="s-alpha-b">—</span>
-      <div style="font-size:12px;color:var(--text3);font-family:sans-serif;margin-top:8px">Seuil recommandé : α ≥ 0,67 (Krippendorff, 2004 · Lamolet, 2026, §6.2)</div>
+      <div class="alpha-threshold">Seuil recommandé : α ≥ 0,67 · Krippendorff (1980) ; Lamolet (2026)</div>
     </div>
+
     <div class="card">
-      <h3 style="margin-bottom:12px">Alpha par inducteur</h3>
+      <div class="section-label">Alpha par inducteur</div>
       <div id="s-by-ind"></div>
     </div>
+
     <div class="card">
-      <h3 style="margin-bottom:12px">Distribution des accords</h3>
-      <div class="stat-row"><span>✓ Accord total</span><span class="stat-val" id="s-ag" style="color:var(--A)">—</span></div>
-      <div class="stat-row"><span>∼ Désaccord partiel (N↔Ø ou A↔Ø)</span><span class="stat-val" id="s-pt" style="color:var(--warn)">—</span></div>
-      <div class="stat-row"><span>✗ Désaccord structurel (N↔A)</span><span class="stat-val" id="s-st" style="color:var(--N)">—</span></div>
+      <div class="section-label">Distribution des accords</div>
+      <div class="stat-row">
+        <span>✓ Accord total</span>
+        <span class="stat-val" id="s-ag" style="color:var(--A)">—</span>
+      </div>
+      <div class="stat-row">
+        <span>∼ Désaccord partiel <small style="font-size:11px">(N↔Ø ou A↔Ø)</small></span>
+        <span class="stat-val" id="s-pt" style="color:var(--warn)">—</span>
+      </div>
+      <div class="stat-row">
+        <span>✗ Désaccord structurel <small style="font-size:11px">(N↔A)</small></span>
+        <span class="stat-val" id="s-st" style="color:var(--N)">—</span>
+      </div>
     </div>
+
     <button class="btn-secondary" onclick="loadResolution()">Aller en résolution →</button>
   </div>
 </div>
@@ -395,32 +1085,36 @@ function getResolutions(){
 <div id="screen-resolution" class="screen hidden">
   <button class="nav-back" onclick="showScreen('home')">← Retour</button>
   <h2>Résolution des désaccords</h2>
-  <p>Délibérez terme par terme. Les termes en accord sont intégrés automatiquement à l'export.</p>
-  <div id="res-load" class="loading">Chargement…</div>
+  <p>Délibérez terme par terme. Les termes en accord total sont intégrés automatiquement à l'export.</p>
+  <div id="res-load" class="loading">Chargement des données</div>
   <div id="res-body" class="hidden">
-    <div class="ind-tabs" id="res-tabs"></div>
+    <div class="tabs" id="res-tabs"></div>
     <div id="res-list"></div>
     <div class="card mt-24">
-      <h3>Exporter le lexique validé</h3>
+      <div class="section-label">Exporter le lexique validé</div>
       <p>Accord total + résolutions délibérées. Deux formats complémentaires.</p>
       <div class="row">
         <button class="btn-primary" onclick="exportJSON()">JSON pour la MBC</button>
         <button class="btn-secondary" onclick="exportPDF()">PDF justificatif</button>
-        <span id="exp-status" style="font-size:13px;color:var(--text3);font-family:sans-serif;flex:1"></span>
+        <span id="exp-status" style="font-size:12px;color:var(--ink-3);font-family:'Sora',sans-serif;flex:1"></span>
       </div>
     </div>
   </div>
 </div>
 
+<footer style="text-align:center;padding:1.5rem;font-family:'DM Mono',monospace;font-size:.72rem;color:#9C9690;border-top:1px solid #DDD8CF;margin-top:2rem;">
+αK.27 - Ferdinand Lamolet (2026) · MIT Licence
+</footer>
+
 <script>
 // ── STATE ──────────────────────────────────────────────────
 const S={
   url:'',
-  lexique:[],    // [{id,inducteur,terme}]
-  codings:[],    // [{codeur,term_id,inducteur,terme,code,note}]
-  resolutions:[], // [{term_id,inducteur,terme,code_final,note}]
+  lexique:[],
+  codings:[],
+  resolutions:[],
   coder:{name:'',queue:[],idx:0,pending:null},
-  _adminPairs:[], // [{inducteur,terme}] deduped
+  _adminPairs:[],
   _prevTab:'',
   _resDisag:[],
   _resTab:''
@@ -454,7 +1148,7 @@ async function api(params){
 async function testConn(){
   const url=qs('#script-url').value.trim();
   if(!url){qs('#conn-status').textContent='Entrez une URL.';return;}
-  S.url=url;qs('#conn-status').textContent='Test…';
+  S.url=url;qs('#conn-status').textContent='Test en cours…';
   const r=await api({action:'ping'});
   qs('#conn-status').textContent=r?'✓ '+r.msg:'✗ Échec';
   if(r)persist();
@@ -503,16 +1197,16 @@ function previewLex(){
   });
   S._adminPairs=pairs;
   const inds=[...new Set(pairs.map(p=>p.inducteur))];
-  qs('#prev-stats').innerHTML=`<span class="badge" style="background:var(--bg3);color:var(--text2)">${pairs.length} paires</span><span class="badge" style="background:var(--bg3);color:var(--text2)">${inds.length} inducteurs</span>`;
+  qs('#prev-stats').innerHTML=`<span class="badge badge-neutral">${pairs.length} paires</span><span class="badge badge-neutral">${inds.length} inducteurs</span>`;
   S._prevTab=inds[0]||'';
   renderPrevTabs(inds);renderPrevTable(S._prevTab);
   show('admin-preview');
 }
-function renderPrevTabs(inds){qs('#prev-tabs').innerHTML=inds.map(i=>`<span class="ind-tab${i===S._prevTab?' active':''}" onclick="switchPrevTab('${escA(i)}')">${escH(i)}</span>`).join('');}
-function switchPrevTab(i){S._prevTab=i;qs('#prev-tabs').querySelectorAll('.ind-tab').forEach(t=>t.classList.toggle('active',t.textContent===i));renderPrevTable(i);}
+function renderPrevTabs(inds){qs('#prev-tabs').innerHTML=inds.map(i=>`<span class="tab${i===S._prevTab?' active':''}" onclick="switchPrevTab('${escA(i)}')">${escH(i)}</span>`).join('');}
+function switchPrevTab(i){S._prevTab=i;qs('#prev-tabs').querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.textContent===i));renderPrevTable(i);}
 function renderPrevTable(ind){
   const items=S._adminPairs.filter(p=>p.inducteur===ind);
-  qs('#prev-table').innerHTML=items.map((p,i)=>`<div class="trow"><span style="color:var(--text3);width:28px;text-align:right;flex-shrink:0">${i+1}</span><span>${escH(p.terme)}</span></div>`).join('')||'<div class="trow" style="color:var(--text3)">—</div>';
+  qs('#prev-table').innerHTML=items.map((p,i)=>`<div class="trow"><span style="color:var(--ink-ghost);width:28px;text-align:right;flex-shrink:0;font-family:'DM Mono',monospace;font-size:11px">${i+1}</span><span>${escH(p.terme)}</span></div>`).join('')||'<div class="trow" style="color:var(--ink-3)">—</div>';
 }
 async function publishLex(){
   const pairs=S._adminPairs;if(!pairs.length){alert('Aucune paire.');return;}
@@ -530,10 +1224,10 @@ async function publishLex(){
 async function viewCurrentLex(){
   const el=qs('#cur-lex');
   if(!el.classList.contains('hidden')){hide('cur-lex');return;}
-  el.innerHTML='<div class="trow" style="color:var(--text3)">Chargement…</div>';show('cur-lex');
+  el.innerHTML='<div class="trow" style="color:var(--ink-3)">Chargement…</div>';show('cur-lex');
   const r=await api({action:'get_lexique'});
   if(!r){el.innerHTML='<div class="trow" style="color:var(--N)">Erreur.</div>';return;}
-  el.innerHTML=r.terms.length?r.terms.map(t=>`<div class="trow"><span style="color:var(--text3);width:52px;flex-shrink:0">${escH(t.id)}</span><span style="width:120px;flex-shrink:0;color:var(--text3)">${escH(t.inducteur)}</span><span>${escH(t.terme)}</span></div>`).join(''):'<div class="trow" style="color:var(--text3)">Lexique vide.</div>';
+  el.innerHTML=r.terms.length?r.terms.map(t=>`<div class="trow"><span style="color:var(--ink-ghost);width:52px;flex-shrink:0;font-family:'DM Mono',monospace;font-size:11px">${escH(t.id)}</span><span style="width:120px;flex-shrink:0;color:var(--ink-3)">${escH(t.inducteur)}</span><span>${escH(t.terme)}</span></div>`).join(''):'<div class="trow" style="color:var(--ink-3)">Lexique vide.</div>';
 }
 
 // ── CODER ──────────────────────────────────────────────────
@@ -557,7 +1251,7 @@ function renderCoder(){
   if(idx>=queue.length){qs('#done-msg').textContent=`${queue.length} paire${queue.length!==1?'s':''} codée${queue.length!==1?'s':''} par ${name}. Merci.`;showScreen('coder-done');return;}
   const term=S.lexique.find(t=>t.id===queue[idx]);
   qs('#cod-term').textContent=term?.terme||'?';
-  qs('#cod-ind').textContent='pour : '+(term?.inducteur||'?');
+  qs('#cod-ind').textContent=term?.inducteur||'?';
   qs('#cod-tid').textContent=queue[idx];
   qs('#cod-counter').textContent=`${idx+1} / ${queue.length}`;
   qs('#cod-id').textContent=name;
@@ -570,7 +1264,7 @@ function selectCode(code){
   ['N','A','O'].forEach(c=>qs('#btn-code-'+c).classList.remove('selected'));
   qs('#btn-code-'+(code==='Ø'?'O':code)).classList.add('selected');
   S.coder.pending=code;
-  const box=qs('#confirm-box');box.className='confirm-note '+(code==='Ø'?'O':code);
+  const box=qs('#confirm-box');box.className='confirm-panel '+(code==='Ø'?'O':code);
   qs('#confirm-lbl').innerHTML=`Code retenu : <span class="badge badge-${code==='Ø'?'O':code}">${code}</span>`;
   show('confirm-sec');qs('#cod-note').focus();
 }
@@ -614,7 +1308,7 @@ async function loadSynth(){
     const b=a===null?'<span class="badge badge-warn">N/A</span>'
       :a>=0.67?`<span class="badge badge-ok">${a.toFixed(3)}</span>`
       :`<span class="badge badge-warn">${a.toFixed(3)}</span>`;
-    return `<div class="stat-row"><span style="font-family:sans-serif">${escH(ind)}</span>${b}</div>`;
+    return `<div class="stat-row"><span style="font-family:'Sora',sans-serif">${escH(ind)}</span>${b}</div>`;
   }).join('');
   hide('synth-load');show('synth-body');
 }
@@ -633,15 +1327,14 @@ async function loadResolution(){
   S._resTab=tabInds[0]||'';
   qs('#res-tabs').innerHTML=tabInds.map(ind=>{
     const cnt=disagreements.filter(d=>d.term.inducteur===ind).length;
-    return `<span class="ind-tab${ind===S._resTab?' active':''}" onclick="switchResTab('${escA(ind)}')">${escH(ind)} ${cnt?`<span class="badge badge-err" style="font-size:10px;margin-left:2px">${cnt}</span>`:''}</span>`;
+    return `<span class="tab${ind===S._resTab?' active':''}" onclick="switchResTab('${escA(ind)}')">${escH(ind)} ${cnt?`<span class="badge badge-err" style="font-size:10px;margin-left:2px">${cnt}</span>`:''}</span>`;
   }).join('');
   renderResTab(S._resTab);
   hide('res-load');show('res-body');
 }
 function switchResTab(ind){
   S._resTab=ind;
-  qs('#res-tabs').querySelectorAll('.ind-tab').forEach(t=>{
-    // match by first text node
+  qs('#res-tabs').querySelectorAll('.tab').forEach(t=>{
     t.classList.toggle('active',t.childNodes[0]?.textContent?.trim()===ind);
   });
   renderResTab(ind);
@@ -654,27 +1347,31 @@ function buildResCard(d){
   const {term,coderCodes}=d;
   const resolved=S.resolutions.filter(r=>r.term_id===term.id).sort((a,b)=>String(b.timestamp).localeCompare(String(a.timestamp)))[0];
   const panels=coderCodes.map(([coder,code,note])=>`
-    <div class="res-box"><div class="res-name">${escH(coder)}</div>
-    <div><span class="badge badge-${code==='Ø'?'O':code}">${code}</span></div>
-    <div class="res-note">${note?escH(note):'<em>aucune note</em>'}</div></div>`).join('');
-  const resSection=resolved?`<div class="alert-ok mt-8" style="font-size:13px">Résolu : <span class="badge badge-${resolved.code_final==='Ø'?'O':resolved.code_final}">${resolved.code_final}</span>${resolved.note?' — '+escH(resolved.note):''}</div>`:'';
+    <div class="res-box">
+      <div class="res-name">${escH(coder)}</div>
+      <div><span class="badge badge-${code==='Ø'?'O':code}">${code}</span></div>
+      <div class="res-note">${note?escH(note):'<em>aucune note</em>'}</div>
+    </div>`).join('');
+  const resSection=resolved?`<div class="alert alert-ok mt-8" style="font-size:13px">Résolu : <span class="badge badge-${resolved.code_final==='Ø'?'O':resolved.code_final}">${resolved.code_final}</span>${resolved.note?' — '+escH(resolved.note):''}</div>`:'';
   const typeTag=d.type==='structural'?'<span class="badge badge-err">Structurel N↔A</span>':'<span class="badge badge-warn">Partiel</span>';
   return `<div class="card" id="rcard-${term.id}">
     <div class="row-between mb-16">
-      <div><span style="font-size:21px;font-family:Georgia,serif">${escH(term.terme)}</span>
-      <div class="ind-chip" style="margin-top:6px">${escH(term.inducteur)}</div></div>
-      <div class="row" style="gap:6px">${typeTag}<span style="font-size:10px;color:var(--text3);font-family:sans-serif">${term.id}</span></div>
+      <div>
+        <span style="font-size:22px;font-family:'Lora',Georgia,serif;font-weight:500">${escH(term.terme)}</span>
+        <div class="term-inducer-chip" style="display:inline-flex;margin-left:10px">pour · <span>${escH(term.inducteur)}</span></div>
+      </div>
+      <div class="row" style="gap:6px;flex-shrink:0">${typeTag}<span style="font-size:10px;color:var(--ink-ghost);font-family:'DM Mono',monospace">${term.id}</span></div>
     </div>
     <div class="res-grid">${panels}</div>
     ${resSection}
-    <div class="field mt-16" style="margin-bottom:10px">
+    <div class="field mt-16" style="margin-bottom:12px">
       <label>Note de résolution</label>
       <input type="text" id="rnote-${term.id}" placeholder="Justification du code retenu…" value="${resolved?escA(resolved.note):''}">
     </div>
     <div class="row">
-      <button class="btn-N" style="padding:10px 12px;font-size:13px" onclick="resolveItem('${term.id}','${escA(term.inducteur)}','${escA(term.terme)}','N')">N</button>
-      <button class="btn-A" style="padding:10px 12px;font-size:13px" onclick="resolveItem('${term.id}','${escA(term.inducteur)}','${escA(term.terme)}','A')">A</button>
-      <button class="btn-O" style="padding:10px 12px;font-size:13px" onclick="resolveItem('${term.id}','${escA(term.inducteur)}','${escA(term.terme)}','Ø')">Ø</button>
+      <button class="btn-danger" style="font-size:13px;padding:9px 14px" onclick="resolveItem('${term.id}','${escA(term.inducteur)}','${escA(term.terme)}','N')">N</button>
+      <button class="btn-secondary" style="font-size:13px;padding:9px 14px;color:var(--A);border-color:var(--A-mid)" onclick="resolveItem('${term.id}','${escA(term.inducteur)}','${escA(term.terme)}','A')">A</button>
+      <button class="btn-secondary" style="font-size:13px;padding:9px 14px" onclick="resolveItem('${term.id}','${escA(term.inducteur)}','${escA(term.terme)}','Ø')">Ø</button>
     </div>
   </div>`;
 }
@@ -685,7 +1382,6 @@ async function resolveItem(termId,inducteur,terme,code){
   if(!r)return;
   S.resolutions=S.resolutions.filter(x=>x.term_id!==termId);
   S.resolutions.push({...entry,timestamp:new Date().toISOString()});
-  // Re-render card
   const card=document.getElementById('rcard-'+termId);
   if(card){
     const m=cmap(S.codings,termId);
@@ -712,13 +1408,13 @@ function buildExport(){
 function exportJSON(){
   if(!S.lexique.length){alert('Chargez d\'abord les données.');return;}
   const{result,nAg,nRs,nIn,alpha}=buildExport();
-  const out={outil:'VLX — Validateur du Lexique Sémantique',reference:'Lamolet (2026), §6.2',
+  const out={outil:'αK.27 — Codage sémantique à fiabilité contrôlée',reference:'Lamolet (2026), §6.2',
     date:new Date().toISOString().split('T')[0],alpha_krippendorff:alpha,
     n_termes:result.length,n_accord:nAg,n_resolu:nRs,n_incomplet:nIn,lexique:result};
   const a=document.createElement('a');
   a.href=URL.createObjectURL(new Blob([JSON.stringify(out,null,2)],{type:'application/json'}));
   a.download='lexique_valide.json';a.click();
-  qs('#exp-status').textContent=`JSON : ${result.length} paires · α = ${alpha??'N/A'}`;
+  qs('#exp-status').textContent=`JSON · ${result.length} paires · α = ${alpha??'N/A'}`;
 }
 
 // ── EXPORT PDF ─────────────────────────────────────────────
@@ -730,7 +1426,7 @@ function exportPDF(){
   const inds=[...new Set(result.map(r=>r.inducteur))].sort();
 
   let html=`<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8">
-  <title>VLX — Rapport de validation du lexique sémantique</title>
+  <title>αK.27 — Rapport de fiabilité inter-juges</title>
   <style>
     body{font-family:'Georgia',serif;font-size:11pt;color:#111;max-width:680px;margin:40px auto;line-height:1.65}
     h1{font-size:16pt;font-weight:400;border-bottom:2px solid #111;padding-bottom:8px;margin-bottom:6px}
@@ -751,24 +1447,21 @@ function exportPDF(){
     .sig-label{font-size:9pt;color:#666;font-family:-apple-system,sans-serif}
     @media print{body{margin:20px}}
   </style></head><body>
-  <h1>VLX — Rapport de validation du lexique sémantique</h1>
-  <div class="meta">Lamolet, F. (2026). <em>La catégorie du décrochage scolaire comme achievement word négatif.</em> AMU.<br>
-  Date : ${date} · Outil : VLX (ferdinandlamolet.github.io)</div>
-
+  <h1>αK.27 — Rapport de fiabilité inter-juges</h1>
+  <div class="meta">Lamolet, F. (2026). <em>La catégorie du décrochage scolaire comme achievement word.</em> AMU.<br>
+  Date : ${date} · Outil : αK.27 (ferdinandlamolet.github.io)</div>
   <h2>1. Protocole</h2>
   <p>Le lexique sémantique issu du TAVI a été soumis à un double codage aveugle par ${coders.length} codeur${coders.length>1?'s':''} (${coders.join(', ')}).
   Chaque paire (inducteur × terme) a été classée indépendamment en <strong>N</strong> (normativo-déficitaire),
   <strong>A</strong> (agentif-alternatif) ou <strong>Ø</strong> (non pertinent).
   Un même terme peut recevoir des codes différents selon son inducteur.
   Les codeurs n'avaient pas connaissance des pré-codages théoriques ni de l'hypothèse de recherche (Lamolet, 2026, §6.2).</p>
-
   <h2>2. Alpha de Krippendorff global</h2>
   <div class="alpha-box">
     <div class="alpha-num">${alpha!==null?alpha.toFixed(3):'N/A'}</div>
     <div style="font-size:10pt;color:#666;font-family:-apple-system,sans-serif;margin-top:6px">α de Krippendorff (métrique nominale)</div>
     <div style="font-size:9.5pt;color:#888;font-family:-apple-system,sans-serif;margin-top:4px">Seuil de publication recommandé : α ≥ 0,67 (Krippendorff, 2004)</div>
   </div>
-
   <h2>3. Statistiques globales</h2>
   <table>
     <tr><th>Indicateur</th><th>Valeur</th></tr>
@@ -779,7 +1472,6 @@ function exportPDF(){
     <tr><td>Paires incomplètes (< 2 codeurs)</td><td>${nIn}</td></tr>
   </table>`;
 
-  // Alpha par inducteur
   html+=`<h2>4. Alpha par inducteur</h2><table><tr><th>Inducteur</th><th>Paires codées ≥ 2</th><th>α</th><th>Seuil</th></tr>`;
   inds.forEach(ind=>{
     const ids=S.lexique.filter(t=>t.inducteur===ind&&cmap(S.codings,t.id).size>=2).map(t=>t.id);
@@ -788,7 +1480,6 @@ function exportPDF(){
   });
   html+=`</table>`;
 
-  // Lexique par inducteur
   html+=`<h2>5. Lexique validé par inducteur</h2>`;
   inds.forEach(ind=>{
     const items=result.filter(r=>r.inducteur===ind).sort((a,b)=>a.terme.localeCompare(b.terme,'fr'));
@@ -801,7 +1492,6 @@ function exportPDF(){
     html+=`</table>`;
   });
 
-  // Notes de délibération
   const notes=S.resolutions.filter(r=>r.note?.trim());
   if(notes.length){
     html+=`<h2>6. Notes de délibération</h2><table><tr><th>Inducteur</th><th>Terme</th><th>Code</th><th>Justification</th></tr>`;
@@ -810,12 +1500,11 @@ function exportPDF(){
     html+=`</table>`;
   }
 
-  // Signatures
   html+=`<div class="sig">
-    ${coders.map(c=>`<div class="sig-box"><div class="sig-line"></div><div class="sig-label">${escH(c)}, codeur VLX</div></div>`).join('')}
+    ${coders.map(c=>`<div class="sig-box"><div class="sig-line"></div><div class="sig-label">${escH(c)}, codeur αK.27</div></div>`).join('')}
     <div class="sig-box"><div class="sig-line"></div><div class="sig-label">Ferdinand Lamolet, responsable de l'étude</div></div>
   </div>
-  <p style="font-size:8pt;color:#aaa;margin-top:32px;font-family:-apple-system,sans-serif">VLX — Validateur du Lexique Sémantique · MIT Licence · ferdinandlamolet.github.io</p>
+  <p style="font-size:8pt;color:#aaa;margin-top:32px;font-family:-apple-system,sans-serif">αK.27 — Codage sémantique à fiabilité contrôlée · MIT Licence · ferdinandlamolet.github.io</p>
   </body></html>`;
 
   const win=window.open('','_blank');
