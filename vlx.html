@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VLX — Validateur du Lexique Sémantique</title>
+<title>VLX - Validateur du Lexique Sémantique</title>
 <style>
 :root {
   --bg:#fafaf8;--bg2:#f2f1eb;--bg3:#e8e7e0;--border:#d4d2c8;
@@ -103,9 +103,9 @@ hr{border:none;border-top:1px solid var(--border);margin:24px 0}
 <!-- ══════ SETUP ══════ -->
 <div id="screen-setup" class="screen">
   <div style="margin-bottom:40px">
-    <div style="font-size:22px;margin-bottom:10px">🍋</div>
-    <h1>VLX — Validateur du Lexique Sémantique</h1>
-    <p style="color:var(--text3)">Double codage aveugle par inducteur · Alpha de Krippendorff · Export PDF + JSON</p>
+    <div style="font-size:22px;margin-bottom:10px">🍒</div>
+    <h1>VLX - Validateur du Lexique Sémantique</h1>
+    <p style="color:var(--text3)">Double codage aveugle par inducteur (Alpha de Krippendorff) · Export PDF + JSON</p>
   </div>
   <div class="card">
     <h3>Connexion Google Sheets</h3>
@@ -129,7 +129,7 @@ hr{border:none;border-top:1px solid var(--border);margin:24px 0}
         <li>Exécuter en tant que : <strong>Moi</strong> · Accès : <strong>Tout le monde</strong></li>
         <li>Copiez l'URL et collez-la ci-dessus</li>
       </ol>
-<pre id="gas-code">/* VLX — Validateur du Lexique Sémantique
+<pre id="gas-code">/* Validateur du Lexique Sémantique
    Ferdinand Lamolet (2026) · MIT Licence */
 const SS = SpreadsheetApp.getActiveSpreadsheet();
 function doGet(e) {
@@ -210,34 +210,34 @@ function getResolutions(){
 <div id="screen-home" class="screen hidden">
   <div class="row-between" style="margin-bottom:36px;align-items:flex-start">
     <div>
-      <div style="font-size:20px;margin-bottom:6px">🍋</div>
+      <div style="font-size:20px;margin-bottom:6px">🍒</div>
       <h1>VLX — Validateur du Lexique</h1>
-      <small>Protocole bimodal (Lamolet, 2026) · Codage par inducteur</small>
+      <small>Protocole bimodal (Lamolet, 2026)</small>
     </div>
     <button class="btn-secondary" style="font-size:13px;padding:7px 12px" onclick="showScreen('setup')">⚙</button>
   </div>
   <div style="display:grid;gap:10px;margin-bottom:24px">
     <div class="card" style="cursor:pointer;border-left:3px solid var(--border)" onclick="showScreen('admin')">
       <div class="row-between"><div>
-        <h3 style="margin-bottom:2px">① Admin — Constituer le lexique</h3>
+        <h3 style="margin-bottom:2px">① Admin - Constituer le lexique</h3>
         <p style="margin:0;font-size:13px">Importer le CSV TAVI · colonnes Inducteur + Mot · dédupliquer · publier.</p>
       </div><span style="color:var(--text3);font-size:18px">→</span></div>
     </div>
     <div class="card" style="cursor:pointer;border-left:3px solid var(--border)" onclick="showScreen('coder-id')">
       <div class="row-between"><div>
-        <h3 style="margin-bottom:2px">② Codeur — Codage aveugle</h3>
+        <h3 style="margin-bottom:2px">② Codeur - Codage aveugle</h3>
         <p style="margin:0;font-size:13px">Chaque terme affiché avec son inducteur. Ordre aléatoire par codeur.</p>
       </div><span style="color:var(--text3);font-size:18px">→</span></div>
     </div>
     <div class="card" style="cursor:pointer;border-left:3px solid var(--border)" onclick="loadSynth()">
       <div class="row-between"><div>
-        <h3 style="margin-bottom:2px">③ Synthèse — Alpha de Krippendorff</h3>
+        <h3 style="margin-bottom:2px">③ Synthèse - Alpha de Krippendorff</h3>
         <p style="margin:0;font-size:13px">Accord global et par inducteur · distribution des désaccords.</p>
       </div><span style="color:var(--text3);font-size:18px">→</span></div>
     </div>
     <div class="card" style="cursor:pointer;border-left:3px solid var(--border)" onclick="loadResolution()">
       <div class="row-between"><div>
-        <h3 style="margin-bottom:2px">④ Résolution — Délibérer et exporter</h3>
+        <h3 style="margin-bottom:2px">④ Résolution - Délibérer et exporter</h3>
         <p style="margin:0;font-size:13px">Désaccords par inducteur · Export PDF justificatif + JSON pour la MBC.</p>
       </div><span style="color:var(--text3);font-size:18px">→</span></div>
     </div>
