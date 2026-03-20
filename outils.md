@@ -16,7 +16,7 @@ Dans le cadre de cette recherche, le TAVI est utilisé pour accéder aux structu
 
 ---
 
-### αK.27 - Codage sémantique à fiabilité contrôlée
+### αK.27
 
 Outil de codage collaboratif en ligne conçu pour rompre la circularité méthodologique : lorsque le chercheur a lui-même construit le dispositif d'enquête, il ne peut coder seul les résultats sans risquer de projeter ses présupposés théoriques sur les données qu'il est censé découvrir. L'outil confie le codage à plusieurs juges indépendants, maintenus à l'écart de l'hypothèse de recherche, dont les catégorisations sont mesurées par l'alpha de Krippendorff (α).
 
