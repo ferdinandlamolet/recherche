@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VLX — Validateur du Lexique Sémantique</title>
+<style>
+:root {
+  --bg:#fafaf8;--bg2:#f2f1eb;--bg3:#e8e7e0;--border:#d4d2c8;
+  --text:#1a1a18;--text2:#6b6a64;--text3:#9c9a93;
+  --N:#922b2b;--N-bg:#fdf0f0;--N-mid:#e57373;
+  --A:#2a6445;--A-bg:#eef7f2;--A-mid:#66bb8a;
+  --O:#555552;--O-bg:#f4f4f2;--O-mid:#999994;
+  --warn:#b45309;--warn-bg:#fffbeb;--ok:#166534;--ok-bg:#f0fdf4;
+  --r:12px;--r-sm:8px;
+}
+@media(prefers-color-scheme:dark){:root{
+  --bg:#191917;--bg2:#222220;--bg3:#2c2c29;--border:#3a3a36;
+  --text:#e6e4dc;--text2:#a0a09a;--text3:#666660;
+  --N:#f87171;--N-bg:#2d1515;--N-mid:#dc4444;
+  --A:#6ee7a0;--A-bg:#0e2419;--A-mid:#38a169;
+  --O:#a0a09a;--O-bg:#252522;--O-mid:#666660;
+  --warn:#fbbf24;--warn-bg:#2a1d04;--ok:#86efac;--ok-bg:#0d2414;
+}}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Georgia','Times New Roman',serif;background:var(--bg);color:var(--text);font-size:16px;line-height:1.65;min-height:100vh}
+.screen{max-width:700px;margin:0 auto;padding:48px 24px 80px}
+.hidden{display:none!important}
+.center{text-align:center}
+h1{font-size:22px;font-weight:400;letter-spacing:-.3px;margin-bottom:6px}
+h2{font-size:19px;font-weight:400;letter-spacing:-.2px;margin-bottom:12px}
+h3{font-size:15px;font-weight:600;margin-bottom:8px;font-family:-apple-system,sans-serif}
+p{color:var(--text2);margin-bottom:12px;font-size:15px}
+small{font-size:13px;color:var(--text3);font-family:-apple-system,sans-serif}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:24px;margin-bottom:16px}
+.card-flat{background:var(--bg3);border:none;border-radius:var(--r-sm);padding:16px}
+button{cursor:pointer;font-family:-apple-system,sans-serif;font-size:14px;border:none;border-radius:var(--r-sm);padding:9px 18px;transition:opacity .15s,filter .15s}
+button:hover{opacity:.82}
+button:disabled{opacity:.38;cursor:not-allowed}
+.btn-primary{background:var(--text);color:var(--bg);font-weight:500}
+.btn-secondary{background:var(--bg3);color:var(--text);border:1px solid var(--border)}
+.btn-N{background:var(--N-bg);color:var(--N);border:2px solid var(--N);padding:18px 10px;font-size:14px;font-weight:600;line-height:1.4;font-family:-apple-system,sans-serif;border-radius:var(--r);text-align:center}
+.btn-A{background:var(--A-bg);color:var(--A);border:2px solid var(--A);padding:18px 10px;font-size:14px;font-weight:600;line-height:1.4;font-family:-apple-system,sans-serif;border-radius:var(--r);text-align:center}
+.btn-O{background:var(--O-bg);color:var(--O);border:2px solid var(--O-mid);padding:18px 10px;font-size:14px;font-weight:600;line-height:1.4;font-family:-apple-system,sans-serif;border-radius:var(--r);text-align:center}
+.btn-N.selected{box-shadow:0 0 0 3px var(--N)}
+.btn-A.selected{box-shadow:0 0 0 3px var(--A)}
+.btn-O.selected{box-shadow:0 0 0 3px var(--O-mid)}
+input[type="text"],input[type="url"],textarea{width:100%;font-family:-apple-system,sans-serif;font-size:14px;background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:var(--r-sm);padding:10px 14px;outline:none;transition:border-color .15s}
+input:focus,textarea:focus{border-color:var(--text2)}
+textarea{resize:vertical}
+label{font-size:13px;font-family:-apple-system,sans-serif;color:var(--text2);margin-bottom:5px;display:block;font-weight:500}
+.field{margin-bottom:16px}
+.progress-bar{height:3px;background:var(--border);border-radius:2px;overflow:hidden;margin-bottom:28px}
+.progress-fill{height:100%;background:var(--text);border-radius:2px;transition:width .4s ease}
+.badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:600;font-family:-apple-system,sans-serif}
+.badge-N{background:var(--N-bg);color:var(--N)}
+.badge-A{background:var(--A-bg);color:var(--A)}
+.badge-O{background:var(--O-bg);color:var(--O-mid)}
+.badge-ok{background:var(--ok-bg);color:var(--ok)}
+.badge-warn{background:var(--warn-bg);color:var(--warn)}
+.badge-err{background:var(--N-bg);color:var(--N)}
+.alert-warn{padding:12px 16px;border-radius:var(--r-sm);font-size:14px;font-family:-apple-system,sans-serif;margin-bottom:16px;background:var(--warn-bg);color:var(--warn);border:1px solid #fcd34d}
+.alert-ok{padding:12px 16px;border-radius:var(--r-sm);font-size:14px;font-family:-apple-system,sans-serif;margin-bottom:16px;background:var(--ok-bg);color:var(--ok);border:1px solid var(--A-mid)}
+.nav-back{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-family:-apple-system,sans-serif;color:var(--text3);cursor:pointer;background:none;border:none;padding:0;margin-bottom:32px}
+.nav-back:hover{color:var(--text2);opacity:1}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.row-between{display:flex;gap:10px;align-items:center;justify-content:space-between}
+.stat-row{display:flex;justify-content:space-between;align-items:baseline;padding:10px 0;border-bottom:1px solid var(--border);font-family:-apple-system,sans-serif;font-size:14px}
+.stat-row:last-child{border-bottom:none}
+.stat-val{font-size:22px;font-weight:300;letter-spacing:-.5px;font-family:Georgia,serif}
+.alpha-box{text-align:center;padding:32px 24px;border:1px solid var(--border);border-radius:var(--r);background:var(--bg2);margin-bottom:16px}
+.alpha-num{font-size:56px;font-weight:300;letter-spacing:-3px;line-height:1;margin-bottom:6px}
+.term-card{border:1px solid var(--border);border-radius:var(--r);padding:40px 32px;margin:24px 0;background:var(--bg2);text-align:center}
+.term-big{font-size:42px;letter-spacing:-1px;line-height:1.1}
+.ind-chip{display:inline-block;margin-top:14px;padding:4px 14px;border-radius:20px;background:var(--bg3);border:1px solid var(--border);font-size:13px;font-family:-apple-system,sans-serif;color:var(--text2)}
+.term-id{font-size:11px;color:var(--text3);font-family:-apple-system,sans-serif;margin-top:8px}
+.btn-trio{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.confirm-note{background:var(--bg3);border-radius:var(--r-sm);padding:14px 16px;margin:12px 0 16px;border-left:3px solid var(--border)}
+.confirm-note.N{border-left-color:var(--N)}
+.confirm-note.A{border-left-color:var(--A)}
+.confirm-note.O{border-left-color:var(--O-mid)}
+.ind-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.ind-tab{padding:5px 12px;border-radius:20px;font-size:13px;font-family:-apple-system,sans-serif;background:var(--bg3);border:1px solid var(--border);color:var(--text2);cursor:pointer}
+.ind-tab.active{background:var(--text);color:var(--bg);border-color:var(--text)}
+.scroll-box{max-height:320px;overflow-y:auto;border:1px solid var(--border);border-radius:var(--r-sm)}
+.trow{display:flex;align-items:center;padding:7px 12px;border-bottom:1px solid var(--border);gap:8px;font-family:-apple-system,sans-serif;font-size:13px}
+.trow:last-child{border-bottom:none}
+.res-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0}
+@media(max-width:480px){.res-grid{grid-template-columns:1fr}}
+.res-box{padding:12px 14px;border-radius:var(--r-sm);background:var(--bg3);border:1px solid var(--border);font-family:-apple-system,sans-serif}
+.res-name{font-size:11px;color:var(--text3);font-weight:500;margin-bottom:5px;text-transform:uppercase;letter-spacing:.05em}
+.res-note{font-size:12px;color:var(--text3);font-style:italic;margin-top:4px}
+details{margin-bottom:16px}
+summary{cursor:pointer;font-size:13px;font-family:-apple-system,sans-serif;color:var(--text3);padding:8px 0;user-select:none}
+pre{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r-sm);padding:16px;font-family:'Menlo','Consolas',monospace;font-size:11px;overflow-x:auto;line-height:1.6;color:var(--text2);white-space:pre}
+hr{border:none;border-top:1px solid var(--border);margin:24px 0}
+.mt-8{margin-top:8px}.mt-16{margin-top:16px}.mt-24{margin-top:24px}
+.loading{color:var(--text3);font-family:-apple-system,sans-serif;font-size:14px;text-align:center;padding:32px}
+</style>
+</head>
+<body>
+
+<!-- ══════ SETUP ══════ -->
+<div id="screen-setup" class="screen">
+  <div style="margin-bottom:40px">
+    <div style="font-size:22px;margin-bottom:10px">🍋</div>
+    <h1>VLX — Validateur du Lexique Sémantique</h1>
+    <p style="color:var(--text3)">Double codage aveugle par inducteur · Alpha de Krippendorff · Export PDF + JSON</p>
+  </div>
+  <div class="card">
+    <h3>Connexion Google Sheets</h3>
+    <p>URL du Web App Apps Script déployé depuis votre Google Sheet.</p>
+    <div class="field">
+      <label>URL du Web App</label>
+      <input type="url" id="script-url" placeholder="https://script.google.com/macros/s/…/exec">
+    </div>
+    <div class="row">
+      <button class="btn-primary" onclick="testConn()">Tester</button>
+      <span id="conn-status" style="font-size:13px;color:var(--text3);font-family:sans-serif"></span>
+    </div>
+  </div>
+  <details>
+    <summary>⚙ Apps Script — code à déployer</summary>
+    <div class="card mt-8">
+      <ol style="color:var(--text2);font-size:13px;font-family:sans-serif;line-height:2.2;padding-left:18px;margin-bottom:14px">
+        <li>Google Sheet → Extensions → Apps Script</li>
+        <li>Remplacez tout le contenu par le code ci-dessous</li>
+        <li>Déployer → Nouveau déploiement → App Web</li>
+        <li>Exécuter en tant que : <strong>Moi</strong> · Accès : <strong>Tout le monde</strong></li>
+        <li>Copiez l'URL et collez-la ci-dessus</li>
+      </ol>
+<pre id="gas-code">/* VLX — Validateur du Lexique Sémantique
+   Ferdinand Lamolet (2026) · MIT Licence */
+const SS = SpreadsheetApp.getActiveSpreadsheet();
+function doGet(e) {
+  const p = e.parameter; let r;
+  try {
+    switch(p.action) {
+      case 'ping':           r={ok:true,msg:'VLX connecté'}; break;
+      case 'get_lexique':    r=getLexique(); break;
+      case 'save_lexique':   r=saveLexique(JSON.parse(decodeURIComponent(p.data))); break;
+      case 'append_lexique': r=appendLexique(JSON.parse(decodeURIComponent(p.data))); break;
+      case 'save_codage':    r=saveCodage(JSON.parse(decodeURIComponent(p.data))); break;
+      case 'get_codages':    r=getCodages(); break;
+      case 'save_resolution':r=saveResolution(JSON.parse(decodeURIComponent(p.data))); break;
+      case 'get_resolutions':r=getResolutions(); break;
+      default: r={ok:false,error:'action inconnue: '+p.action};
+    }
+  } catch(err){r={ok:false,error:err.toString()};}
+  return ContentService.createTextOutput(JSON.stringify(r))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+function sh(name,headers){
+  let s=SS.getSheetByName(name);
+  if(!s){s=SS.insertSheet(name);s.appendRow(headers);}
+  return s;
+}
+function getLexique(){
+  const s=sh('VLX_Lexique',['id','inducteur','terme']);
+  const d=s.getDataRange().getValues();
+  if(d.length<=1)return{ok:true,terms:[]};
+  return{ok:true,terms:d.slice(1).map(r=>({id:r[0],inducteur:r[1],terme:r[2]}))};
+}
+function saveLexique(terms){
+  const s=sh('VLX_Lexique',['id','inducteur','terme']);
+  s.clearContents(); s.appendRow(['id','inducteur','terme']);
+  terms.forEach(t=>s.appendRow([t.id,t.inducteur,t.terme]));
+  return{ok:true};
+}
+function appendLexique(terms){
+  const s=sh('VLX_Lexique',['id','inducteur','terme']);
+  terms.forEach(t=>s.appendRow([t.id,t.inducteur,t.terme]));
+  return{ok:true};
+}
+function saveCodage(e){
+  sh('VLX_Codages',['timestamp','codeur','term_id','inducteur','terme','code','note'])
+    .appendRow([new Date().toISOString(),e.codeur,e.term_id,e.inducteur,e.terme,e.code,e.note||'']);
+  return{ok:true};
+}
+function getCodages(){
+  const s=SS.getSheetByName('VLX_Codages');
+  if(!s)return{ok:true,codings:[]};
+  const d=s.getDataRange().getValues();
+  if(d.length<=1)return{ok:true,codings:[]};
+  return{ok:true,codings:d.slice(1).map(r=>({
+    timestamp:r[0],codeur:r[1],term_id:r[2],inducteur:r[3],terme:r[4],code:r[5],note:r[6]||''
+  }))};
+}
+function saveResolution(e){
+  sh('VLX_Resolutions',['timestamp','term_id','inducteur','terme','code_final','note'])
+    .appendRow([new Date().toISOString(),e.term_id,e.inducteur,e.terme,e.code_final,e.note||'']);
+  return{ok:true};
+}
+function getResolutions(){
+  const s=SS.getSheetByName('VLX_Resolutions');
+  if(!s)return{ok:true,resolutions:[]};
+  const d=s.getDataRange().getValues();
+  if(d.length<=1)return{ok:true,resolutions:[]};
+  return{ok:true,resolutions:d.slice(1).map(r=>({
+    timestamp:r[0],term_id:r[1],inducteur:r[2],terme:r[3],code_final:r[4],note:r[5]||''
+  }))};
+}</pre>
+      <button class="btn-secondary mt-8" onclick="copyGas()">Copier le code</button>
+    </div>
+  </details>
+  <button class="btn-primary mt-8" onclick="goHome()">Continuer →</button>
+</div>
+
+<!-- ══════ HOME ══════ -->
+<div id="screen-home" class="screen hidden">
+  <div class="row-between" style="margin-bottom:36px;align-items:flex-start">
+    <div>
+      <div style="font-size:20px;margin-bottom:6px">🍋</div>
+      <h1>VLX — Validateur du Lexique</h1>
+      <small>Protocole bimodal (Lamolet, 2026) · Codage par inducteur</small>
+    </div>
+    <button class="btn-secondary" style="font-size:13px;padding:7px 12px" onclick="showScreen('setup')">⚙</button>
+  </div>
+  <div style="display:grid;gap:10px;margin-bottom:24px">
+    <div class="card" style="cursor:pointer;border-left:3px solid var(--border)" onclick="showScreen('admin')">
+      <div class="row-between"><div>
+        <h3 style="margin-bottom:2px">① Admin — Constituer le lexique</h3>
+        <p style="margin:0;font-size:13px">Importer le CSV TAVI · colonnes Inducteur + Mot · dédupliquer · publier.</p>
+      </div><span style="color:var(--text3);font-size:18px">→</span></div>
+    </div>
+    <div class="card" style="cursor:pointer;border-left:3px solid var(--border)" onclick="showScreen('coder-id')">
+      <div class="row-between"><div>
+        <h3 style="margin-bottom:2px">② Codeur — Codage aveugle</h3>
+        <p style="margin:0;font-size:13px">Chaque terme affiché avec son inducteur. Ordre aléatoire par codeur.</p>
+      </div><span style="color:var(--text3);font-size:18px">→</span></div>
+    </div>
+    <div class="card" style="cursor:pointer;border-left:3px solid var(--border)" onclick="loadSynth()">
+      <div class="row-between"><div>
+        <h3 style="margin-bottom:2px">③ Synthèse — Alpha de Krippendorff</h3>
+        <p style="margin:0;font-size:13px">Accord global et par inducteur · distribution des désaccords.</p>
+      </div><span style="color:var(--text3);font-size:18px">→</span></div>
+    </div>
+    <div class="card" style="cursor:pointer;border-left:3px solid var(--border)" onclick="loadResolution()">
+      <div class="row-between"><div>
+        <h3 style="margin-bottom:2px">④ Résolution — Délibérer et exporter</h3>
+        <p style="margin:0;font-size:13px">Désaccords par inducteur · Export PDF justificatif + JSON pour la MBC.</p>
+      </div><span style="color:var(--text3);font-size:18px">→</span></div>
+    </div>
+  </div>
+  <div class="card-flat" style="font-size:13px;color:var(--text3);font-family:sans-serif;line-height:1.6">
+    <strong style="color:var(--text2)">Architecture par inducteur.</strong>
+    Un même mot peut recevoir des codes différents selon l'inducteur pour lequel il a été produit
+    (<em>liberté</em> produit pour <em>Décrocheur</em> ≠ <em>liberté</em> produit pour <em>Raccrochage</em>).
+    La clé d'identité est <code style="font-family:monospace;font-size:11px">inducteur × terme</code>.
+  </div>
+</div>
+
+<!-- ══════ ADMIN ══════ -->
+<div id="screen-admin" class="screen hidden">
+  <button class="nav-back" onclick="showScreen('home')">← Retour</button>
+  <h2>Constituer le lexique</h2>
+  <p>Importez le CSV exporté depuis Google Sheets TAVI. Les colonnes <strong>Inducteur</strong> et <strong>Mot</strong> sont détectées automatiquement (insensible à la casse, séparateur auto). Les paires dupliquées sont supprimées.</p>
+  <div class="card">
+    <div class="field">
+      <label>Fichier CSV du TAVI</label>
+      <div class="row">
+        <button class="btn-secondary" onclick="qs('#csv-in').click()">Choisir le fichier…</button>
+        <span id="csv-name" style="font-size:13px;color:var(--text3);font-family:sans-serif"></span>
+      </div>
+      <input type="file" id="csv-in" accept=".csv,.tsv,.txt" style="display:none" onchange="importCSV(event)">
+    </div>
+    <p style="font-size:13px;margin-bottom:8px">Ou collez manuellement des paires <code style="font-family:monospace;font-size:12px">inducteur;mot</code> (une par ligne) :</p>
+    <div class="field">
+      <textarea id="admin-manual" rows="6" placeholder="décrocheur;abandon&#10;décrocheur;liberté&#10;réussite;diplôme&#10;compétence;mécanique"></textarea>
+    </div>
+    <button class="btn-primary" onclick="previewLex()">Prévisualiser →</button>
+  </div>
+
+  <div id="admin-preview" class="hidden">
+    <div class="row-between mb-8" style="flex-wrap:wrap;gap:8px">
+      <h3 style="margin:0">Prévisualisation</h3>
+      <div class="row" style="gap:6px" id="prev-stats"></div>
+    </div>
+    <div class="ind-tabs" id="prev-tabs"></div>
+    <div class="scroll-box" id="prev-table"></div>
+    <div class="row mt-16">
+      <button class="btn-primary" id="btn-pub" onclick="publishLex()">Publier dans Google Sheets ↑</button>
+      <span id="pub-status" style="font-size:13px;color:var(--text3);font-family:sans-serif"></span>
+    </div>
+  </div>
+  <hr>
+  <button class="btn-secondary" onclick="viewCurrentLex()">Voir le lexique actuel ↓</button>
+  <div id="cur-lex" class="hidden mt-16 scroll-box"></div>
+</div>
+
+<!-- ══════ CODER ID ══════ -->
+<div id="screen-coder-id" class="screen hidden">
+  <button class="nav-back" onclick="showScreen('home')">← Retour</button>
+  <h2>Identification du codeur</h2>
+  <p>Utilisez toujours le même identifiant pour reprendre une session interrompue.</p>
+  <div class="card">
+    <div class="field">
+      <label>Identifiant de codeur</label>
+      <input type="text" id="coder-name-in" placeholder="ex : Codeur_A, Marie_L, Juge_02…">
+    </div>
+    <div id="warn-resume" class="alert-warn hidden">Session partielle détectée. Vous reprendrez sur les termes restants.</div>
+    <button class="btn-primary" onclick="startCoding()">Commencer →</button>
+  </div>
+  <div class="card-flat mt-16" style="font-size:13px;color:var(--text3);font-family:sans-serif">
+    <strong style="color:var(--text2)">Consigne.</strong> L'inducteur est affiché avec chaque terme. Codez le registre sémantique dominant dans ce contexte, indépendamment des pré-codages théoriques.
+  </div>
+</div>
+
+<!-- ══════ CODER ══════ -->
+<div id="screen-coder" class="screen hidden">
+  <div class="progress-bar"><div class="progress-fill" id="cod-prog" style="width:0%"></div></div>
+  <div class="row-between" style="font-family:sans-serif;margin-bottom:16px">
+    <small id="cod-counter"></small>
+    <small id="cod-id" style="color:var(--text3)"></small>
+  </div>
+  <div class="term-card">
+    <div class="term-big" id="cod-term">—</div>
+    <div class="ind-chip" id="cod-ind">—</div>
+    <div class="term-id" id="cod-tid"></div>
+  </div>
+  <p class="center" style="font-family:sans-serif;font-size:13px;margin-bottom:16px">Registre sémantique dominant pour ce terme dans ce contexte</p>
+  <div class="btn-trio">
+    <button class="btn-N" id="btn-code-N" onclick="selectCode('N')">
+      <div style="font-size:10px;opacity:.7;margin-bottom:4px;letter-spacing:.04em">N</div>Normativo-déficitaire
+    </button>
+    <button class="btn-A" id="btn-code-A" onclick="selectCode('A')">
+      <div style="font-size:10px;opacity:.7;margin-bottom:4px;letter-spacing:.04em">A</div>Agentif-alternatif
+    </button>
+    <button class="btn-O" id="btn-code-O" onclick="selectCode('Ø')">
+      <div style="font-size:10px;opacity:.7;margin-bottom:4px;letter-spacing:.04em">Ø</div>Non pertinent
+    </button>
+  </div>
+  <div id="confirm-sec" class="hidden mt-16">
+    <div class="confirm-note" id="confirm-box">
+      <div style="font-size:13px;font-weight:600;font-family:sans-serif;margin-bottom:8px" id="confirm-lbl"></div>
+      <div class="field" style="margin-bottom:10px">
+        <label>Note justificative (facultative)</label>
+        <textarea id="cod-note" rows="2" placeholder="Pourquoi ce registre dans ce contexte ?"></textarea>
+      </div>
+      <div class="row">
+        <button class="btn-primary" id="btn-confirm" onclick="confirmCode()">Confirmer →</button>
+        <button class="btn-secondary" onclick="cancelCode()">Modifier</button>
+      </div>
+    </div>
+  </div>
+  <details style="margin-top:28px">
+    <summary>Définitions des trois registres</summary>
+    <div class="card mt-8" style="font-size:14px">
+      <p style="margin-bottom:12px"><strong style="color:var(--N)">N — Normativo-déficitaire.</strong> Renvoie à une norme scolaire, un manque, une absence, un échec. Positionne l'individu en déficit face à l'institution. <em style="color:var(--text3)">Ex : abandon, risque, retard, échec.</em></p>
+      <p style="margin-bottom:12px"><strong style="color:var(--A)">A — Agentif-alternatif.</strong> Renvoie à une trajectoire propre, une capacité construite, un choix. <em style="color:var(--text3)">Ex : mécanique, compétence, autonomie, expérience.</em></p>
+      <p style="margin-bottom:0"><strong style="color:var(--O)">Ø — Non pertinent.</strong> Terme neutre, sans valeur catégorisante pour la représentation du décrochage. <em style="color:var(--text3)">Ex : école, famille, classe.</em></p>
+    </div>
+  </details>
+</div>
+
+<!-- ══════ CODER DONE ══════ -->
+<div id="screen-coder-done" class="screen hidden center">
+  <div style="font-size:52px;margin-bottom:20px">✓</div>
+  <h2>Codage enregistré</h2>
+  <p id="done-msg"></p>
+  <button class="btn-primary mt-16" onclick="showScreen('home')">Retour à l'accueil</button>
+</div>
+
+<!-- ══════ SYNTH ══════ -->
+<div id="screen-synth" class="screen hidden">
+  <button class="nav-back" onclick="showScreen('home')">← Retour</button>
+  <h2>Synthèse — Accord inter-juges</h2>
+  <div id="synth-load" class="loading">Chargement…</div>
+  <div id="synth-body" class="hidden">
+    <div class="card">
+      <div class="stat-row"><span>Paires (inducteur × terme)</span><span class="stat-val" id="s-n">—</span></div>
+      <div class="stat-row"><span>Codeurs ayant participé</span><span class="stat-val" id="s-c">—</span></div>
+      <div class="stat-row"><span>Paires codées par ≥ 2 codeurs</span><span class="stat-val" id="s-coded">—</span></div>
+    </div>
+    <div class="alpha-box">
+      <div class="alpha-num" id="s-alpha">—</div>
+      <div style="font-size:13px;color:var(--text2);font-family:sans-serif;margin-bottom:8px">α de Krippendorff global (nominale)</div>
+      <span class="badge" id="s-alpha-b">—</span>
+      <div style="font-size:12px;color:var(--text3);font-family:sans-serif;margin-top:8px">Seuil recommandé : α ≥ 0,67 (Krippendorff, 2004 · Lamolet, 2026, §6.2)</div>
+    </div>
+    <div class="card">
+      <h3 style="margin-bottom:12px">Alpha par inducteur</h3>
+      <div id="s-by-ind"></div>
+    </div>
+    <div class="card">
+      <h3 style="margin-bottom:12px">Distribution des accords</h3>
+      <div class="stat-row"><span>✓ Accord total</span><span class="stat-val" id="s-ag" style="color:var(--A)">—</span></div>
+      <div class="stat-row"><span>∼ Désaccord partiel (N↔Ø ou A↔Ø)</span><span class="stat-val" id="s-pt" style="color:var(--warn)">—</span></div>
+      <div class="stat-row"><span>✗ Désaccord structurel (N↔A)</span><span class="stat-val" id="s-st" style="color:var(--N)">—</span></div>
+    </div>
+    <button class="btn-secondary" onclick="loadResolution()">Aller en résolution →</button>
+  </div>
+</div>
+
+<!-- ══════ RESOLUTION ══════ -->
+<div id="screen-resolution" class="screen hidden">
+  <button class="nav-back" onclick="showScreen('home')">← Retour</button>
+  <h2>Résolution des désaccords</h2>
+  <p>Délibérez terme par terme. Les termes en accord sont intégrés automatiquement à l'export.</p>
+  <div id="res-load" class="loading">Chargement…</div>
+  <div id="res-body" class="hidden">
+    <div class="ind-tabs" id="res-tabs"></div>
+    <div id="res-list"></div>
+    <div class="card mt-24">
+      <h3>Exporter le lexique validé</h3>
+      <p>Accord total + résolutions délibérées. Deux formats complémentaires.</p>
+      <div class="row">
+        <button class="btn-primary" onclick="exportJSON()">JSON pour la MBC</button>
+        <button class="btn-secondary" onclick="exportPDF()">PDF justificatif</button>
+        <span id="exp-status" style="font-size:13px;color:var(--text3);font-family:sans-serif;flex:1"></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── STATE ──────────────────────────────────────────────────
+const S={
+  url:'',
+  lexique:[],    // [{id,inducteur,terme}]
+  codings:[],    // [{codeur,term_id,inducteur,terme,code,note}]
+  resolutions:[], // [{term_id,inducteur,terme,code_final,note}]
+  coder:{name:'',queue:[],idx:0,pending:null},
+  _adminPairs:[], // [{inducteur,terme}] deduped
+  _prevTab:'',
+  _resDisag:[],
+  _resTab:''
+};
+
+// ── PERSIST ────────────────────────────────────────────────
+function persist(){try{localStorage.setItem('vlx_url',S.url);localStorage.setItem('vlx_cod',S.coder.name);}catch(e){}}
+function restore(){try{S.url=localStorage.getItem('vlx_url')||'';S.coder.name=localStorage.getItem('vlx_cod')||'';if(S.url)qs('#script-url').value=S.url;}catch(e){}}
+
+// ── HELPERS ────────────────────────────────────────────────
+function qs(s,c){return(c||document).querySelector(s)}
+function show(id){document.getElementById(id)?.classList.remove('hidden')}
+function hide(id){document.getElementById(id)?.classList.add('hidden')}
+function tog(id,b){b?show(id):hide(id)}
+function showScreen(n){document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));show('screen-'+n);window.scrollTo(0,0)}
+function escH(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function escA(s){return String(s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/'/g,'&#39;')}
+
+// ── API ────────────────────────────────────────────────────
+async function api(params){
+  if(!S.url){showScreen('setup');return null;}
+  try{
+    const r=await fetch(S.url+'?'+new URLSearchParams(params).toString(),{redirect:'follow'});
+    const d=JSON.parse(await r.text());
+    if(!d.ok)throw new Error(d.error||'Erreur serveur');
+    return d;
+  }catch(e){alert('Erreur Google Sheets :\n'+e.message);return null;}
+}
+
+// ── SETUP ──────────────────────────────────────────────────
+async function testConn(){
+  const url=qs('#script-url').value.trim();
+  if(!url){qs('#conn-status').textContent='Entrez une URL.';return;}
+  S.url=url;qs('#conn-status').textContent='Test…';
+  const r=await api({action:'ping'});
+  qs('#conn-status').textContent=r?'✓ '+r.msg:'✗ Échec';
+  if(r)persist();
+}
+function goHome(){const url=qs('#script-url').value.trim();if(url){S.url=url;persist();}showScreen('home');}
+function copyGas(){navigator.clipboard.writeText(qs('#gas-code').textContent).then(()=>alert('Code copié.')).catch(()=>alert('Copiez manuellement.'));}
+
+// ── ADMIN ──────────────────────────────────────────────────
+function importCSV(e){
+  const file=e.target.files[0];if(!file)return;
+  qs('#csv-name').textContent=file.name;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    const lines=ev.target.result.split(/\r?\n/).map(l=>l.trim()).filter(Boolean);
+    if(lines.length<2){alert('Fichier trop court.');return;}
+    const sep=lines[0].includes('\t')?'\t':lines[0].includes(';')?';':',';
+    const headers=lines[0].split(sep).map(h=>h.replace(/"/g,'').trim().toLowerCase());
+    const iInd=headers.findIndex(h=>/inducteur|stimulus/.test(h));
+    const iMot=headers.findIndex(h=>/^mot|^word|assoc/.test(h));
+    if(iInd<0||iMot<0){alert('Colonnes Inducteur / Mot non trouvées.\nDétectées : '+headers.join(', '));return;}
+    const pairs=[];
+    lines.slice(1).forEach(l=>{
+      const cols=l.split(sep).map(c=>c.replace(/"/g,'').trim());
+      const ind=cols[iInd]?.trim().toLowerCase();
+      const mot=cols[iMot]?.trim().toLowerCase();
+      if(ind&&mot)pairs.push(ind+';'+mot);
+    });
+    qs('#admin-manual').value=pairs.join('\n');
+    e.target.value='';
+    previewLex();
+  };
+  reader.readAsText(file,'UTF-8');
+}
+
+function previewLex(){
+  const raw=qs('#admin-manual').value.trim();
+  if(!raw){alert('Entrez des données.');return;}
+  const seen=new Set();const pairs=[];
+  raw.split(/\r?\n/).map(l=>l.trim()).filter(Boolean).forEach(l=>{
+    const parts=l.split(';');if(parts.length<2)return;
+    const ind=parts[0].trim().toLowerCase();
+    const mot=parts.slice(1).join(';').trim().toLowerCase();
+    if(!ind||!mot)return;
+    const k=ind+'||'+mot;
+    if(!seen.has(k)){seen.add(k);pairs.push({inducteur:ind,terme:mot});}
+  });
+  S._adminPairs=pairs;
+  const inds=[...new Set(pairs.map(p=>p.inducteur))];
+  qs('#prev-stats').innerHTML=`<span class="badge" style="background:var(--bg3);color:var(--text2)">${pairs.length} paires</span><span class="badge" style="background:var(--bg3);color:var(--text2)">${inds.length} inducteurs</span>`;
+  S._prevTab=inds[0]||'';
+  renderPrevTabs(inds);renderPrevTable(S._prevTab);
+  show('admin-preview');
+}
+function renderPrevTabs(inds){qs('#prev-tabs').innerHTML=inds.map(i=>`<span class="ind-tab${i===S._prevTab?' active':''}" onclick="switchPrevTab('${escA(i)}')">${escH(i)}</span>`).join('');}
+function switchPrevTab(i){S._prevTab=i;qs('#prev-tabs').querySelectorAll('.ind-tab').forEach(t=>t.classList.toggle('active',t.textContent===i));renderPrevTable(i);}
+function renderPrevTable(ind){
+  const items=S._adminPairs.filter(p=>p.inducteur===ind);
+  qs('#prev-table').innerHTML=items.map((p,i)=>`<div class="trow"><span style="color:var(--text3);width:28px;text-align:right;flex-shrink:0">${i+1}</span><span>${escH(p.terme)}</span></div>`).join('')||'<div class="trow" style="color:var(--text3)">—</div>';
+}
+async function publishLex(){
+  const pairs=S._adminPairs;if(!pairs.length){alert('Aucune paire.');return;}
+  const payload=pairs.map((p,i)=>({id:'L'+String(i+1).padStart(5,'0'),inducteur:p.inducteur,terme:p.terme}));
+  qs('#btn-pub').disabled=true;qs('#pub-status').textContent='Publication…';
+  const BATCH=30;
+  for(let i=0;i<payload.length;i+=BATCH){
+    const batch=payload.slice(i,i+BATCH);
+    const r=await api({action:i===0?'save_lexique':'append_lexique',data:encodeURIComponent(JSON.stringify(batch))});
+    if(!r){qs('#btn-pub').disabled=false;qs('#pub-status').textContent='✗ Erreur';return;}
+    qs('#pub-status').textContent=`${Math.min(i+BATCH,payload.length)} / ${payload.length}…`;
+  }
+  S.lexique=payload;qs('#btn-pub').disabled=false;qs('#pub-status').textContent=`✓ ${payload.length} paires publiées`;
+}
+async function viewCurrentLex(){
+  const el=qs('#cur-lex');
+  if(!el.classList.contains('hidden')){hide('cur-lex');return;}
+  el.innerHTML='<div class="trow" style="color:var(--text3)">Chargement…</div>';show('cur-lex');
+  const r=await api({action:'get_lexique'});
+  if(!r){el.innerHTML='<div class="trow" style="color:var(--N)">Erreur.</div>';return;}
+  el.innerHTML=r.terms.length?r.terms.map(t=>`<div class="trow"><span style="color:var(--text3);width:52px;flex-shrink:0">${escH(t.id)}</span><span style="width:120px;flex-shrink:0;color:var(--text3)">${escH(t.inducteur)}</span><span>${escH(t.terme)}</span></div>`).join(''):'<div class="trow" style="color:var(--text3)">Lexique vide.</div>';
+}
+
+// ── CODER ──────────────────────────────────────────────────
+async function startCoding(){
+  const name=qs('#coder-name-in').value.trim();if(!name){alert('Entrez un identifiant.');return;}
+  S.coder.name=name;persist();
+  const [lR,cR]=await Promise.all([api({action:'get_lexique'}),api({action:'get_codages'})]);
+  if(!lR||!cR)return;
+  S.lexique=lR.terms;S.codings=cR.codings;
+  if(!S.lexique.length){alert('Lexique vide. Publiez d\'abord les termes.');return;}
+  const done=new Set(S.codings.filter(c=>c.codeur===name).map(c=>c.term_id));
+  const remaining=S.lexique.filter(t=>!done.has(t.id));
+  if(!remaining.length){alert(`Codage complet (${S.lexique.length} paires). Consultez la Synthèse.`);return;}
+  tog('warn-resume',done.size>0);
+  S.coder.queue=seededShuffle(remaining.map(t=>t.id),name+remaining.length);
+  S.coder.idx=0;S.coder.pending=null;
+  showScreen('coder');renderCoder();
+}
+function renderCoder(){
+  const {queue,idx,name}=S.coder;
+  if(idx>=queue.length){qs('#done-msg').textContent=`${queue.length} paire${queue.length!==1?'s':''} codée${queue.length!==1?'s':''} par ${name}. Merci.`;showScreen('coder-done');return;}
+  const term=S.lexique.find(t=>t.id===queue[idx]);
+  qs('#cod-term').textContent=term?.terme||'?';
+  qs('#cod-ind').textContent='pour : '+(term?.inducteur||'?');
+  qs('#cod-tid').textContent=queue[idx];
+  qs('#cod-counter').textContent=`${idx+1} / ${queue.length}`;
+  qs('#cod-id').textContent=name;
+  qs('#cod-prog').style.width=`${(idx/queue.length)*100}%`;
+  qs('#cod-note').value='';S.coder.pending=null;
+  hide('confirm-sec');
+  ['N','A','O'].forEach(c=>qs('#btn-code-'+c)?.classList.remove('selected'));
+}
+function selectCode(code){
+  ['N','A','O'].forEach(c=>qs('#btn-code-'+c).classList.remove('selected'));
+  qs('#btn-code-'+(code==='Ø'?'O':code)).classList.add('selected');
+  S.coder.pending=code;
+  const box=qs('#confirm-box');box.className='confirm-note '+(code==='Ø'?'O':code);
+  qs('#confirm-lbl').innerHTML=`Code retenu : <span class="badge badge-${code==='Ø'?'O':code}">${code}</span>`;
+  show('confirm-sec');qs('#cod-note').focus();
+}
+function cancelCode(){S.coder.pending=null;hide('confirm-sec');['N','A','O'].forEach(c=>qs('#btn-code-'+c).classList.remove('selected'));}
+async function confirmCode(){
+  const {queue,idx,name,pending}=S.coder;if(!pending){alert('Sélectionnez un code.');return;}
+  const term=S.lexique.find(t=>t.id===queue[idx]);const note=qs('#cod-note').value.trim();
+  qs('#btn-confirm').disabled=true;qs('#btn-confirm').textContent='…';
+  const entry={codeur:name,term_id:queue[idx],inducteur:term?.inducteur||'',terme:term?.terme||'',code:pending,note};
+  const r=await api({action:'save_codage',data:encodeURIComponent(JSON.stringify(entry))});
+  qs('#btn-confirm').disabled=false;qs('#btn-confirm').textContent='Confirmer →';
+  if(!r)return;
+  S.codings.push({...entry,timestamp:new Date().toISOString()});
+  S.coder.idx++;renderCoder();
+}
+
+// ── SYNTH ──────────────────────────────────────────────────
+async function loadSynth(){
+  showScreen('synth');show('synth-load');hide('synth-body');
+  const [lR,cR]=await Promise.all([api({action:'get_lexique'}),api({action:'get_codages'})]);
+  if(!lR||!cR)return;
+  S.lexique=lR.terms;S.codings=cR.codings;
+  const {coders,nCoded,nAgree,nPartial,nStructural}=analyze(S.lexique,S.codings);
+  qs('#s-n').textContent=S.lexique.length;qs('#s-c').textContent=coders.size;
+  qs('#s-coded').textContent=nCoded;qs('#s-ag').textContent=nAgree;
+  qs('#s-pt').textContent=nPartial;qs('#s-st').textContent=nStructural;
+  const eligIds=S.lexique.filter(t=>cmap(S.codings,t.id).size>=2).map(t=>t.id);
+  const alpha=eligIds.length>=2?kripp(S.codings,eligIds):null;
+  const aEl=qs('#s-alpha');const bEl=qs('#s-alpha-b');
+  if(alpha!==null&&!isNaN(alpha)){
+    const v=+alpha.toFixed(3);aEl.textContent=v.toFixed(3);
+    if(v>=0.8){bEl.textContent='Accord fort ≥ 0,80';bEl.className='badge badge-ok';}
+    else if(v>=0.67){bEl.textContent='Accord acceptable ≥ 0,67';bEl.className='badge badge-ok';}
+    else if(v>=0.33){bEl.textContent='Accord faible';bEl.className='badge badge-warn';}
+    else{bEl.textContent='En dessous du seuil';bEl.className='badge badge-err';}
+  }else{aEl.textContent='N/A';bEl.textContent='Données insuffisantes';bEl.className='badge badge-warn';}
+  const inds=[...new Set(S.lexique.map(t=>t.inducteur))].sort();
+  qs('#s-by-ind').innerHTML=inds.map(ind=>{
+    const ids=S.lexique.filter(t=>t.inducteur===ind&&cmap(S.codings,t.id).size>=2).map(t=>t.id);
+    const a=ids.length>=2?+kripp(S.codings,ids).toFixed(3):null;
+    const b=a===null?'<span class="badge badge-warn">N/A</span>'
+      :a>=0.67?`<span class="badge badge-ok">${a.toFixed(3)}</span>`
+      :`<span class="badge badge-warn">${a.toFixed(3)}</span>`;
+    return `<div class="stat-row"><span style="font-family:sans-serif">${escH(ind)}</span>${b}</div>`;
+  }).join('');
+  hide('synth-load');show('synth-body');
+}
+
+// ── RESOLUTION ─────────────────────────────────────────────
+async function loadResolution(){
+  showScreen('resolution');show('res-load');hide('res-body');
+  const [lR,cR,rR]=await Promise.all([api({action:'get_lexique'}),api({action:'get_codages'}),api({action:'get_resolutions'})]);
+  if(!lR||!cR||!rR)return;
+  S.lexique=lR.terms;S.codings=cR.codings;S.resolutions=rR.resolutions;
+  const {disagreements}=analyze(S.lexique,S.codings);
+  S._resDisag=disagreements;
+  const allInds=[...new Set(S.lexique.map(t=>t.inducteur))].sort();
+  const disInds=[...new Set(disagreements.map(d=>d.term.inducteur))].sort();
+  const tabInds=disInds.length?disInds:allInds;
+  S._resTab=tabInds[0]||'';
+  qs('#res-tabs').innerHTML=tabInds.map(ind=>{
+    const cnt=disagreements.filter(d=>d.term.inducteur===ind).length;
+    return `<span class="ind-tab${ind===S._resTab?' active':''}" onclick="switchResTab('${escA(ind)}')">${escH(ind)} ${cnt?`<span class="badge badge-err" style="font-size:10px;margin-left:2px">${cnt}</span>`:''}</span>`;
+  }).join('');
+  renderResTab(S._resTab);
+  hide('res-load');show('res-body');
+}
+function switchResTab(ind){
+  S._resTab=ind;
+  qs('#res-tabs').querySelectorAll('.ind-tab').forEach(t=>{
+    // match by first text node
+    t.classList.toggle('active',t.childNodes[0]?.textContent?.trim()===ind);
+  });
+  renderResTab(ind);
+}
+function renderResTab(ind){
+  const items=S._resDisag.filter(d=>d.term.inducteur===ind).sort((a,b)=>(b.type==='structural')-(a.type==='structural'));
+  qs('#res-list').innerHTML=items.length?items.map(d=>buildResCard(d)).join(''):'<div class="card center"><p style="margin:0;font-size:14px">Aucun désaccord pour cet inducteur.</p></div>';
+}
+function buildResCard(d){
+  const {term,coderCodes}=d;
+  const resolved=S.resolutions.filter(r=>r.term_id===term.id).sort((a,b)=>String(b.timestamp).localeCompare(String(a.timestamp)))[0];
+  const panels=coderCodes.map(([coder,code,note])=>`
+    <div class="res-box"><div class="res-name">${escH(coder)}</div>
+    <div><span class="badge badge-${code==='Ø'?'O':code}">${code}</span></div>
+    <div class="res-note">${note?escH(note):'<em>aucune note</em>'}</div></div>`).join('');
+  const resSection=resolved?`<div class="alert-ok mt-8" style="font-size:13px">Résolu : <span class="badge badge-${resolved.code_final==='Ø'?'O':resolved.code_final}">${resolved.code_final}</span>${resolved.note?' — '+escH(resolved.note):''}</div>`:'';
+  const typeTag=d.type==='structural'?'<span class="badge badge-err">Structurel N↔A</span>':'<span class="badge badge-warn">Partiel</span>';
+  return `<div class="card" id="rcard-${term.id}">
+    <div class="row-between mb-16">
+      <div><span style="font-size:21px;font-family:Georgia,serif">${escH(term.terme)}</span>
+      <div class="ind-chip" style="margin-top:6px">${escH(term.inducteur)}</div></div>
+      <div class="row" style="gap:6px">${typeTag}<span style="font-size:10px;color:var(--text3);font-family:sans-serif">${term.id}</span></div>
+    </div>
+    <div class="res-grid">${panels}</div>
+    ${resSection}
+    <div class="field mt-16" style="margin-bottom:10px">
+      <label>Note de résolution</label>
+      <input type="text" id="rnote-${term.id}" placeholder="Justification du code retenu…" value="${resolved?escA(resolved.note):''}">
+    </div>
+    <div class="row">
+      <button class="btn-N" style="padding:10px 12px;font-size:13px" onclick="resolveItem('${term.id}','${escA(term.inducteur)}','${escA(term.terme)}','N')">N</button>
+      <button class="btn-A" style="padding:10px 12px;font-size:13px" onclick="resolveItem('${term.id}','${escA(term.inducteur)}','${escA(term.terme)}','A')">A</button>
+      <button class="btn-O" style="padding:10px 12px;font-size:13px" onclick="resolveItem('${term.id}','${escA(term.inducteur)}','${escA(term.terme)}','Ø')">Ø</button>
+    </div>
+  </div>`;
+}
+async function resolveItem(termId,inducteur,terme,code){
+  const note=(document.getElementById('rnote-'+termId)?.value||'').trim();
+  const entry={term_id:termId,inducteur,terme,code_final:code,note};
+  const r=await api({action:'save_resolution',data:encodeURIComponent(JSON.stringify(entry))});
+  if(!r)return;
+  S.resolutions=S.resolutions.filter(x=>x.term_id!==termId);
+  S.resolutions.push({...entry,timestamp:new Date().toISOString()});
+  // Re-render card
+  const card=document.getElementById('rcard-'+termId);
+  if(card){
+    const m=cmap(S.codings,termId);
+    const cc=[...m.entries()].map(([coder,c])=>[coder,c,S.codings.find(x=>x.term_id===termId&&x.codeur===coder)?.note||'']);
+    card.outerHTML=buildResCard({term:{id:termId,inducteur,terme},coderCodes:cc,type:'structural'});
+  }
+}
+
+// ── EXPORT JSON ────────────────────────────────────────────
+function buildExport(){
+  const result=[];let nAg=0,nRs=0,nIn=0;
+  S.lexique.forEach(term=>{
+    const res=S.resolutions.filter(r=>r.term_id===term.id).sort((a,b)=>String(b.timestamp).localeCompare(String(a.timestamp)))[0];
+    if(res){result.push({inducteur:term.inducteur,terme:term.terme,code:res.code_final,source:'résolution',note:res.note||''});nRs++;return;}
+    const m=cmap(S.codings,term.id);const codes=[...m.values()];
+    if(codes.length>=2&&new Set(codes).size===1){result.push({inducteur:term.inducteur,terme:term.terme,code:codes[0],source:'accord',note:''});nAg++;return;}
+    if(codes.length===1){result.push({inducteur:term.inducteur,terme:term.terme,code:codes[0],source:'codage_unique',note:''});nIn++;return;}
+    result.push({inducteur:term.inducteur,terme:term.terme,code:'Ø',source:'non_codé',note:''});nIn++;
+  });
+  const eligIds=S.lexique.filter(t=>cmap(S.codings,t.id).size>=2).map(t=>t.id);
+  const alpha=eligIds.length>=2?+kripp(S.codings,eligIds).toFixed(3):null;
+  return{result,nAg,nRs,nIn,alpha};
+}
+function exportJSON(){
+  if(!S.lexique.length){alert('Chargez d\'abord les données.');return;}
+  const{result,nAg,nRs,nIn,alpha}=buildExport();
+  const out={outil:'VLX — Validateur du Lexique Sémantique',reference:'Lamolet (2026), §6.2',
+    date:new Date().toISOString().split('T')[0],alpha_krippendorff:alpha,
+    n_termes:result.length,n_accord:nAg,n_resolu:nRs,n_incomplet:nIn,lexique:result};
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([JSON.stringify(out,null,2)],{type:'application/json'}));
+  a.download='lexique_valide.json';a.click();
+  qs('#exp-status').textContent=`JSON : ${result.length} paires · α = ${alpha??'N/A'}`;
+}
+
+// ── EXPORT PDF ─────────────────────────────────────────────
+function exportPDF(){
+  if(!S.lexique.length){alert('Chargez d\'abord les données.');return;}
+  const{result,nAg,nRs,nIn,alpha}=buildExport();
+  const date=new Date().toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'});
+  const coders=[...new Set(S.codings.map(c=>c.codeur))];
+  const inds=[...new Set(result.map(r=>r.inducteur))].sort();
+
+  let html=`<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8">
+  <title>VLX — Rapport de validation du lexique sémantique</title>
+  <style>
+    body{font-family:'Georgia',serif;font-size:11pt;color:#111;max-width:680px;margin:40px auto;line-height:1.65}
+    h1{font-size:16pt;font-weight:400;border-bottom:2px solid #111;padding-bottom:8px;margin-bottom:6px}
+    h2{font-size:13pt;font-weight:400;margin-top:32px;margin-bottom:8px;border-bottom:1px solid #ccc;padding-bottom:4px}
+    h3{font-size:11pt;font-weight:600;margin-top:20px;margin-bottom:6px}
+    p,li{font-size:10.5pt;color:#333}
+    .meta{font-size:10pt;color:#666;margin-bottom:24px}
+    table{width:100%;border-collapse:collapse;margin-top:8px;font-size:10pt}
+    th{background:#f0ede6;text-align:left;padding:5px 8px;border:1px solid #ccc;font-family:-apple-system,sans-serif;font-size:9.5pt;font-weight:600}
+    td{padding:4px 8px;border:1px solid #ddd;vertical-align:top}
+    .bN{display:inline-block;padding:1px 6px;border-radius:3px;background:#fdf0f0;color:#922b2b;font-weight:600;font-size:9pt;font-family:-apple-system,sans-serif}
+    .bA{display:inline-block;padding:1px 6px;border-radius:3px;background:#eef7f2;color:#2a6445;font-weight:600;font-size:9pt;font-family:-apple-system,sans-serif}
+    .bO{display:inline-block;padding:1px 6px;border-radius:3px;background:#f4f4f2;color:#666;font-weight:600;font-size:9pt;font-family:-apple-system,sans-serif}
+    .alpha-box{text-align:center;border:1px solid #ccc;border-radius:6px;padding:24px;margin:20px 0;background:#fafaf8}
+    .alpha-num{font-size:48pt;font-weight:300;letter-spacing:-3px;line-height:1}
+    .sig{display:flex;gap:24px;margin-top:48px;padding-top:16px;border-top:1px solid #ccc}
+    .sig-box{flex:1}.sig-line{border-bottom:1px solid #888;height:40px;margin-bottom:6px}
+    .sig-label{font-size:9pt;color:#666;font-family:-apple-system,sans-serif}
+    @media print{body{margin:20px}}
+  </style></head><body>
+  <h1>VLX — Rapport de validation du lexique sémantique</h1>
+  <div class="meta">Lamolet, F. (2026). <em>La catégorie du décrochage scolaire comme achievement word négatif.</em> AMU.<br>
+  Date : ${date} · Outil : VLX (ferdinandlamolet.github.io)</div>
+
+  <h2>1. Protocole</h2>
+  <p>Le lexique sémantique issu du TAVI a été soumis à un double codage aveugle par ${coders.length} codeur${coders.length>1?'s':''} (${coders.join(', ')}).
+  Chaque paire (inducteur × terme) a été classée indépendamment en <strong>N</strong> (normativo-déficitaire),
+  <strong>A</strong> (agentif-alternatif) ou <strong>Ø</strong> (non pertinent).
+  Un même terme peut recevoir des codes différents selon son inducteur.
+  Les codeurs n'avaient pas connaissance des pré-codages théoriques ni de l'hypothèse de recherche (Lamolet, 2026, §6.2).</p>
+
+  <h2>2. Alpha de Krippendorff global</h2>
+  <div class="alpha-box">
+    <div class="alpha-num">${alpha!==null?alpha.toFixed(3):'N/A'}</div>
+    <div style="font-size:10pt;color:#666;font-family:-apple-system,sans-serif;margin-top:6px">α de Krippendorff (métrique nominale)</div>
+    <div style="font-size:9.5pt;color:#888;font-family:-apple-system,sans-serif;margin-top:4px">Seuil de publication recommandé : α ≥ 0,67 (Krippendorff, 2004)</div>
+  </div>
+
+  <h2>3. Statistiques globales</h2>
+  <table>
+    <tr><th>Indicateur</th><th>Valeur</th></tr>
+    <tr><td>Paires dans le lexique</td><td>${S.lexique.length}</td></tr>
+    <tr><td>Codeurs</td><td>${coders.length} (${coders.join(', ')})</td></tr>
+    <tr><td>Paires en accord total</td><td>${nAg}</td></tr>
+    <tr><td>Paires résolues après délibération</td><td>${nRs}</td></tr>
+    <tr><td>Paires incomplètes (< 2 codeurs)</td><td>${nIn}</td></tr>
+  </table>`;
+
+  // Alpha par inducteur
+  html+=`<h2>4. Alpha par inducteur</h2><table><tr><th>Inducteur</th><th>Paires codées ≥ 2</th><th>α</th><th>Seuil</th></tr>`;
+  inds.forEach(ind=>{
+    const ids=S.lexique.filter(t=>t.inducteur===ind&&cmap(S.codings,t.id).size>=2).map(t=>t.id);
+    const a=ids.length>=2?+kripp(S.codings,ids).toFixed(3):null;
+    html+=`<tr><td>${escH(ind)}</td><td>${ids.length}</td><td>${a!==null?a.toFixed(3):'N/A'}</td><td>${a!==null?(a>=0.67?'✓ ≥ 0,67':'✗ < 0,67'):'—'}</td></tr>`;
+  });
+  html+=`</table>`;
+
+  // Lexique par inducteur
+  html+=`<h2>5. Lexique validé par inducteur</h2>`;
+  inds.forEach(ind=>{
+    const items=result.filter(r=>r.inducteur===ind).sort((a,b)=>a.terme.localeCompare(b.terme,'fr'));
+    html+=`<h3>${escH(ind)} <span style="font-size:9pt;color:#666;font-weight:400">(${items.length} termes)</span></h3>
+    <table><tr><th>Terme</th><th>Code</th><th>Source</th><th>Note</th></tr>`;
+    items.forEach(it=>{
+      const bc=it.code==='Ø'?'bO':it.code==='N'?'bN':'bA';
+      html+=`<tr><td>${escH(it.terme)}</td><td><span class="${bc}">${it.code}</span></td><td style="font-size:9pt;color:#666">${escH(it.source)}</td><td style="font-size:9pt;font-style:italic;color:#666">${escH(it.note)||''}</td></tr>`;
+    });
+    html+=`</table>`;
+  });
+
+  // Notes de délibération
+  const notes=S.resolutions.filter(r=>r.note?.trim());
+  if(notes.length){
+    html+=`<h2>6. Notes de délibération</h2><table><tr><th>Inducteur</th><th>Terme</th><th>Code</th><th>Justification</th></tr>`;
+    notes.forEach(r=>{const bc=r.code_final==='Ø'?'bO':r.code_final==='N'?'bN':'bA';
+    html+=`<tr><td>${escH(r.inducteur)}</td><td>${escH(r.terme)}</td><td><span class="${bc}">${r.code_final}</span></td><td style="font-style:italic">${escH(r.note)}</td></tr>`;});
+    html+=`</table>`;
+  }
+
+  // Signatures
+  html+=`<div class="sig">
+    ${coders.map(c=>`<div class="sig-box"><div class="sig-line"></div><div class="sig-label">${escH(c)}, codeur VLX</div></div>`).join('')}
+    <div class="sig-box"><div class="sig-line"></div><div class="sig-label">Ferdinand Lamolet, responsable de l'étude</div></div>
+  </div>
+  <p style="font-size:8pt;color:#aaa;margin-top:32px;font-family:-apple-system,sans-serif">VLX — Validateur du Lexique Sémantique · MIT Licence · ferdinandlamolet.github.io</p>
+  </body></html>`;
+
+  const win=window.open('','_blank');
+  win.document.write(html);win.document.close();
+  win.onload=()=>{win.focus();win.print();};
+  qs('#exp-status').textContent='PDF : fenêtre d\'impression ouverte.';
+}
+
+// ── ANALYSIS ───────────────────────────────────────────────
+function cmap(codings,termId){
+  const m=new Map();
+  codings.filter(c=>c.term_id===termId)
+    .sort((a,b)=>String(a.timestamp).localeCompare(String(b.timestamp)))
+    .forEach(c=>m.set(c.codeur,c.code));
+  return m;
+}
+function analyze(lexique,codings){
+  const coders=new Set(codings.map(c=>c.codeur));
+  let nCoded=0,nAgree=0,nPartial=0,nStructural=0;const disagreements=[];
+  lexique.forEach(term=>{
+    const m=cmap(codings,term.id);if(m.size<2)return;nCoded++;
+    const codes=[...m.values()];const u=new Set(codes);
+    if(u.size===1){nAgree++;return;}
+    const hasN=u.has('N'),hasA=u.has('A');
+    const type=(hasN&&hasA)?'structural':'partial';
+    if(type==='structural')nStructural++;else nPartial++;
+    const cc=[...m.entries()].map(([coder,code])=>[coder,code,codings.find(c=>c.term_id===term.id&&c.codeur===coder)?.note||'']);
+    disagreements.push({term,coderCodes:cc,type});
+  });
+  return{coders,nCoded,nAgree,nPartial,nStructural,disagreements};
+}
+
+// ── KRIPPENDORFF (nominal) ─────────────────────────────────
+function kripp(codings,termIds){
+  const cats=['N','A','Ø'];const C=cats.length;
+  const o=Array.from({length:C},()=>Array(C).fill(0));
+  termIds.forEach(tid=>{
+    const m=cmap(codings,tid);const codes=[...m.values()].filter(c=>cats.includes(c));
+    if(codes.length<2)return;const mu=codes.length;
+    for(let i=0;i<mu;i++)for(let j=0;j<mu;j++){
+      if(i===j)continue;const ci=cats.indexOf(codes[i]),cj=cats.indexOf(codes[j]);
+      if(ci>=0&&cj>=0)o[ci][cj]+=1/(mu-1);
+    }
+  });
+  let n=0;for(let c=0;c<C;c++)for(let k=0;k<C;k++)n+=o[c][k];
+  if(n<2)return NaN;
+  const nc=Array(C).fill(0);for(let c=0;c<C;c++)for(let k=0;k<C;k++)nc[c]+=o[c][k];
+  let sumO=0;for(let c=0;c<C;c++)for(let k=0;k<C;k++)if(c!==k)sumO+=o[c][k];
+  const Do=sumO/n;
+  let sumE=0;for(let c=0;c<C;c++)for(let k=0;k<C;k++)if(c!==k)sumE+=nc[c]*nc[k];
+  const De=sumE/(n*(n-1));
+  if(De===0)return 1;return 1-Do/De;
+}
+
+// ── SEEDED SHUFFLE ─────────────────────────────────────────
+function seededShuffle(arr,seed){
+  const a=[...arr];let s=hashStr(seed);
+  for(let i=a.length-1;i>0;i--){s=(Math.imul(s,1664525)+1013904223)>>>0;const j=s%(i+1);[a[i],a[j]]=[a[j],a[i]];}
+  return a;
+}
+function hashStr(str){let h=2166136261;for(let i=0;i<str.length;i++){h^=str.charCodeAt(i);h=Math.imul(h,16777619)>>>0;}return h;}
+
+// ── INIT ───────────────────────────────────────────────────
+restore();
+showScreen(S.url?'home':'setup');
+</script>
+</body>
+</html>
