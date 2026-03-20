@@ -68,6 +68,8 @@ Les protocoles d'utilisation et de réutilisation des outils sont accessibles su
 
 - [**TAVI**](https://ferdinandlamolet.github.io/tav.html) - Test d'Associations Verbales Informatisé
 
+- [**αK.27**](https://ferdinandlamolet.github.io/ak27.html) - Codage sémantique à fiabilité contrôlée
+
 - [**PAC**](https://ferdinandlamolet.github.io/pac.html) - Plateforme d'Analyse de Corpus
 
 - [**AléaScope**](https://ferdinandlamolet.github.io/aleascope.html) - Outil de stratification d'échantillons
