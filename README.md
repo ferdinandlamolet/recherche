@@ -12,7 +12,7 @@
 
 ### Outils
 
-Quatre outils ont été développés pour l'enquête, librement réutilisables.
+Quatre outils ont été développés pour nos enquêtes, librement réutilisables.
 
 | | Description | Accès | Protocole |
 |-------|-------------|-------|-----------|
