@@ -49,8 +49,8 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);display:flex
 .al-w{background:var(--amber-lt);color:var(--amber);border:1px solid #FDE68A;}
 .al-g{background:var(--green-lt);color:var(--green);border:1px solid #A7D7C5;}
 
-/* Upload */
-.up-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;}
+/* Upload — 3 colonnes */
+.up-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.5rem;}
 .up-zone{border:2px dashed var(--border);border-radius:8px;padding:1.75rem;text-align:center;cursor:pointer;transition:border-color .2s,background .2s;}
 .up-zone:hover,.up-zone.drag{border-color:var(--navy);background:var(--navy-lt);}
 .up-zone.ok{border-color:var(--green);background:var(--green-lt);border-style:solid;}
@@ -172,32 +172,39 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);display:flex
   <div class="alert al-i">
     <strong>MBC</strong> opère la confrontation bimodale entre le niveau cognitif (TAVI) et le niveau discursif (PAC). Ce ne sont pas deux mesures du même objet, mais deux niveaux irréductibles d'une même réalité dont la mise en regard rend visible un écart que ni l'un ni l'autre instrument ne pourrait produire seul (Lamolet, 2026).
   </div>
+
   <div class="up-grid">
+
+    <!-- Cellule 1 - TAVI -->
     <div>
       <div class="sl">Niveau cognitif - TAVI</div>
       <div class="up-zone" id="z-tavi"
            onclick="document.getElementById('f-tavi').click()"
            ondragover="ev(event,'z-tavi')" ondrop="df(event,'tavi')" ondragleave="dl('z-tavi')">
         <div class="up-icon">🧠</div>
-        <div class="up-title">Export CSV du TAVI</div>
+        <div class="up-title">csv_reponses (TAVI)</div>
         <div class="up-sub">Séparateur · ; · UTF-8</div>
         <div class="up-sub" style="margin-top:.4rem;" id="fn-tavi">Cliquer ou glisser-déposer</div>
       </div>
       <input type="file" id="f-tavi" accept=".csv" style="display:none" onchange="lf(event,'tavi')">
       <div id="prev-tavi"></div>
     </div>
-    <div class="mt2">
-    <div class="sl">Lexique sémantique - VLX (facultatif)</div>
-    <div class="up-zone" id="z-vlx"
-       onclick="document.getElementById('f-vlx').click()">
-    <div class="up-icon">🍒</div>
-    <div class="up-title">lexique_valide.json (VLX)</div>
-    <div class="up-sub">Remplace les pré-codages théoriques par les codes validés empiriquement</div>
-    <div class="up-sub" style="margin-top:.4rem;" id="fn-vlx">Cliquer pour importer</div>
-  </div>
-  <input type="file" id="f-vlx" accept=".json" style="display:none" onchange="loadVLX(event)">
-  <div id="prev-vlx"></div>
-</div>
+    
+    <!-- Cellule 2 - VLX -->
+    <div>
+      <div class="sl">Lexique sémantique (facultatif)</div>
+      <div class="up-zone" id="z-vlx"
+           onclick="document.getElementById('f-vlx').click()">
+        <div class="up-icon">🍒</div>
+        <div class="up-title">lexique_valide.json (VLX)</div>
+        <div class="up-sub">Remplace les pré-codages théoriques par les codes validés empiriquement</div>
+        <div class="up-sub" style="margin-top:.4rem;" id="fn-vlx">Cliquer pour importer</div>
+      </div>
+      <input type="file" id="f-vlx" accept=".json" style="display:none" onchange="loadVLX(event)">
+      <div id="prev-vlx"></div>
+    </div>
+    
+    <!-- Cellule 3 - PAC -->
     <div>
       <div class="sl">Niveau discursif - PAC</div>
       <div class="up-zone" id="z-pac"
@@ -211,7 +218,9 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);display:flex
       <input type="file" id="f-pac" accept=".csv" style="display:none" onchange="lf(event,'pac')">
       <div id="prev-pac"></div>
     </div>
+
   </div>
+
   <div class="card mt2">
     <div class="ch"><span class="ct">Session</span></div>
     <div class="cb gap">
@@ -251,8 +260,8 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);display:flex
       </span>
     </div>
     <div class="cb">
-      <div class="alert al-i">
-        Codez chaque terme selon son registre sémantique. <strong style="color:var(--accent);">N</strong> = normativo-déficitaire (aligne avec une contrainte discursive forte : abandon, manque, diplôme…). <strong style="color:var(--green);">A</strong> = agentif-alternatif (résistance ou divergence : trajectoire, savoir-faire, choix…). Le <strong>Score d'Incorporation Cognitive (SIC)</strong> est calculé comme la part de saillance portée par le registre N : SIC = Σ saillance(N) / Σ saillance(N+A), mis à l'échelle 0–4. Les pré-codages proposés sont issus du lexique théorique (Lamolet, 2026) - <em>à valider empiriquement sur le corpus réel</em>.
+      <div class="alert al-i" id="tavi-source-alert">
+        Codez chaque terme selon son registre sémantique. <strong style="color:var(--accent);">N</strong> = normativo-déficitaire (aligne avec une contrainte discursive forte : abandon, manque, diplôme…). <strong style="color:var(--green);">A</strong> = agentif-alternatif (résistance ou divergence : trajectoire, savoir-faire, choix…). Le <strong>Score d'Incorporation Cognitive (SIC)</strong> est calculé comme la part de saillance portée par le registre N : SIC = Σ saillance(N) / Σ saillance(N+A), mis à l'échelle 0–4. Les pré-codages proposés sont issus du lexique théorique (Lamolet, 2026) - <em>à valider empiriquement via l'outil VLX avant toute interprétation du SIC.</em>
       </div>
       <div class="itabs" id="itabs"></div>
       <div id="icontent"></div>
@@ -288,7 +297,7 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);display:flex
     <div class="cb"><div class="mx" id="mxwrap"></div></div>
   </div>
   <div class="card">
-    <div class="ch"><span class="ct">Comparaison LP / LGT</span><span style="font-size:.72rem;color:var(--ink-3);">SIC par inducteur et par filière (Lamolet, 2026, §4.7)</span></div>
+    <div class="ch"><span class="ct">Comparaison LP / LGT</span><span style="font-size:.72rem;color:var(--ink-3);">SIC par inducteur et par filière (Lamolet, 2026)</span></div>
     <div class="cb" id="lplgt"></div>
   </div>
 </div>
@@ -297,18 +306,18 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);display:flex
 <div class="panel" id="panel-configs">
   <div id="cfgs-computed"></div>
   <div class="card mt2">
-    <div class="ch"><span class="ct">Cadre interprétatif des configurations (Lamolet, 2026, §4.6)</span></div>
+    <div class="ch"><span class="ct">Cadre interprétatif des configurations (Lamolet, 2026)</span></div>
     <div class="cb">
       <div class="cblk c1">
-        <div class="cblk-t">Configuration 1 — Convergence forte (|Δ| &lt; 0,75)</div>
+        <div class="cblk-t">Configuration 1 - Convergence forte (|Δ| &lt; 0,75)</div>
         <p>Les scores PAC élevés sur une dimension correspondent à une incorporation cognitive forte (SIC élevé pour les inducteurs liés). La contrainte discursive a produit la structure cognitive. Ces dimensions constituent probablement des éléments du noyau central de la représentation (Abric, 1994). La convergence ne confirme pas simplement l'hypothèse : elle en précise la profondeur et identifie quels obstacles sont les plus ancrés.</p>
       </div>
       <div class="cblk c2">
-        <div class="cblk-t">Configuration 2 — Décalage partiel (0,75 ≤ |Δ| &lt; 1,5)</div>
+        <div class="cblk-t">Configuration 2 - Décalage partiel (0,75 ≤ |Δ| &lt; 1,5)</div>
         <p>La contrainte discursive et l'incorporation cognitive divergent partiellement. Ce décalage est théoriquement attendu sur la dimension recognitive (D4) pour les enseignants de LP, dont l'expérience quotidienne les confronte à des formes de compétences hors certification. Il signale que la contrainte discursive n'opère pas uniformément selon les positions institutionnelles. Un décalage D≫T signifie que la littérature naturalise davantage que les professionnels ne l'ont incorporé ; T≫D signifie l'inverse.</p>
       </div>
       <div class="cblk c3">
-        <div class="cblk-t">Configuration 3 — Décalage structurel (|Δ| ≥ 1,5 ou tensions intra-TAVI)</div>
+        <div class="cblk-t">Configuration 3 - Décalage structurel (|Δ| ≥ 1,5 ou tensions intra-TAVI)</div>
         <p>L'écart est suffisamment prononcé pour signaler soit une résistance active de la représentation professionnelle face au discours institutionnel, soit une tension interne à la représentation (inducteurs a priori proches produisant des SIC divergents). Identifier ces fissures, c'est identifier des espaces où une intervention sur les pratiques est pensable (Lamolet, 2026). Ces zones constituent une donnée de première importance sur la structure interne de la représentation.</p>
       </div>
       <div style="margin-top:1rem;padding:.75rem;background:var(--bg);border-radius:5px;font-size:.77rem;color:var(--ink-2);line-height:1.6;border:1px solid var(--border);">
@@ -339,8 +348,6 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);display:flex
 // ════════════════════════════════════════════════════════
 // CONSTANTS THÉORIQUES
 // ════════════════════════════════════════════════════════
-
-// Mapping dimensions PAC → inducteurs TAV (Lamolet 2026)
 const DM = {
   D1:{ label:'Axiologique', cadre:'Scheffler (1960) ; Peters (1967) ; Gallie (1956)', inds:['Décrocheur','Réussite'] },
   D2:{ label:'Normative',   cadre:'Foucault (1975) ; Bachelard (1938)',             inds:['Réussite','Raccrochage'] },
@@ -351,7 +358,6 @@ const DIMS = ['D1','D2','D3','D4'];
 const INDS = ['Décrocheur','Réussite','Compétence','Raccrochage','Choix'];
 const C1=0.75, C2=1.50;
 
-// Lexique théorique pré-semé (Lamolet, 2026) à valider empiriquement
 const SEED = {
   'décrocheur':{
     N:['abandon','manque','échec','exclusion','fragilité','risque','problème','difficultés','aide','prise en charge','désintérêt','démotivation','absent','refus','passif','élève en difficulté','perdre','décrocher'],
@@ -363,7 +369,7 @@ const SEED = {
   },
   'compétence':{
     N:['certification','diplôme','programme','évaluation','notation','référentiel','curriculum','scolaire','académique','bac pro','certifier','valider','académique'],
-    A:['savoir-faire','expérience','pratique','terrain','informel','hors-école','vie','non certifié','acquis','reconnaissance','vae','débrouillardise','aptitude']
+    A:['savoir-faire','expérience','pratique','CPS','informel','hors-école','vie','non certifié','acquis','reconnaissance','vae','débrouillardise','aptitude']
   },
   'raccrochage':{
     N:['retour','réintégration','remédiation','rattrapage','normalisation','insertion','diplôme','norme','récupération','réparation','remise à niveau','réintégrer','école'],
@@ -389,7 +395,7 @@ function scCol(v){ if(isNaN(v)) return 'var(--ink-3)'; if(v<1.5) return 'var(--g
 
 function save(){ try{ localStorage.setItem('mbc_v2',JSON.stringify(DB)); }catch(e){} }
 function load(){
-  try{ const d=localStorage.getItem('mbc_v2'); if(d){ const p=JSON.parse(d); DB={tavi:p.tavi||[],pac:p.pac||[],coding:p.coding||{}}; } }catch(e){}
+  try{ const d=localStorage.getItem('mbc_v2'); if(d){ const p=JSON.parse(d); DB={tavi:p.tavi||[],pac:p.pac||[],coding:p.coding||{},vlx:p.vlx||false}; } }catch(e){}
   seedCoding();
 }
 function seedCoding(){
@@ -457,7 +463,7 @@ function proc(txt,type,fname){
 function updStatus(){
   const ta=DB.tavi.length, pa=DB.pac.length;
   document.getElementById('status').textContent=
-    `TAVI : ${ta} assoc. · PAC : ${pa} extraits`;
+    `TAVI : ${ta} assoc. · PAC : ${pa} extraits${DB.vlx?' · VLX ✓':''}`;
 }
 
 function loadVLX(e){
@@ -466,19 +472,17 @@ function loadVLX(e){
   r.onload = ev => {
     try {
       const data = JSON.parse(ev.target.result);
-      const lex = data.lexique || data; // tolère JSON brut ou enveloppé
+      const lex = data.lexique || data;
       if(!Array.isArray(lex)) throw new Error('Format inattendu');
-
       let n = 0;
       lex.forEach(item => {
         const ind = String(item.inducteur||'').trim();
         const mot = String(item.terme||'').trim();
         const code = String(item.code||'').trim();
         if(!ind || !mot || !['N','A','Ø'].includes(code)) return;
-        DB.coding[ky(ind, mot)] = code === 'Ø' ? 'X' : code; // MBC utilise 'X' pour Ø
+        DB.coding[ky(ind, mot)] = code === 'Ø' ? 'X' : code;
         n++;
       });
-
       DB.vlx = true;
       const alpha = data.alpha_krippendorff;
       document.getElementById('fn-vlx').textContent = f.name;
@@ -488,6 +492,8 @@ function loadVLX(e){
           ✓ ${n} paires chargées depuis VLX${alpha !== null && alpha !== undefined ? ` · α = ${alpha}` : ''}.
           Le SIC sera calculé sur la base du codage empiriquement validé.
         </div>`;
+      const alertEl = document.getElementById('tavi-source-alert');
+      if(alertEl) alertEl.innerHTML = `Codez chaque terme selon son registre sémantique. <strong style="color:var(--accent);">N</strong> = normativo-déficitaire · <strong style="color:var(--green);">A</strong> = agentif-alternatif · Le <strong>Score d'Incorporation Cognitive (SIC)</strong> = Σ saillance(N) / Σ saillance(N+A), mis à l'échelle 0–4. <span style="color:var(--green);font-weight:700;">✓ Lexique validé empiriquement (VLX)</span> — double codage aveugle, α de Krippendorff${alpha !== null && alpha !== undefined ? ` = ${alpha}` : ''}. Le SIC peut être interprété sans réserve méthodologique.`;
       save(); updStatus();
     } catch(err) {
       alert('Erreur lecture VLX JSON :\n' + err.message);
@@ -496,15 +502,6 @@ function loadVLX(e){
   r.readAsText(f, 'UTF-8');
   e.target.value = '';
 }
-```
-
----
-
-**Alerte TAVI : afficher la source du codage**
-
-Dans `renderTAVI()`, l'alerte existante contient :
-```
-Les pré-codages proposés sont issus du lexique théorique (Lamolet, 2026) - <em>à valider empiriquement sur le corpus réel</em>.
 
 // ════════════════════════════════════════════════════════
 // TAVI ANALYSIS
@@ -593,7 +590,6 @@ function computeMx(){
 // ════════════════════════════════════════════════════════
 // RENDERS
 // ════════════════════════════════════════════════════════
-
 function renderTAVI(){
   if(!DB.tavi.length){
     document.getElementById('tavi-stats').innerHTML='<div class="alert al-w">Aucune donnée TAVI chargée.</div>';
@@ -610,7 +606,7 @@ function renderTAVI(){
     <div class="sbox"><div class="snum">${Math.round(nc/Math.max(na,1)*100)}%</div><div class="slab">Taux codage</div></div>
   `;
   document.getElementById('itabs').innerHTML=INDS.map(ind=>{
-    const sc=sic(ind); const has=DB.tavi.some(r=>nrm(r.inducteur)===nrm(ind));
+    const has=DB.tavi.some(r=>nrm(r.inducteur)===nrm(ind));
     return `<div class="itab ${activeInd===ind?'on':''}" onclick="selInd('${ind}')">${ind}${has?'':' ⚠'}</div>`;
   }).join('');
   renderInd(activeInd);
@@ -639,7 +635,7 @@ function renderInd(ind){
         <div style="font-family:'Libre Baskerville',serif;font-size:1.5rem;font-weight:700;color:var(--navy);">${sc.toFixed(2)}</div>
         <div>
           <div style="font-size:.79rem;font-weight:600;color:var(--navy);">Score d'Incorporation Cognitive (SIC) - <em>${ind}</em></div>
-          <div style="font-size:.71rem;color:var(--ink-2);">0 = register alternatif dominant · 4 = register normativo-déficitaire dominant</div>
+          <div style="font-size:.71rem;color:var(--ink-2);">0 = registre alternatif dominant · 4 = registre normativo-déficitaire dominant</div>
         </div>
         <div class="sic-bar" style="width:100px;height:10px;margin-left:.5rem;"><div class="sic-fill" style="width:${(sc/4*100).toFixed(1)}%;background:${scCol(sc)};"></div></div>
         <span style="font-family:'DM Mono',monospace;font-size:.8rem;color:${scCol(sc)};font-weight:700;">${sc.toFixed(2)}/4</span>
@@ -664,7 +660,7 @@ function renderInd(ind){
         <div style="max-height:380px;overflow-y:auto;border:1px solid var(--border);border-radius:5px;padding:.5rem .6rem;">
           ${ws.slice(0,100).map(w=>wRow(w,ind)).join('')}
         </div>
-        <div style="font-size:.69rem;color:var(--ink-3);margin-top:.35rem;">Saillance = f × (6 − R̄). Pré-codages : lexique théorique Lamolet (2026). Modifier selon les données empiriques.</div>
+        <div style="font-size:.69rem;color:var(--ink-3);margin-top:.35rem;">Saillance = f × (6 − R̄). ${DB.vlx?'Codages : lexique validé empiriquement (VLX).':'Pré-codages : lexique théorique Lamolet (2026). Modifier selon les données empiriques.'}</div>
       </div>
     </div>
   `;
@@ -819,7 +815,6 @@ function renderLPLGT(){
     const ecN=(lpS!==null&&lgtS!==null)?(lpS-lgtS):null;
     const ecS=ecN!==null?ecN.toFixed(2):'—';
     const ecC=ecN!==null?(ecN<-0.4?'var(--green)':ecN>0.4?'var(--accent)':'var(--ink-2)'):'var(--ink-3)';
-    
     let interp='';
     if(ecN!==null){
       if(Math.abs(ecN)>=0.5){
@@ -828,7 +823,6 @@ function renderLPLGT(){
           : 'LGT plus alternatif — écart inattendu';
       } else interp='Pas d\'écart significatif entre filières';
     }
-
     h+=`<tr>
       <td style="padding:.35rem .7rem;font-weight:600;">${ind}</td>
       <td style="text-align:center;font-family:'DM Mono',monospace;font-weight:700;color:${scCol(glob||0)};">${glob!==null?glob.toFixed(2):'—'}</td>
@@ -852,10 +846,9 @@ function renderConfigs(){
   const c1=[],c2=[],c3=[];
   DIMS.forEach(dim=>DM[dim].inds.forEach(ind=>{
     const c=mx[dim][ind];
-    if(c.active&&c.cfg!=='nd'){ ({c1,c2,c3}[c.cfg]||[]).push({dim,ind,c}); [c1,c2,c3][['c1','c2','c3'].indexOf(c.cfg)].push({dim,ind,c}); }
+    if(c.active&&c.cfg!=='nd'){ [c1,c2,c3][['c1','c2','c3'].indexOf(c.cfg)].push({dim,ind,c}); }
   }));
 
-  // Tensions intra-TAVI
   const intra=[];
   for(let i=0;i<INDS.length;i++) for(let j=i+1;j<INDS.length;j++){
     const a=INDS[i],b=INDS[j];
@@ -878,21 +871,20 @@ function renderConfigs(){
   }
 
   if(c1.length||c2.length||c3.length||intra.length){
-    h+=cSection(c1,'c1','⬤ Configuration 1 — Convergence forte','Le discours institutionnel et scientifique a produit les structures cognitives automatiques des professionnels. Ces paires constituent probablement le noyau central de la représentation sociale de la catégorie (Abric, 1994).');
-    h+=cSection(c2,'c2','◐ Configuration 2 — Décalage partiel','Zones de résistance ou d\'hétérogénéité : la contrainte discursive et l\'incorporation cognitive divergent. Particulièrement attendu sur D4 Recognitive pour les enseignants de LP.');
+    h+=cSection(c1,'c1','⬤ Configuration 1 - Convergence forte','Le discours institutionnel et scientifique a produit les structures cognitives automatiques des professionnels. Ces paires constituent probablement le noyau central de la représentation sociale de la catégorie (Abric, 1994).');
+    h+=cSection(c2,'c2','◐ Configuration 2 - Décalage partiel','Zones de résistance ou d\'hétérogénéité : la contrainte discursive et l\'incorporation cognitive divergent. Particulièrement attendu sur D4 Recognitive pour les enseignants de LP.');
     if(c3.length||intra.length){
       h+=`<div class="cblk c3">
-        <div class="cblk-t">○ Configuration 3 — Décalage structurel</div>
-        <p>Zones de tension prononcée entre niveaux, ou entre inducteurs partageant une dimension. Ce sont les lieux où la représentation se fissure — des espaces où une intervention sur les pratiques devient pensable (Lamolet, 2026, §4.6).</p>
+        <div class="cblk-t">○ Configuration 3 - Décalage structurel</div>
+        <p>Zones de tension prononcée entre niveaux, ou entre inducteurs partageant une dimension. Ce sont les lieux où la représentation se fissure, des espaces où une intervention sur les pratiques devient pensable (Lamolet, 2026).</p>
         ${c3.map(({dim,ind,c})=>`<div class="citem"><strong>${dim}×${ind}</strong> — PAC=${c.ps!==null?c.ps.toFixed(2):'—'} / SIC=${c.ts!==null?c.ts.toFixed(2):'—'} · |Δ|=${c.dAbs!==null?c.dAbs.toFixed(2):'—'}</div>`).join('')}
-        ${intra.map(({a,b,sa,sb,ec,dim})=>`<div class="citem"><strong>Tension intra-TAVI : ${a} vs ${b}</strong> (dimension partagée : ${dim} ${DM[dim].label}) — SIC(${a})=${sa.toFixed(2)} vs SIC(${b})=${sb.toFixed(2)} · |Δ|=${ec.toFixed(2)} — Tension interne à la représentation : les deux inducteurs activent des registres cognitifs divergents malgré leur proximité théorique.</div>`).join('')}
+        ${intra.map(({a,b,sa,sb,ec,dim})=>`<div class="citem"><strong>Tension intra-TAVI : ${a} vs ${b}</strong> (dimension partagée : ${dim} ${DM[dim].label}) - SIC(${a})=${sa.toFixed(2)} vs SIC(${b})=${sb.toFixed(2)} · |Δ|=${ec.toFixed(2)} - Tension interne à la représentation : les deux inducteurs activent des registres cognitifs divergents malgré leur proximité théorique.</div>`).join('')}
       </div>`;
     }
   } else {
     h='<div class="alert al-w">Aucune configuration calculable. Vérifiez que les mots TAVI sont codés (N/A) dans l\'onglet Analyse TAVI.</div>';
   }
 
-  // Résumé global
   const pm=pacMeans(); const allSIC=INDS.map(i=>sic(i)).filter(s=>s!==null);
   const meanPAC=DIMS.map(d=>pm[d]).filter(v=>v!==null);
   if(allSIC.length&&meanPAC.length){
@@ -902,7 +894,7 @@ function renderConfigs(){
       <strong>Résumé global :</strong> Score PAC moyen = <strong style="font-family:'DM Mono',monospace;color:${scCol(parseFloat(mP))}">${mP}/4</strong> · SIC TAVI moyen = <strong style="font-family:'DM Mono',monospace;color:${scCol(parseFloat(mT))}">${mT}/4</strong> · Écart global = <strong style="font-family:'DM Mono',monospace;">${(parseFloat(mP)-parseFloat(mT)).toFixed(2)}</strong>.
       ${parseFloat(mP)>parseFloat(mT)+0.5?'La contrainte discursive est globalement plus forte que l\'incorporation cognitive : la littérature naturalise davantage que les professionnels n\'ont incorporé.'
         :parseFloat(mT)>parseFloat(mP)+0.5?'L\'incorporation cognitive est globalement plus forte que la contrainte discursive : les professionnels ont incorporé des présupposés que la littérature récente a partiellement dépassés.'
-        :'Les deux niveaux sont globalement équilibrés — la convergence domine sur l\'ensemble du protocole.'}
+        :'Les deux niveaux sont globalement équilibrés, la convergence domine sur l\'ensemble du protocole.'}
     </div>`;
   }
 
@@ -942,9 +934,9 @@ function exJson(){
 }
 function imJson(e){
   const f=e.target.files[0]; if(!f) return;
-  const r=new FileReader(); r.onload=ev=>{ try{ const d=JSON.parse(ev.target.result); if(d.tavi&&d.pac){ DB={tavi:d.tavi||[],pac:d.pac||[],coding:d.coding||{}}; seedCoding(); save(); updStatus(); alert('✓ Session restaurée.'); } else alert('Fichier invalide.'); }catch{ alert('Erreur de lecture.'); } }; r.readAsText(f); e.target.value='';
+  const r=new FileReader(); r.onload=ev=>{ try{ const d=JSON.parse(ev.target.result); if(d.tavi&&d.pac){ DB={tavi:d.tavi||[],pac:d.pac||[],coding:d.coding||{},vlx:d.vlx||false}; seedCoding(); save(); updStatus(); alert('✓ Session restaurée.'); } else alert('Fichier invalide.'); }catch{ alert('Erreur de lecture.'); } }; r.readAsText(f); e.target.value='';
 }
-function reset(){ if(!confirm('Réinitialiser toutes les données ?')) return; DB={tavi:[],pac:[],coding:{}}; seedCoding(); save(); updStatus(); ['z-tavi','z-pac'].forEach(id=>document.getElementById(id).classList.remove('ok')); alert('Session réinitialisée.'); }
+function reset(){ if(!confirm('Réinitialiser toutes les données ?')) return; DB={tavi:[],pac:[],coding:{},vlx:false}; seedCoding(); save(); updStatus(); ['z-tavi','z-pac','z-vlx'].forEach(id=>document.getElementById(id).classList.remove('ok')); alert('Session réinitialisée.'); }
 
 // ════════════════════════════════════════════════════════
 // TABS
