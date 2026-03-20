@@ -47,4 +47,14 @@ AléaScope répond à un problème pratique de constitution du corpus : comment 
 🔭 [Application AléaScope](https://ferdinandlamolet.github.io/alea-scope.html)
 
 ---
+
+### MBC - Matrice Bimodale de Confrontation
+
+Outil de mise en relation structurée des exports du TAVI et de la PAC. La MBC opère au second niveau du protocole bimodal, après validation des analyses intra-instrument, en rendant visible l'écart entre la contrainte discursive mesurée par la PAC et son degré d'incorporation cognitive mesuré par le TAVI.
+
+Dans le cadre de cette recherche, la MBC est utilisée pour identifier les configurations de convergence ou de décalage entre les deux niveaux de la représentation sociale du *décrochage scolaire* et en préciser la portée analytique.
+
+🔬 [Matrice Bimodale de Confrontation](https://ferdinandlamolet.github.io/mbc.html)
+
+---
 **Ferdinand Lamolet** (2026)
