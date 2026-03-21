@@ -481,6 +481,17 @@
         </div>
 
         <!-- Écran d'accueil -->
+        <div id="alreadyDoneScreen" class="card hidden">
+           <div style="text-align:center; padding:3rem 2rem;">
+                <div style="font-size:4rem; margin-bottom:1.5rem;">🔒</div>
+                <h2 style="font-family:'Spectral',serif; font-size:2rem; color:var(--primary); margin-bottom:1rem;">Test déjà complété</h2>
+                <p style="font-size:1.1rem; color:var(--text-light); line-height:1.8;">
+                   Nos enregistrements indiquent que vous avez déjà participé à ce test depuis cet appareil.<br>
+                   Pour des raisons de rigueur méthodologique, chaque participant ne peut répondre qu'une seule fois.
+                </p>
+           </div>
+        </div>
+        
         <div id="welcomeScreen" class="card" style="text-align: center;">
             <div class="info-section" style="margin-top: 0; background: linear-gradient(135deg, rgba(232, 171, 94, 0.12), rgba(45, 106, 79, 0.12));">
                 <h3>Bienvenue</h3>
@@ -743,6 +754,16 @@
     </div>
 
     <script>
+        const STORAGE_KEY = 'tavi_completed';
+
+        window.addEventListener('DOMContentLoaded', () => {
+           if (localStorage.getItem(STORAGE_KEY)) {
+               showScreen('alreadyDoneScreen');
+           } else {
+               showScreen('welcomeScreen');
+           }
+        });
+        
         // Données
         const inducteurs = [
             "Décrocheur",
@@ -764,6 +785,7 @@
         // Fonction pour gérer l'affichage des écrans (un seul visible à la fois)
         function showScreen(screenId) {
             const screens = [
+                'alreadyDoneScreen',
                 'welcomeScreen',
                 'displayScreen',
                 'inputScreen',
@@ -1172,6 +1194,7 @@
             document.getElementById('progressBar').style.width = '100%';
             
             // Envoyer les données vers Google Sheets
+            localStorage.setItem(STORAGE_KEY, new Date().toISOString());
             await sendDataToGoogleSheets();
         }
 
