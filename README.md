@@ -6,7 +6,7 @@
 ### Le *décrochage scolaire* en France
 **Généalogie d'une catégorie, anatomie d'un obstacle**
 
-- [Projet de recherche](https://ferdinandlamolet.github.io) (2026)
+- [Projet de recherche](https://ferdinandlamolet.github.io/recherche) (2026)
 
 ---
 
@@ -16,11 +16,11 @@ Quatre outils ont été développés pour nos enquêtes, librement réutilisable
 
 | | Description | Accès | Protocole |
 |-------|-------------|-------|-----------|
-| **TAVI** | Test d'Associations Verbales Informatisé | [Ouvrir](https://ferdinandlamolet.github.io/tav.html) | [Protocole](https://ferdinandlamolet.github.io/tav-protocole.html) |
-| **αK.27** | Codage sémantique à fiabilité contrôlée | [Ouvrir](https://ferdinandlamolet.github.io/ak27.html) | x |
-| **PAC** | Plateforme d'Analyse de Corpus | [Ouvrir](https://ferdinandlamolet.github.io/pac.html) | [Protocole](https://ferdinandlamolet.github.io/pac-protocole.html) |
-| **AléaScope** | Stratification d'échantillon | [Ouvrir](https://ferdinandlamolet.github.io/aleascope.html) | x |
-| **MBC** | Matrice Bimodale de Confrontation | [Ouvrir](https://ferdinandlamolet.github.io/mbc.html) | x |
+| **TAVI** | Test d'Associations Verbales Informatisé | [Ouvrir](https://ferdinandlamolet.github.io/recherche/tav.html) | [Protocole](https://ferdinandlamolet.github.io/recherche/tav-protocole.html) |
+| **αK.27** | Codage sémantique à fiabilité contrôlée | [Ouvrir](https://ferdinandlamolet.github.io/recherche/ak27.html) | x |
+| **PAC** | Plateforme d'Analyse de Corpus | [Ouvrir](https://ferdinandlamolet.github.io/pac.html) | [Protocole](https://ferdinandlamolet.github.io/recherche/pac-protocole.html) |
+| **AléaScope** | Stratification d'échantillon | [Ouvrir](https://ferdinandlamolet.github.io/recherche/aleascope.html) | x |
+| **MBC** | Matrice Bimodale de Confrontation | [Ouvrir](https://ferdinandlamolet.github.io/recherche/mbc.html) | x |
 
 ---
 
