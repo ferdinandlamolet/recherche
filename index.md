@@ -64,17 +64,17 @@ La comparaison entre les deux niveaux est précisément ce que la question de re
 ### Outils
 
 Quatre outils ont été développés pour conduire cette enquête et sont mis à disposition librement.
-Les protocoles d'utilisation et de réutilisation des outils sont accessibles sur cette [page](https://ferdinandlamolet.github.io/outils).
+Les protocoles d'utilisation et de réutilisation des outils sont accessibles sur cette [page](https://ferdinandlamolet.github.io/recherche/outils).
 
-- [**TAVI**](https://ferdinandlamolet.github.io/tav.html) - Test d'Associations Verbales Informatisé
+- [**TAVI**](https://ferdinandlamolet.github.io/recherche/tav.html) - Test d'Associations Verbales Informatisé
 
-- [**αK.27**](https://ferdinandlamolet.github.io/ak27.html) - Codage sémantique à fiabilité contrôlée
+- [**αK.27**](https://ferdinandlamolet.github.io/recherche/ak27.html) - Codage sémantique à fiabilité contrôlée
 
-- [**PAC**](https://ferdinandlamolet.github.io/pac.html) - Plateforme d'Analyse de Corpus
+- [**PAC**](https://ferdinandlamolet.github.io/recherche/pac.html) - Plateforme d'Analyse de Corpus
 
-- [**AléaScope**](https://ferdinandlamolet.github.io/aleascope.html) - Outil de stratification d'échantillons
+- [**AléaScope**](https://ferdinandlamolet.github.io/recherche/aleascope.html) - Outil de stratification d'échantillons
 
-- [**MBC**](https://ferdinandlamolet.github.io/mbc.html) - Matrice Bimodale de Confrontation
+- [**MBC**](https://ferdinandlamolet.github.io/recherche/mbc.html) - Matrice Bimodale de Confrontation
 
 ---
 
