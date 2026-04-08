@@ -12,7 +12,7 @@ Dans le cadre de cette recherche, le TAVI est utilisé pour accéder aux structu
 
 📋 [Protocole TAVI](https://ferdinandlamolet.github.io/recherche/tav-protocole) (présentation de la méthode TAV et du paramétrage)
 
-🏫 [Test d'Associations Verbales Informatisé](https://ferdinandlamolet.github.io/recherche/tav.html) (application configurée pour cette recherche)
+🏫 [Test d'Associations Verbales Informatisé](https://ferdinandlamolet.github.io/recherche/tav.html)
 
 ---
 
@@ -34,7 +34,7 @@ Dans le cadre de cette recherche, la PAC est utilisée pour analyser le corpus d
 
 📋 [Protocole PAC](https://ferdinandlamolet.github.io/recherche/pac-protocole.html) (présentation du dispositif de codage coopératif)
 
-🔎 [Plateforme d'Analyse de Corpus](https://ferdinandlamolet.github.io/recherche/pac.html) (grille de codage configurée pour cette recherche)
+🔎 [Plateforme d'Analyse de Corpus](https://ferdinandlamolet.github.io/recherche/pac.html)
 
 ---
 
